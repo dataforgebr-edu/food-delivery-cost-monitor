@@ -8,7 +8,8 @@ authors = [
 license = {text = "MIT"}
 requires-python = ">=3.12,<4.0"
 dependencies = [
-    "taskipy (>=1.14.1,<2.0.0)"
+    "taskipy (>=1.14.1,<2.0.0)",
+    "boto3 (>=1.43.18,<2.0.0)"
 ]
 
 [build-system]
