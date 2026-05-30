@@ -8,6 +8,8 @@ dbt_packages/
 logs/
 .vscode
 
+*.docx
+
 # End of https://www.toptal.com/developers/gitignore/api/dbt
 
 # Created by https://www.toptal.com/developers/gitignore/api/python

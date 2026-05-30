@@ -1,0 +1,33 @@
+[project]
+name = "food-delivery-cost-monitor"
+version = "1.0"
+description = "Pipeline de monitoramento de custos de plataforma de dados"
+authors = [
+    {name = "RodrigoSilva1989",email = "dataforge.br@gmail.com"}
+]
+license = {text = "MIT"}
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "taskipy (>=1.14.1,<2.0.0)"
+]
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[dependency-groups]
+dev = [
+    "pre-commit (>=4.6.0,<5.0.0)",
+    "black (>=26.5.1,<27.0.0)",
+    "isort (>=8.0.1,<9.0.0)",
+    "bandit (>=1.9.4,<2.0.0)",
+    "sqlfluff (>=4.2.1,<5.0.0)"
+]
+
+[tool.taskipy.tasks]
+lint       = { cmd = "black src && isort src", help = "Formata código" }
+lint-check = { cmd = "black --check src && isort --check src", help = "Verifica formatação (CI)" }
+security   = { cmd = "bandit -r src -lll", help = "Scan de segurança" }
