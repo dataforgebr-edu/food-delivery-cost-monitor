@@ -6,7 +6,7 @@ target/
 dbt_modules/
 dbt_packages/
 logs/
-.vscode
+data/
 
 *.docx
 
