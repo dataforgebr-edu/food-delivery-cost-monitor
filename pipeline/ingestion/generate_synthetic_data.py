@@ -4,6 +4,7 @@ import random
 import uuid
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from pipeline_config import DEFAULT_LOCAL_DIR
 
 import pandas as pd
 
@@ -55,8 +56,6 @@ STATUS_WEIGHTS = [0.90, 0.07, 0.03]
 
 JOBS_PER_DOMAIN_PER_DAY = 20
 OUTLIER_RATE = 0.05
-
-DEFAULT_OUTPUT_DIR = Path(__file__).parents[1] / "data" / "raw"
 
 
 def _hour_cost_multiplier(hour: int) -> float:
@@ -112,7 +111,7 @@ def _generate_record(execution_date: date, domain: str, is_outlier: bool) -> dic
 
 
 def generate_for_date(
-    execution_date: date, output_dir: Path = DEFAULT_OUTPUT_DIR
+    execution_date: date, output_dir: Path = DEFAULT_LOCAL_DIR
 ) -> Path:
     """Gera logs de jobs para uma data e salva em Parquet. Retorna o caminho do arquivo."""
     total = len(DOMAINS) * JOBS_PER_DOMAIN_PER_DAY
@@ -166,7 +165,7 @@ def generate_for_date(
 
 
 def generate_for_period(
-    start_date: date, end_date: date, output_dir: Path = DEFAULT_OUTPUT_DIR
+    start_date: date, end_date: date, output_dir: Path = DEFAULT_LOCAL_DIR
 ) -> list[Path]:
     """Gera logs para um intervalo de datas."""
     paths = []
@@ -191,7 +190,7 @@ def main():
         "--end-date", type=date.fromisoformat, help="Data final (YYYY-MM-DD)"
     )
     parser.add_argument(
-        "--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR, help="Diretório de saída"
+        "--output-dir", type=Path, default=DEFAULT_LOCAL_DIR, help="Diretório de saída"
     )
     args = parser.parse_args()
 

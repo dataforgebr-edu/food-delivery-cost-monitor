@@ -1,24 +1,20 @@
-import os
 from typing import Any
 
 import boto3
 from botocore.exceptions import ClientError
-from dotenv import load_dotenv
 
 from infra.logi import get_logger
 
-load_dotenv()
+from pipeline_config import (
+    API_KEY,
+    API_SECRET,
+    API_REGION,
+    ATHENA_DATABASE,
+    TABLE_JOBS_LOGS,
+    RAW_LAYER_LOCATION,
+)
 
 logger = get_logger(__name__)
-
-api_key = os.getenv("AWS_ACCESS_KEY_ID")
-api_secret = os.getenv("AWS_SECRET_ACCESS_KEY")
-api_region = os.getenv("AWS_REGION")
-athena_db = os.getenv("ATHENA_DATABASE", "")
-bucket_name = os.getenv("S3_BUCKET")
-athena_output_location = f"s3://{bucket_name}/athena-results/"
-table_jobs_logs = "job_logs"
-raw_layer_location = f"s3://{bucket_name}/raw/{table_jobs_logs}/"
 
 
 def glue_check_database(database_name: str, client: Any) -> str | None:
@@ -89,6 +85,13 @@ def glue_create_raw_layer(
                         "Parameters": {"serialization.format": "1"},
                     },
                 },
+                "PartitionKeys": [
+                    {
+                        "Name": "date",
+                        "Type": "string",
+                        'Comment': 'Partição de filtro por data'
+                    }
+                ]
             },
         )
     except ClientError as e:
@@ -97,28 +100,27 @@ def glue_create_raw_layer(
         else:
             raise
 
-
 def main():
     glue_client = boto3.client(
         "glue",
-        aws_access_key_id=api_key,
-        aws_secret_access_key=api_secret,
-        region_name=api_region,
+        aws_access_key_id=API_KEY,
+        aws_secret_access_key=API_SECRET,
+        region_name=API_REGION,
     )
 
-    if glue_check_database(athena_db, glue_client) is None:
-        glue_create_database(athena_db, glue_client)
-        logger.info(f"Database '{athena_db}' criada com sucesso")
+    if glue_check_database(ATHENA_DATABASE, glue_client) is None:
+        glue_create_database(ATHENA_DATABASE, glue_client)
+        logger.info(f"Database '{ATHENA_DATABASE}' criada com sucesso")
     else:
-        logger.info(f"Database '{athena_db}' já existe")
+        logger.info(f"Database '{ATHENA_DATABASE}' já existe")
 
-    if glue_check_table(table_jobs_logs, athena_db, glue_client) is None:
+    if glue_check_table(TABLE_JOBS_LOGS, ATHENA_DATABASE, glue_client) is None:
         glue_create_raw_layer(
-            table_jobs_logs, athena_db, raw_layer_location, glue_client
+            TABLE_JOBS_LOGS, ATHENA_DATABASE, RAW_LAYER_LOCATION, glue_client
         )
-        logger.info(f"Tabela '{table_jobs_logs}' criada com sucesso")
+        logger.info(f"Tabela '{TABLE_JOBS_LOGS}' criada com sucesso")
     else:
-        logger.info(f"Tabela '{table_jobs_logs}' já existe")
+        logger.info(f"Tabela '{TABLE_JOBS_LOGS}' já existe")
 
 
 if __name__ == "__main__":
