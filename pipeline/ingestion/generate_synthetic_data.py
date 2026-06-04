@@ -4,11 +4,10 @@ import random
 import uuid
 from datetime import date, datetime, timedelta
 from pathlib import Path
-from pipeline_config import DEFAULT_LOCAL_DIR
 
 import pandas as pd
-
 from infra.logi import get_logger
+from pipeline_config import DEFAULT_LOCAL_DIR
 
 logger = get_logger(__name__)
 

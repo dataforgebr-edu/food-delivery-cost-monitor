@@ -1,23 +1,17 @@
-from typing import Any
-
-import boto3
 from botocore.exceptions import ClientError
-
 from infra.logi import get_logger
-
+from mypy_boto3_glue import GlueClient
 from pipeline_config import (
-    API_KEY,
-    API_SECRET,
-    API_REGION,
     ATHENA_DATABASE,
-    TABLE_JOBS_LOGS,
     RAW_LAYER_LOCATION,
+    TABLE_JOBS_LOGS,
+    create_glue_client,
 )
 
 logger = get_logger(__name__)
 
 
-def glue_check_database(database_name: str, client: Any) -> str | None:
+def glue_check_database(database_name: str, client: GlueClient) -> str | None:
     try:
         response = client.get_database(Name=database_name)
         return response["Database"]["Name"]
@@ -28,7 +22,9 @@ def glue_check_database(database_name: str, client: Any) -> str | None:
             raise
 
 
-def glue_check_table(table_name: str, database_name: str, client: Any) -> str | None:
+def glue_check_table(
+    table_name: str, database_name: str, client: GlueClient
+) -> str | None:
     try:
         response = client.get_table(DatabaseName=database_name, Name=table_name)
         return response["Table"]["Name"]
@@ -39,7 +35,7 @@ def glue_check_table(table_name: str, database_name: str, client: Any) -> str | 
             raise
 
 
-def glue_create_database(database_name: str, client: Any) -> None:
+def glue_create_database(database_name: str, client: GlueClient) -> None:
     try:
         client.create_database(
             DatabaseInput={
@@ -55,7 +51,7 @@ def glue_create_database(database_name: str, client: Any) -> None:
 
 
 def glue_create_raw_layer(
-    table_name: str, database_name: str, storage_location: str, client: Any
+    table_name: str, database_name: str, storage_location: str, client: GlueClient
 ) -> None:
     try:
         client.create_table(
@@ -87,11 +83,11 @@ def glue_create_raw_layer(
                 },
                 "PartitionKeys": [
                     {
-                        "Name": "date",
-                        "Type": "string",
-                        'Comment': 'Partição de filtro por data'
+                        "Name": "date_filter",
+                        "Type": "date",
+                        "Comment": "Partição de filtro por data para otimizar a consulta dos dados",
                     }
-                ]
+                ],
             },
         )
     except ClientError as e:
@@ -100,13 +96,44 @@ def glue_create_raw_layer(
         else:
             raise
 
+
+def glue_register_partition(
+    database_name: str = ATHENA_DATABASE,
+    table_name: str = TABLE_JOBS_LOGS,
+    file_date: str = "",
+    s3_location: str = RAW_LAYER_LOCATION,
+    client: GlueClient = create_glue_client(),
+):
+    try:
+        final_location = f"{s3_location}date={file_date}/"
+
+        client.batch_create_partition(
+            DatabaseName=database_name,
+            TableName=table_name,
+            PartitionInputList=[
+                {
+                    "Values": [file_date],
+                    "StorageDescriptor": {
+                        "Location": final_location,
+                        "InputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetInputFormat",
+                        "OutputFormat": "org.apache.hadoop.hive.ql.io.parquet.MapredParquetOutputFormat",
+                        "SerdeInfo": {
+                            "SerializationLibrary": "org.apache.hadoop.hive.ql.io.parquet.serde.ParquetHiveSerDe"
+                        },
+                    },
+                }
+            ],
+        )
+        # logger.info(f"Partição {file_date} registrada no Glue")
+    except ClientError as e:
+        logger.error(
+            f"Erro ao registrar partição {file_date} na tabela {table_name}: {e}"
+        )
+        raise
+
+
 def main():
-    glue_client = boto3.client(
-        "glue",
-        aws_access_key_id=API_KEY,
-        aws_secret_access_key=API_SECRET,
-        region_name=API_REGION,
-    )
+    glue_client = create_glue_client()
 
     if glue_check_database(ATHENA_DATABASE, glue_client) is None:
         glue_create_database(ATHENA_DATABASE, glue_client)
