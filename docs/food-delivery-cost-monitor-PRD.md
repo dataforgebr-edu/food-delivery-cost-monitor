@@ -67,9 +67,9 @@ Marts: métricas agregadas por domínio, job e período — prontas para consumo
 
 Detecção de anomalias
 
-Python (pandas)
+dbt \+ AWS Athena
 
-Cálculo de desvio padrão sobre janela móvel de 7 dias por job/domínio
+mart_anomalies: window functions SQL calculam desvio padrão por (domain, job_name) sobre janela de 7 dias, integrado ao pipeline dbt
 
 Orquestração
 
@@ -93,12 +93,12 @@ Airflow em Docker local; Power BI Desktop instalado na máquina
 - O script generate_synthetic_data.py cria N registros de logs para cada data do período configuradoigurado
 - Os logs sao salvos em formato Parquet e enviados para S3 no caminho s3://ifood-cost-monitor/raw/job_logs/date=YYYY-MM-DD/
 - O AWS Glue Data Catalog registra a tabela externa apontando para o S3
-- O dbt executa os models sequencialmente: stg_job_logs > int_cost_by_domain > mart_platform_efficiency
-- O script detect_anomalies.py le o mart final via Athena, calcula os desvios e escreve os alertas na tabela mart_anomalies
+- O dbt executa os models sequencialmente: stg_job_logs > int_cost_by_domain > mart_platform_efficiency > mart_anomalies
+- mart_anomalies calcula as anomalias diretamente em SQL via window functions sobre mart_platform_efficiency, sem script Python adicional
 - O Power BI Desktop conecta-se ao Athena via ODBC e exibe os dashboards em tempo real
 
 ## 2.2 Diagrama de dependências da DAG
-*generate_data >> upload_to_s3 >> run_dbt_staging >> run_dbt_intermédiate >> run_dbt_marts >> detect_anomalies >> notify_completion*
+*generate_data >> upload_to_s3 >> run_dbt_staging >> run_dbt_intermediate >> run_dbt_marts >> run_dbt_tests >> notify_completion*
 
 # 3. Estrutura de Pastas
 **Caminho**
@@ -141,9 +141,9 @@ dbt_project/schema.yml
 
 Documentação e testes dos models (not_null, unique, accepted_values)
 
-anomaly_detection/detect_anomalies.py
+dbt_project/models/marts/mart_anomalies.sql
 
-Detecta jobs com custo > 2 sigma da média movel de 7 dias
+Detecta jobs com custo > 2 sigma da média móvel de 7 dias via window functions SQL
 
 infra/docker-compose.yml
 
@@ -547,22 +547,21 @@ Define a tabela raw do S3/Athena como fonte de dados para o dbt. Inclui testes d
 
 # 7. Detecção de Anomalias
 ## 7.1 Lógica
-O script detect_anomalies.py implementa detecção estatistica simples e interpretavel — ideal para demonstrar em um portfolio sem complexidade excessiva:
+A detecção de anomalias é implementada diretamente em SQL no model dbt `mart_anomalies.sql` — sem script Python adicional. Essa decisão mantém toda a lógica de transformação em uma única camada declarativa e testável.
 
-1. Le o mart_platform_efficiency via Athena (boto3 \+ pandas)
-2. Para cada combinacao de domain \+ job_name, calcula a média e o desvio padrão dos ultimos 7 dias
-3. Marca como anomalia qualquer registro onde: custo_observado > média_7d \+ 2 * std_7d
-4. Classifica a severidade: warning (2-3σ) ou critical (>3σ)
-5. Escreve os resultados como Parquet no S3 e atualiza a tabela mart_anomalies no Athena
+1. Lê de `mart_platform_efficiency`, que já contém `cost_7d_avg` e `cost_7d_std` por domínio
+2. Para granularidade por `(domain, job_name)`, aplica window functions: `AVG` e `STDDEV_POP` sobre os últimos 7 dias com `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW`
+3. Marca como anomalia qualquer registro onde: `estimated_cost_usd > média_7d + 2 * std_7d`
+4. Classifica a severidade: `warning` (2-3σ) ou `critical` (>3σ)
 
-*Decisão de design: optou-se por desvio padrão classico (em vez de IQR ou algoritmos de ML) para manter a lógica explicavel em uma entrevista técnica — o que e um diferencial em contextos de FinOps e governanca.*
+*Decisão de design: mover a detecção para dbt elimina um script avulso, centraliza os testes de qualidade e demonstra maturidade de pipeline — desvio padrão clássico mantém a lógica explicável em entrevista técnica.*
 
 ## 7.2 Geração de outliers nos dados sintéticos
 O script de geração de dados injeta anomalias propositais para garantir que o detector tenha casos reais para encontrar:
 
 - 5% dos registros recebem um multiplicador aleatorio de 3x a 8x no custo
 - As anomalias são distribuídas de forma nao-uniforme entre os domínios (fintech e payments tem mais)
-- O script loga quais registros foram marcados como anomalias para fácilitar validação
+- O script loga quais registros foram marcados como anomalias para facilitar validação
 
 # 8. Orquestração com Airflow
 ## 8.1 DAG pipeline_daily
@@ -645,12 +644,6 @@ BashOperator
 
 dbt test — valida qualidade dos dados
 
-detect_anomalies
-
-PythonOperator
-
-Executa detect_anomalies.py
-
 notify_completion
 
 PythonOperator
@@ -721,7 +714,6 @@ mart_platform_efficiency
 - Inicializar projeto dbt com perfil Athena
 - Implementar os 4 models dbt (stg, int, marts x2) com testes
 - Rodar dbt run e dbt test manualmente — corrigir erros
-- Implementar detect_anomalies.py e validar com os dados do dia 1
 - Implementar a DAG do Airflow e testar trigger manual
 - Ajustar dependências e retry logic
 

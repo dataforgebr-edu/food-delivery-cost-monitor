@@ -61,8 +61,8 @@ Pipeline de monitoramento de custos de plataforma de dados (FinOps), inspirado n
 Geração (Python) → S3/Parquet [Bronze]
     → dbt/Athena stg_job_logs [Silver]
     → dbt/Athena int_cost_by_domain
-    → dbt/Athena mart_platform_efficiency + mart_anomalies [Gold]
-    → detect_anomalies.py (2σ, janela 7 dias)
+    → dbt/Athena mart_platform_efficiency [Gold]
+    → dbt/Athena mart_anomalies (2σ, janela 7 dias via window functions SQL) [Gold]
     → Power BI (via ODBC Simba)
 ```
 
@@ -89,7 +89,6 @@ dbt_project/
   schema.yml
 src/                           # módulos Python reutilizáveis (alvo do task lint)
   ingestion/                   # generate_synthetic_data.py, upload_to_s3.py
-  anomaly_detection/           # detect_anomalies.py
   infra/                       # athena_setup.py
 .env                           # nunca commitado — ver .env.example
 ```
@@ -100,7 +99,7 @@ Campos críticos: `job_id` (UUID), `execution_date`, `domain` (orders/payments/f
 
 ### Lógica de anomalia
 
-`estimated_cost_usd > média_7d + 2 * std_7d` por `(domain, job_name)`. Severidade: `warning` (2–3σ), `critical` (>3σ). O script de geração injeta 5% de outliers (multiplicador 3x–8x) para validação do detector.
+`estimated_cost_usd > média_7d + 2 * std_7d` por `(domain, job_name)`. Severidade: `warning` (2–3σ), `critical` (>3σ). Implementada via window functions SQL no model `mart_anomalies.sql`. O script de geração injeta 5% de outliers (multiplicador 3x–8x) para validação.
 
 ## Variáveis de ambiente
 
