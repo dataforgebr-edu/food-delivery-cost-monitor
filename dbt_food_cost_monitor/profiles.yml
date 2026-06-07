@@ -1,0 +1,11 @@
+dbt_food_cost_monitor:
+  outputs:
+    dev:
+      database: "{{env_var('DBT_DATABASE')}}"
+      region_name: "{{env_var('DBT_REGION_NAME')}}"
+      s3_data_dir: "{{env_var('DBT_S3_DATA_DIR')}}"
+      s3_staging_dir: "{{env_var('DBT_STAGING_DIR')}}"
+      schema: "{{env_var('DBT_SCHEMA')}}"
+      threads: "{{env_var('DBT_THREADS') | int}}"
+      type: "{{env_var('DBT_TYPE')}}"
+  target: dev

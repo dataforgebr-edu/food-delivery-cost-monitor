@@ -7,7 +7,7 @@ dbt_modules/
 dbt_packages/
 logs/
 data/
-profiles.yml
+*.user.yml
 
 *.docx
 
