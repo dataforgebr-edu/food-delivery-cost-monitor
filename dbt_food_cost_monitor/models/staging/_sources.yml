@@ -1,0 +1,74 @@
+version: 1
+
+sources:
+  - name: raw
+    database: "{{env_var('DBT_DATABASE')}}"
+    schema: "{{env_var('DBT_SCHEMA')}}"
+    description: Origem dos dados utilizados no monitoramento de custos de serviços cloud.
+    loaded_at_field: created_at
+    freshness:
+      warn_after:
+        count: 24
+        period: hour
+      error_after:
+        count: 48
+        period: hour
+    tables:
+      - name: job_logs
+        description: Tabela com o registro dos jobs executados, tempo de processamento e custos.
+        columns:
+          - name: job_id
+            description: Identificador único do job.
+            data_tests:
+              - unique
+              - not_null
+          - name: execution_date
+            description: Data de execução do job.
+            data_tests:
+              - not_null
+          - name: domain
+            description: Áreas de negócio responsáveis pelo job.
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values:
+                      [orders, payments, fintech, marketplace, logistics, restaurants]
+          - name: job_name
+            description: Nome do job de processamento.
+            data_tests:
+              - not_null
+          - name: duration_min
+            description: Duracao da execução em minutos.
+            data_tests:
+              - not_null
+          - name: dbu_consumed
+            description: Databricks Units consumidas.
+            data_tests:
+              - not_null
+          - name: estimated_cost_usd
+            description: Custo estimado em dolares.
+            data_tests:
+              - not_null
+          - name: status
+            description: Status de execução do job.
+            data_tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values:
+                      - success
+                      - failed
+                      - timeout
+          - name: cluster_type
+            description: Tipo de cluster simulado para execução do job.
+            data_tests:
+              - accepted_values:
+                  arguments:
+                    values:
+                      - job_cluster
+                      - all_purpose
+          - name: created_at
+            description: Timestamp de criação do registro
+            data_tests:
+              - not_null
