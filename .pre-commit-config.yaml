@@ -34,4 +34,6 @@ repos:
     rev: 4.2.1
     hooks:
       - id: sqlfluff-lint
+        exclude: ^dbt_food_cost_monitor/
       - id: sqlfluff-fix
+        exclude: ^dbt_food_cost_monitor/

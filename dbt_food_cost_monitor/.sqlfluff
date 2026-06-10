@@ -1,12 +1,10 @@
 [sqlfluff]
-templater = dbt
+templater = jinja
 dialect = athena
+ignore = templating
 runaway_limit = 10
 max_line_length = 80
 indent_unit = space
-
-[sqlfluff:templater:dbt]
-profiles_dir = .
 
 [sqlfluff:indentation]
 tab_space_size = 4

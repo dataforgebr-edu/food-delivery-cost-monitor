@@ -258,12 +258,12 @@ Timestamp de criação do registro
 2026-05-01 12:34:56
 
 ## 4.2 Staging — stg_job_logs
-Limpeza e padronização dos dados brutos. Inclui filtros de qualidade (remoção de registros com status invalido ou custo negativo) e adição de colunas derivadas.
+Limpeza e padronização dos dados brutos. Inclui filtros de qualidade (remoção de registros com status invalido ou custo negativo) e adição de colunas derivadas calculáveis linha a linha.
 
 - Todos os campos do raw, tipados corretamente
-- cost_category: classificação do custo em low / medium / high / critical
-- is_anomaly_candidate: flag booleana para jobs com custo acima do percentil 95 do dia
-- execution_week: número da semana para agregacoes semanais
+- execution_week: DATE_TRUNC('week', execution_date) — derivado linha a linha, sem dependência de outros registros
+
+> **Nota arquitetural:** `cost_category` (classificação por quartil via NTILE) e `is_anomaly_candidate` (flag acima do percentil 95 do dia) foram removidos desta camada. Ambos exigem window functions de ranking ou agregação sobre múltiplos registros, o que viola o contrato da staging. `cost_category` pertence ao `int_cost_by_domain` ou `mart_platform_efficiency`; `is_anomaly_candidate` pertence ao `mart_anomalies`, após as estatísticas do dia já terem sido calculadas.
 
 ## 4.3 Intermédiate — int_cost_by_domain
 Agregação diaria por domínio, consumida pelos models finais e pelo detector de anomalias.
@@ -526,8 +526,9 @@ Define a tabela raw do S3/Athena como fonte de dados para o dbt. Inclui testes d
 - SELECT com CAST explicito em todos os tipos
 - WHERE status IN ('success', 'failed', 'timeout') — remove registros invalidos
 - WHERE estimated_cost_usd >= 0 — remove custos negativos
-- CASE WHEN para criar cost_category
 - DATE_TRUNC('week', execution_date) para execution_week
+
+> `cost_category` e `is_anomaly_candidate` foram movidos para camadas posteriores — ver nota em 4.2.
 
 ## 6.3 int_cost_by_domain.sql
 - GROUP BY execution_date, domain
@@ -750,4 +751,3 @@ Melhorias opcionais para enriquecer o portfolio após a entrega inicial:
 - Implementar infrastructure as code com Terraform para os recursos AWS
 - Adicionar unit tests para as funções Python (pytest)
 - Explorar compressao Parquet (snappy vs zstd) e seu impacto no custo do Athena
-

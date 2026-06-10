@@ -12,5 +12,6 @@
     },
     "terminal.integrated.env.linux": {
         "PYTHONPATH": "${workspaceFolder}/pipeline"
-    }
+    },
+    "python.envFile": "${workspaceFolder}/.env"
 }
