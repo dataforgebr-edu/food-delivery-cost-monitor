@@ -14,7 +14,7 @@ transform as (
         cast(status as {{dbt.type_string()}}) as st_status,
         cast(cluster_type as {{dbt.type_string()}}) as tp_cluster,
         cast(created_at as {{dbt.type_timestamp()}}) as dt_criacao,
-        {{dbt_date.iso_week_of_year(execution_date)}} as nr_dia_semana
+        week_of_year(cast(execution_date as date)) as nr_semana_ano
     from source
 )
 

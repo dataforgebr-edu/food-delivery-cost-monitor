@@ -1,0 +1,58 @@
+models:
+  - name: stg_job_logs
+    description: View contendo os dados brutos com tipos bem definidos, padronização de colunas e adição de campos.
+    columns:
+      - name: id_job
+        description: Identificador numérico de cada job executado.
+        data_tests:
+          - unique
+          - not_null
+      - name: dt_execucao
+        description: Campo do tipo data que registra a data de execução de cada job executado.
+        data_tests:
+          - not_null
+      - name: nm_dominio
+        description: qCampo do tipo string que indica a área de negócio responsável pela execução do job.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                [orders, payments, fintech, marketplace, logistics, restaurants]
+      - name: nm_job
+        description: Campo do tipo string com o nome do job de processado.
+        data_tests:
+          - not_null
+      - name: nr_duracao_minutos
+        description: Campo decimal com a duração de cada execução
+        data_tests:
+          - not_null
+      - name: nr_dbu_consumidos
+        description: Campo decimal que representa o volume de Databricks Units consumidas.
+        data_tests:
+          - not_null
+      - name: nr_estimativa_custo_usd
+        description: Campo decimal com o custo estimado em dolares.
+        data_tests:
+          - not_null
+      - name: st_status
+        description: Campo do tipo string que indica o status de execução do job.
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                [success, failed, timeout]
+      - name: tp_cluster
+        description: Campo string que indica o tipo de cluster utilizado para a execução do job.
+        data_tests:
+          - accepted_values:
+              values:
+                - job_cluster
+                - all_purpose
+      - name: dt_criacao
+        description: Campo do tipo data que indica a data de criação do registro
+        data_tests:
+          - not_null
+      - name: nr_semana_ano
+        description: Campo do tipo inteiro que indica o número da semana do ano
+        data_tests:
+          - not_null

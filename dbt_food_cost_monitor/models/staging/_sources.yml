@@ -1,4 +1,4 @@
-version: 1
+version: 2
 
 sources:
   - name: raw
@@ -57,9 +57,7 @@ sources:
               - accepted_values:
                   arguments:
                     values:
-                      - success
-                      - failed
-                      - timeout
+                      [success, failed, timeout]
           - name: cluster_type
             description: Tipo de cluster simulado para execução do job.
             data_tests:
