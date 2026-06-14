@@ -1,0 +1,48 @@
+version: 2
+
+models:
+  - name: int_cost_by_domain
+    description: Tabela com dados agregados no nível diário e de domínio.
+    columns:
+      - name: dt_execucao
+        description: Data de execução do job
+      - name: nm_dominio
+        description: Domínio de negócio ao qual o job pertence
+      - name: nr_total_jobs
+        description: Total de jobs executados no dia
+        data_tests:
+          - not_null
+      - name: nr_sucesso_jobs
+        description: Total de jobs executados com sucesso
+        data_tests:
+          - not_null
+      - name: vl_total_custo_usd
+        description: Custo total por domínio
+        data_tests:
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 0"
+      - name: vl_medio_por_job
+        description: Valor médio gasto por job executado
+        data_tests:
+          - not_null
+      - name: vl_maior_custo
+        description: Maior valor gasto no dia para cada domínio
+        data_tests:
+          - not_null
+      - name: nr_total_duracao_minutos
+        description: Tempo total de processamento.
+        data_tests:
+          - not_null
+      - name: nr_medio_duracao_minutos
+        description: Média de tempo gasto em minutos de processamento
+        data_tests:
+          - not_null
+      - name: nr_taxa_sucesso
+        description: Taxa indicando o percentual de sucesso das execuções.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+                inclusive: true
