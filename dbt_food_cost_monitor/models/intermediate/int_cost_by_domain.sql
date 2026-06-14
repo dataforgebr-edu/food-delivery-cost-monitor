@@ -5,7 +5,7 @@ agegate_data_by_domain as (
     select
         dt_execucao,
         nm_dominio,
-        count(id_job) as nr_total_jobs
+        count(id_job) as nr_total_jobs,
         count(
             case
                 when st_status = 'success' then id_job
@@ -32,7 +32,7 @@ calculation_success_rate as (
         vl_maior_custo,
         nr_total_duracao_minutos,
         nr_medio_duracao_minutos,
-        nr_sucesso_jobs / nr_total_jobs as nr_taxa_sucesso
+        cast(nr_sucesso_jobs as {{dbt.type_float()}}) / nr_total_jobs as nr_taxa_sucesso
     from agegate_data_by_domain
 )
 
