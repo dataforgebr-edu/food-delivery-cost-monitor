@@ -9,7 +9,7 @@ change_cast_types as (
         cast(job_name as {{dbt.type_string()}})  as nm_job,
         cast(duration_min as {{dbt.type_float()}})as nr_duracao_minutos,
         cast(dbu_consumed as {{dbt.type_float()}}) as nr_dbu_consumidos,
-        cast(estimated_cost_usd as {{dbt.type_float()}}) as nr_estimativa_custo_usd,
+        cast(estimated_cost_usd as {{dbt.type_float()}}) as vl_estimativa_custo_usd,
         cast(status as {{dbt.type_string()}}) as st_status,
         cast(cluster_type as {{dbt.type_string()}}) as tp_cluster,
         cast(created_at as {{dbt.type_timestamp()}}) as dt_criacao
@@ -23,13 +23,13 @@ filter_negative_cost as (
         nm_job,
         nr_duracao_minutos,
         nr_dbu_consumidos,
-        nr_estimativa_custo_usd,
+        vl_estimativa_custo_usd,
         st_status,
         tp_cluster,
         dt_criacao
     from change_cast_types
     where 1 = 1
-    and nr_estimativa_custo_usd > 0
+    and vl_estimativa_custo_usd > 0
 ),
 create_new_columns as (
     select
@@ -39,7 +39,7 @@ create_new_columns as (
         nm_job,
         nr_duracao_minutos,
         nr_dbu_consumidos,
-        nr_estimativa_custo_usd,
+        vl_estimativa_custo_usd,
         st_status,
         tp_cluster,
         dt_criacao,

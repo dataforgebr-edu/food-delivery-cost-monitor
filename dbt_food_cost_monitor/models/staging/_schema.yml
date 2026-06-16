@@ -41,7 +41,7 @@ models:
         description: Campo decimal que representa o volume de Databricks Units consumidas.
         data_tests:
           - not_null
-      - name: nr_estimativa_custo_usd
+      - name: vl_estimativa_custo_usd
         data_type: double
         description: Campo decimal com o custo estimado em dolares.
         data_tests:
