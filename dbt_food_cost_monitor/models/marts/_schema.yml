@@ -1,0 +1,86 @@
+version: 2
+
+models:
+  - name: mart_platform_efficiency
+    description: Tabela com métricas de eficiência por domínio, calculadas com base no score.
+    data_tests:
+      - dbt_utils.unique_combination_of_columns:
+            combination_of_columns:
+                - dt_execucao
+                - nm_dominio
+    columns:
+      - name: dt_execucao
+        description: Data de execução do job
+      - name: nm_dominio
+        description: Domínio de negócio ao qual o job pertence
+      - name: nr_total_jobs
+        description: Total de jobs executados no dia
+      - name: nr_sucesso_jobs
+        description: Total de jobs executados com sucesso
+      - name: vl_total_custo_usd
+        description: Custo total por domínio
+      - name: vl_medio_por_job
+        description: Valor médio gasto por job executado
+      - name: vl_maior_custo
+        description: Maior valor gasto no dia para cada domínio
+      - name: nr_total_duracao_minutos
+        description: Tempo total de processamento.
+      - name: nr_medio_duracao_minutos
+        description: Média de tempo gasto em minutos de processamento
+      - name: nr_taxa_sucesso
+        description: Taxa indicando o percentual de sucesso das execuções.
+      - name: vl_medio_7d
+        description: Média de custo dos últimos 7 dias.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: vl_desvio_7d
+        description: Desvio padrão dos últimos 7 dias.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: vl_custo_mtd
+        description: Custo total do mês até o dia de execução.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: vl_custo_dia_anterior
+        description: Custo total do dia anterior.
+        data_tests:
+          - dbt_utils.not_null_proportion:
+              arguments:
+                at_least: 0.95
+      - name: nr_custo_trend_pct
+        description: Percentual de variação do custo em relação ao dia anterior.
+        data_tests:
+          - dbt_utils.not_null_proportion:
+              arguments:
+                at_least: 0.95
+      - name: nr_custo_score
+        description: Score de custo, baseado na média de custo dos últimos 7 dias.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+                inclusive: true
+      - name: nr_custo_trend_score
+        description: Score de tendência, baseado na variação do custo em relação ao dia anterior.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 1
+                inclusive: true
+      - name: nr_eficiencia_score
+        description: Score de eficiência de 0 a 100 - quanto maior, mais eficiente.
+            Calculado com base na taxa de sucesso, score de custo e score de tendência.
+        data_tests:
+          - dbt_utils.accepted_range:
+              arguments:
+                min_value: 0
+                max_value: 100
+                inclusive: true
