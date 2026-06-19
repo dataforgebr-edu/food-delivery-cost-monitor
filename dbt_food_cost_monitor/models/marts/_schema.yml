@@ -84,3 +84,63 @@ models:
                 min_value: 0
                 max_value: 100
                 inclusive: true
+  - name: mart_anomalies
+    description: Tabela para detecção de anomalias nos jobs.
+    columns:
+      - name: id_job
+        description: Identificador único do job
+        data_tests:
+          - not_null
+          - unique
+      - name: dt_execucao
+        description: Data de execução do job
+        data_tests:
+          - not_null
+      - name: nm_dominio
+        description: Domínio de negócio ao qual o job pertence
+        data_tests:
+          - not_null
+          - accepted_values:
+              values:
+                [orders, payments, fintech, marketplace, logistics, restaurants]
+      - name: nm_job
+        description: Nome do job
+        data_tests:
+          - not_null
+      - name: vl_estimativa_custo_usd
+        description: Custo total do job
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: vl_medio_7d
+        description: Média de custo dos últimos 7 dias.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: vl_desvio_7d
+        description: Desvio padrão dos últimos 7 dias.
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: vl_limite_superior
+        description: Limite superior de custo para o job
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+                expression: ">= 0"
+      - name: nr_sigma_desvio
+        description: Desvio em sigma do custo do job em relação à média
+        data_tests:
+          - not_null
+          - dbt_utils.expression_is_true:
+              arguments:
+                expression: "> 2"
+      - name: nm_severidade
+        description: Severidade da anomalia
+        data_tests:
+          - not_null
+          - accepted_values:
+                values: ["critical", "warning"]
