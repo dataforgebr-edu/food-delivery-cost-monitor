@@ -12,7 +12,7 @@ Versão | 1.0
 Data | Maio 2026
 Status | Em desenvolvimento
 Contexto | Projeto portfolio — inspirado no ambiente de Governança de Dados do iFood
-Stack principal | Python, SQL, dbt, Airflow, AWS S3, AWS Athena, Docker, Power BI
+Stack principal | Python, SQL, dbt, Airflow, Astronomer Cosmos, AWS S3, AWS Athena, Docker, Power BI
 
 
 # 1. Visão Geral
@@ -73,9 +73,9 @@ mart_anomalies: window functions SQL calculam desvio padrão por (domain, job_na
 
 Orquestração
 
-Apache Airflow
+Apache Airflow \+ Astronomer Cosmos
 
-DAG diária com dependências entre tarefas, retry e alertas de falha
+DAG diária com dependências entre tarefas, retry e alertas de falha. Cosmos converte o grafo de dependências do dbt (staging \> intermediate \> marts \> tests) em um TaskGroup nativo do Airflow, com uma task por model
 
 Visualização
 
@@ -98,7 +98,7 @@ Airflow em Docker local; Power BI Desktop instalado na máquina
 - O Power BI Desktop conecta-se ao Athena via ODBC e exibe os dashboards em tempo real
 
 ## 2.2 Diagrama de dependências da DAG
-*generate_data >> upload_to_s3 >> run_dbt_staging >> run_dbt_intermediate >> run_dbt_marts >> run_dbt_tests >> notify_completion*
+*generate_data >> upload_to_s3 >> dbt_pipeline (Cosmos DbtTaskGroup: stg_job_logs >> int_cost_by_domain >> mart_platform_efficiency + mart_anomalies >> testes dbt inline) >> notify_completion*
 
 # 3. Estrutura de Pastas
 **Caminho**
@@ -107,7 +107,7 @@ Airflow em Docker local; Power BI Desktop instalado na máquina
 
 dags/pipeline_daily.py
 
-DAG principal do Airflow — orquestra todo o pipeline diario
+DAG principal do Airflow — orquestra todo o pipeline diario; integra os models dbt via Astronomer Cosmos (DbtTaskGroup)
 
 ingestion/generate_synthetic_data.py
 
@@ -621,35 +621,48 @@ PythonOperator
 
 Faz upload dos Parquets para o S3 particionado
 
-run_dbt_staging
+dbt_pipeline
 
-BashOperator
+Cosmos DbtTaskGroup
 
-dbt run --select staging.*
-
-run_dbt_intermédiate
-
-BashOperator
-
-dbt run --select intermédiate.*
-
-run_dbt_marts
-
-BashOperator
-
-dbt run --select marts.*
-
-run_dbt_tests
-
-BashOperator
-
-dbt test — valida qualidade dos dados
+Gera dinamicamente uma task por model dbt (stg_job_logs, int_cost_by_domain, mart_platform_efficiency, mart_anomalies) \+ testes, replicando o grafo de dependências do projeto dbt dentro da DAG
 
 notify_completion
 
 PythonOperator
 
 Loga resumo da execução (jobs processados, anomalias detectadas)
+
+## 8.3 Integração dbt via Astronomer Cosmos
+**Decisão (2026-06-19):** a orquestração das camadas dbt deixa de ser feita via um `BashOperator` por camada e passa a usar `astronomer-cosmos`, que converte o grafo de dependências do dbt (`stg_job_logs > int_cost_by_domain > mart_platform_efficiency, mart_anomalies`) em um `TaskGroup` nativo do Airflow — uma task por model/test, em vez de uma task por camada.
+
+**Parametro**
+
+**Valor**
+
+execution_mode
+
+`ExecutionMode.LOCAL`
+
+dbt_executable_path
+
+Aponta para o binário de uma virtualenv dedicada (ex.: `/usr/local/airflow/dbt_venv/bin/dbt`), e não para o ambiente Python do próprio Airflow
+
+Onde a venv é criada
+
+No `airflow_project/Dockerfile`, em build time — ex.: `python -m venv /usr/local/airflow/dbt_venv && /usr/local/airflow/dbt_venv/bin/pip install dbt-core==1.11.* dbt-athena==1.10.*`
+
+Motivação
+
+Evita conflito de dependências entre dbt-core/dbt-athena e os pacotes já fixados pelo Astro Runtime (Airflow 3.x), sem pagar o custo de criar a venv a cada execução de task — como ocorreria no `ExecutionMode.VIRTUALENV` dinâmico
+
+Trade-off aceito
+
+A imagem do Airflow fica maior (duas instalações Python) e qualquer atualização de versão do dbt exige rebuild da imagem — aceitável, já que o deploy via Astro CLI já rebuilda a imagem a cada alteração
+
+ProfileConfig (pendente)
+
+A decidir: apontar direto para o `profiles.yml` já existente em `dbt_food_cost_monitor/`, ou usar um `ProfileMapping` nativo do Cosmos para Athena (a confirmar se existe suporte oficial do Cosmos para esse adapter)
 
 # 9. Dashboard Power BI
 ## 9.1 KPIs principais (cards de métricas)

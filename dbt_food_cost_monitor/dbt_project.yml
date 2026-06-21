@@ -32,6 +32,9 @@ vars:
 # files using the `{{ config(...) }}` macro.
 models:
   dbt_food_cost_monitor:
+    +persist_docs:
+      relation: true
+      columns: true
     # Config indicated by + and applies to all files under models/example/
     staging:
       +materialized: view
