@@ -39,13 +39,13 @@ dev = [
 ]
 
 [tool.taskipy.tasks]
-lint       = { cmd = "black --fast pipeline && isort pipeline", help = "Formata código" }
-lint-check = { cmd = "black --fast --check pipeline && isort --check pipeline", help = "Verifica formatação (CI)" }
-security   = { cmd = "bandit -r pipeline -lll", help = "Scan de segurança" }
-athena_setup = {cmd = "python -m infra.athena_setup", help = "criação do banco e da tabela no glue"}
+lint       = { cmd = "black --fast airflow_project/pipeline && isort airflow_project/pipeline", help = "Formata código" }
+lint-check = { cmd = "black --fast --check airflow_project/pipeline && isort --check airflow_project/pipeline", help = "Verifica formatação (CI)" }
+security   = { cmd = "bandit -r airflow_project/pipeline -lll", help = "Scan de segurança" }
+athena_setup = { cmd = "python -m infra.athena_setup", help = "criação do banco e da tabela no glue" }
 
 [tool.pyright]
-include = ["pipeline"]
-extraPaths = ["pipeline"]
+include = ["airflow_project/pipeline"]
+extraPaths = ["airflow_project/pipeline"]
 venvPath = "."
 venv = ".venv"

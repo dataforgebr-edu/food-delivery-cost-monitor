@@ -75,7 +75,7 @@ def s3_upload_file(
 
 
 def main():
-    logger.info(f"Iniciando carga incremental")
+    logger.info("Iniciando carga incremental")
 
     s3_client = create_s3_client()
 
@@ -83,17 +83,17 @@ def main():
         s3_client, BUCKET_NAME, RAW_LAYER_PREFIX, DEFAULT_LOCAL_DIR
     )
     if len(dates_to_upload) == 0:
-        logger.info(f"Nenhum arquivo novo para ser carregado.")
+        logger.info("Nenhum arquivo novo para ser carregado.")
     else:
         logger.info(f"Lista de arquivos a serem carregados: {dates_to_upload}")
-        
+
         for date in dates_to_upload:
             s3_upload_file(
                 s3_client, BUCKET_NAME, str(DEFAULT_LOCAL_DIR), RAW_LAYER_PREFIX, date
             )
             glue_register_partition(file_date=date)
         logger.info(
-            f"Arquivos importados para o s3 e registrados no glueDataCatalog com sucesso!"
+            "Arquivos importados para o s3 e registrados no glueDataCatalog com sucesso!"
         )
 
 

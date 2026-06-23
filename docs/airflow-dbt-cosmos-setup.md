@@ -1,7 +1,7 @@
 # Setup do ambiente Airflow + dbt + Astronomer Cosmos
 
 Status | A implementar
-Data | 2026-06-20 (revisado — ver decisões de reorganização de pastas e Connections/Variables)
+Data | 2026-06-23 (revisado — ver decisão de onde entram as deps do `pipeline/` e cache de camada do `dbt deps`)
 Relacionado | `docs/food-delivery-cost-monitor-PRD.md` (seção 8.3)
 
 Este documento é um roteiro de configuração — nenhum dos arquivos abaixo foi criado ainda. Serve de checklist para implementar a orquestração da camada dbt dentro da DAG do Airflow via Astronomer Cosmos.
@@ -14,6 +14,7 @@ Este documento é um roteiro de configuração — nenhum dos arquivos abaixo fo
 | Como o Cosmos obtém config/credenciais do Athena (dbt) | Plano A: `AthenaAccessKeyProfileMapping` lendo uma Airflow Connection. Plano B (fallback): `ProfileConfig(profiles_yml_filepath=...)` reaproveitando o `profiles.yml` existente | Centraliza a credencial AWS em um único lugar (Connection do Airflow) em vez de duas cópias de `.env`. O bug conhecido da issue [astronomer-cosmos#996](https://github.com/astronomer/astronomer-cosmos/issues/996) só é disparado quando a Connection usa credenciais temporárias com session token (assume role/STS) — como a Connection aqui usa as mesmas access key/secret key estáticas do IAM user já usadas hoje, o risco é baixo. Se ainda assim falhar, cai para o Plano B sem retrabalho, pois já está especificado |
 | Como as tasks de ingestão (`pipeline/`) obtêm config/credenciais | Camada de tradução dentro da própria task da DAG: lê a Connection + Variables do Airflow e injeta em `os.environ` antes de chamar o código de `pipeline/` | Mantém `pipeline/` agnóstico de Airflow e testável standalone via Poetry (sem precisar de `apache-airflow` instalado só para importar `pipeline_config.py`). Evita duplicar a mesma credencial AWS em `airflow_project/.env` |
 | Modo de execução do dbt dentro da DAG | `ExecutionMode.LOCAL` com venv dbt dedicada, criada em build time no Dockerfile | Evita conflito de dependências com o Astro Runtime e evita o custo de criar venv a cada execução de task (alternativa: `ExecutionMode.VIRTUALENV` dinâmico, descartada) |
+| Onde instalar as dependências Python do `pipeline/` (`boto3`, `pandas`, `pyarrow`, `python-dotenv`) | Ambiente principal da imagem via `airflow_project/requirements.txt`, sem venv isolada | Diferente do `dbt-core` (árvore de dependências grande e historicamente conflitante com o Airflow — ver issue #996 acima), esses pacotes são comuns e com pins soltos: risco de colisão baixo com o Astro Runtime/Cosmos. Isolar junto com a venv do dbt só acoplaria as duas árvores de dependência sem motivo funcional — e não resolveria a execução isolada por si só, já que tasks `@task` correm no processo do próprio worker/scheduler do Airflow, não num binário externo chamado via subprocess como o `dbt` |
 
 ## 0. Visão geral do que falta
 
@@ -21,12 +22,13 @@ Este documento é um roteiro de configuração — nenhum dos arquivos abaixo fo
 |---|---|---|
 | 1 | Mover `pipeline/` e `dbt_food_cost_monitor/` para dentro de `airflow_project/` | raiz → `airflow_project/pipeline/`, `airflow_project/dbt_food_cost_monitor/` |
 | 2 | Atualizar caminhos que assumiam a raiz | `pyproject.toml`, `.pre-commit-config.yaml`, `CLAUDE.md` |
-| 3 | Dependência Cosmos | `airflow_project/requirements.txt` |
-| 4 | venv dbt isolada + `dbt deps` no build | `airflow_project/Dockerfile` |
+| 3 | Dependências do ambiente principal (Cosmos + `pipeline/`) | `airflow_project/requirements.txt` |
+| 4 | venv dbt isolada + `dbt deps` no build, com cache de camada via `packages.yml`/`package-lock.yml` | `airflow_project/Dockerfile` |
 | 5 | Ignorar lixo gerado | `airflow_project/.dockerignore` |
 | 6 | Connection AWS + Variables (dev local) | `airflow_project/airflow_settings.yaml` |
 | 7 | DAG com Cosmos + injeção de env vars pra `pipeline/` | `airflow_project/dags/pipeline_daily.py` (e apagar `exampledag.py`) |
-| 8 | Validação local | `astro dev start` |
+| 8 | Volumes locais pra dev sem rebuild (opcional) | `airflow_project/docker-compose.override.yml` |
+| 9 | Validação local | `astro dev start` |
 
 ## 1. Reorganização de pastas
 
@@ -71,11 +73,19 @@ O Poetry (`.venv`, `pyproject.toml`, `poetry.lock`) continua na raiz do repo —
 **`airflow_project/requirements.txt`** (ambiente principal do Airflow, gerenciado pelo Astro CLI):
 ```
 astronomer-cosmos>=1.11,<2.0
+boto3>=1.43.18,<2.0.0
+pandas>=3.0.3,<4.0.0
+pyarrow>=24.0.0,<25.0.0
+python-dotenv>=1.2.2,<2.0.0
 ```
+
+As 4 últimas linhas são as dependências de runtime do `pipeline/` (hoje só copiado via `COPY` + `PYTHONPATH` no Dockerfile, sem instalação própria — sem isso o `import` dentro das tasks da DAG falha por módulo ausente). Mesmas faixas de versão do `pyproject.toml` da raiz, pra não rodar uma versão localmente via Poetry e outra dentro do Airflow.
+
+⚠️ Antes de fixar `boto3`, checar se ele já não vem pré-instalado via os provider packages do Astro Runtime (`astro dev bash` + `pip show boto3`) — evita duplicar uma dependência que o Airflow/Cosmos já trazem.
 
 ⚠️ A imagem base é `astrocrpublic.azurecr.io/runtime:3.2-4`. Há um issue em aberto no repositório do Cosmos sobre suporte a Airflow 3.2 (astronomer-cosmos#2403). **Validar com `astro dev start` se a build sobe sem erro de import** antes de seguir para a DAG; se travar, pode ser necessário fixar outra versão do Cosmos ou outro runtime.
 
-**`pyproject.toml`** já tem `dbt-core` e `dbt-athena` pinados (uso local via Poetry) — não precisa mudar. Importante manter as mesmas faixas de versão na venv isolada do Dockerfile (passo 4), para não rodar uma versão de dbt local e outra dentro do Airflow.
+**`pyproject.toml`** já tem `dbt-core` e `dbt-athena` pinados (uso local via Poetry) — não precisa mudar. Importante manter as mesmas faixas de versão na venv isolada do Dockerfile (passo 3), para não rodar uma versão de dbt local e outra dentro do Airflow.
 
 ## 3. `airflow_project/Dockerfile`
 
@@ -88,19 +98,21 @@ RUN python -m venv /usr/local/airflow/dbt_venv && \
         "dbt-core>=1.11.11,<2.0.0" \
         "dbt-athena>=1.10.1,<2.0.0"
 
-# projeto dbt já vive dentro do build context (passo 1) — cópia direta, sem include/
-COPY dbt_food_cost_monitor/ /usr/local/airflow/dbt_food_cost_monitor/
-
-# dbt_packages é regenerado aqui dentro, não confiamos no que está no disco do dev
+# só os manifestos de dependência primeiro — cache de camada: o dbt deps só reroda
+# quando packages.yml/package-lock.yml mudam, não a cada edição de model
+COPY dbt_food_cost_monitor/packages.yml dbt_food_cost_monitor/package-lock.yml /usr/local/airflow/dbt_food_cost_monitor/
 RUN /usr/local/airflow/dbt_venv/bin/dbt deps \
     --project-dir /usr/local/airflow/dbt_food_cost_monitor
+
+# resto do projeto dbt — já vive dentro do build context (passo 1), sem include/.
+# dbt_packages está no .dockerignore (passo 4): essa COPY não sobrescreve o que
+# o dbt deps acabou de instalar
+COPY dbt_food_cost_monitor/ /usr/local/airflow/dbt_food_cost_monitor/
 
 # pacote pipeline/ reutilizado pelas tasks de ingestão
 COPY pipeline/ /usr/local/airflow/pipeline/
 ENV PYTHONPATH="${PYTHONPATH}:/usr/local/airflow/pipeline"
 ```
-
-Otimização opcional (cache de layer): copiar só `packages.yml`/`package-lock.yml` antes do `dbt deps`, e o resto do projeto depois, para o `dbt deps` não rodar de novo a cada rebuild por mudança num model. Não é essencial no início — só vale se o build começar a ficar lento.
 
 ## 4. `airflow_project/.dockerignore`
 
@@ -146,9 +158,9 @@ airflow:
 
 A mesma Connection `aws_athena` serve dois consumidores:
 - **dbt (via Cosmos)**: `AthenaAccessKeyProfileMapping` lê `conn_login`/`conn_password` como `aws_access_key_id`/`aws_secret_access_key` e os campos de `conn_extra` (`region_name`, `database`, `schema`, `s3_staging_dir`) diretamente — não precisa de nenhum glue code, é o mapeamento nativo da classe.
-- **pipeline (ingestão)**: a DAG lê essa mesma Connection + as Variables e injeta em `os.environ` antes de chamar o código de `pipeline/` (detalhe no passo 7).
+- **pipeline (ingestão)**: a DAG lê essa mesma Connection + as Variables e injeta em `os.environ` antes de chamar o código de `pipeline/` (detalhe no passo 6).
 
-⚠️ Isso é só para dev local. Em produção (deploy via Astro), a Connection e as Variables são cadastradas via Environment Variables/secrets do Astro Cloud — pendência para quando houver deploy real, não bloqueia o setup local (ver passo 8).
+⚠️ Isso é só para dev local. Em produção (deploy via Astro), a Connection e as Variables são cadastradas via Environment Variables/secrets do Astro Cloud — pendência para quando houver deploy real, não bloqueia o setup local (ver passo 9).
 
 ## 6. DAG — `airflow_project/dags/pipeline_daily.py`
 
@@ -237,7 +249,42 @@ pipeline_daily()
 
 ⚠️ Os nomes de função `main()` em `generate_synthetic_data`/`upload_to_s3` são um placeholder — confirmar o entrypoint real desses módulos. `generate_synthetic_data.py` usa `argparse`, então pode não ter uma função `main()` exportável; pode ser melhor chamar via `BashOperator` (`python -m ingestion.generate_synthetic_data ...`) em vez de importar — nesse caso, a injeção de `os.environ` do passo `_inject_aws_env_from_airflow` precisa ser feita via parâmetro `env=` do `BashOperator` em vez de `os.environ` direto no processo do worker.
 
-## 7. Validação local
+## 7. `airflow_project/docker-compose.override.yml` (opcional — acelera o ciclo de dev)
+
+O Astro CLI detecta e faz merge automático de um `docker-compose.override.yml` colocado na raiz do projeto (`astro dev start`, modo container — não funciona em modo standalone). Ele só vale pra dev local: o `astro deploy` builda a imagem a partir do `Dockerfile` e a sobe pro registry sem nenhum compose envolvido, então esse arquivo nunca afeta produção.
+
+Sem ele, `pipeline/` e `dbt_food_cost_monitor/` só entram nos containers via `COPY` no build (passos 1/3) — qualquer alteração exige rodar `astro dev start` de novo (rebuild completo, incluindo `dbt deps`). Com o override, essas pastas passam a ser bind mounts: edição no disco aparece direto dentro do container rodando, sem rebuild.
+
+```yaml
+services:
+  scheduler:
+    volumes:
+      - ./pipeline:/usr/local/airflow/pipeline
+      - ./dbt_food_cost_monitor:/usr/local/airflow/dbt_food_cost_monitor
+      - dbt_packages:/usr/local/airflow/dbt_food_cost_monitor/dbt_packages
+  dag-processor:
+    volumes:
+      - ./dbt_food_cost_monitor:/usr/local/airflow/dbt_food_cost_monitor
+      - dbt_packages:/usr/local/airflow/dbt_food_cost_monitor/dbt_packages
+
+volumes:
+  dbt_packages:
+```
+
+Por que esses serviços (Airflow 3 — `scheduler` / `dag-processor` / `api-server` / `triggerer`, sem `webserver`):
+- **`scheduler`**: com `LocalExecutor` (padrão do Astro local) é quem de fato executa o código das tasks — onde `pipeline/` é importado dentro da função da task e onde o `dbt` (`ExecutionMode.LOCAL`) roda.
+- **`dag-processor`**: o Cosmos lê o manifest do dbt **no parse da DAG** pra montar a `TaskGroup` (uma task por model) — isso roda no `dag-processor`, não no `scheduler`. Sem o volume aqui, a UI só refletiria um model novo depois de rebuild.
+- `pipeline/` não precisa estar no `dag-processor`: o import de `ingestion.*` acontece dentro da função da task (lazy), não no nível do módulo da DAG — o parse não toca nesse código.
+
+Por que o volume nomeado `dbt_packages` por cima do bind mount: essa pasta está no `.gitignore` (não existe no disco do dev a menos que ele já tenha rodado `dbt deps` localmente via Poetry) e no `.dockerignore` (passo 4). Sem esse volume extra, o bind mount da pasta pai (vinda do host, sem `dbt_packages`) mascararia o `dbt_packages` que o `RUN dbt deps` instalou na imagem (passo 3), e o `dbt run` quebraria por falta de packages. O Docker, ao criar um named volume novo num path em que a imagem já tem conteúdo, copia esse conteúdo da imagem pra dentro do volume na primeira vez — efeito prático: o `dbt_packages` do build continua visível dentro do container mesmo com o resto da pasta vindo do host.
+
+⚠️ Essa cópia automática só acontece **uma vez**, na criação do volume. Se `packages.yml`/`package-lock.yml` mudar e a imagem for rebuildada com packages diferentes, o volume nomeado já existente continua com o conteúdo antigo — remover o volume (`docker volume rm` ou `astro dev kill`) antes do próximo `astro dev start` pra ele repopular.
+
+⚠️ Os paths de destino dos volumes têm que casar exatamente com os do `COPY` no Dockerfile (`/usr/local/airflow/pipeline`, `/usr/local/airflow/dbt_food_cost_monitor`) — se esses paths mudarem no Dockerfile, esse arquivo precisa acompanhar.
+
+Validação: `astro dev bash --scheduler "ls -al /usr/local/airflow/pipeline"`, ou editar um arquivo local e confirmar que reflete no container sem rebuild.
+
+## 8. Validação local
 
 ```bash
 cd airflow_project
@@ -250,7 +297,7 @@ Checklist:
 - `dbt_pipeline` aparece expandido como `TaskGroup` com uma task por model/test (sinal de que o Cosmos parseou o manifest certo).
 - Rodar a DAG manualmente e confirmar que a task do primeiro model dbt (`stg_job_logs`) realmente conecta no Athena (erro de credencial apareceria aqui primeiro — se for o erro `InvalidClientTokenId`/"security token included in the request is invalid" da issue #996, trocar para o Plano B do passo 6).
 
-## 8. Para depois (não bloqueia o setup inicial)
+## 9. Para depois (não bloqueia o setup inicial)
 
 - Credenciais de produção no Astro Cloud (ver nota de produção no passo 5).
 - Alertas de falha (`on_failure_callback` ou Slack/email no nível da DAG).
@@ -263,3 +310,5 @@ Checklist:
 - [AthenaAccessKeyProfileMapping does not work as expected locally · Issue #996 · astronomer/astronomer-cosmos](https://github.com/astronomer/astronomer-cosmos/issues/996)
 - [Add support to Airflow 3.2.0 · Issue #2403 · astronomer/astronomer-cosmos](https://github.com/astronomer/astronomer-cosmos/issues/2403)
 - [Configure airflow_settings.yaml (local development only) — Astronomer Documentation](https://www.astronomer.io/docs/astro/cli/develop-project#configure-airflow_settingsyaml-local-development-only)
+- [Run your Astro project in a local Airflow environment with the CLI — Astronomer Documentation](https://www.astronomer.io/docs/astro/cli/run-airflow-locally)
+- [Volumes — Docker Docs](https://docs.docker.com/engine/storage/volumes/)
