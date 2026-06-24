@@ -11,8 +11,8 @@ Este documento é um roteiro de configuração — nenhum dos arquivos abaixo fo
 | Decisão | Escolha | Motivo |
 |---|---|---|
 | Onde vivem `pipeline/` e `dbt_food_cost_monitor/` em relação ao `airflow_project/` | Mover fisicamente para dentro de `airflow_project/` (sem script de cópia/sync) | É o padrão que a própria Astronomer recomenda para monorepo mantido por um único time: submódulo só compensa quando o código é mantido por outro time em outro repositório, e cópia/sync manual carrega risco de ficar desatualizado. Movendo de vez, o Dockerfile copia direto do build context e não existe risco de divergência |
-| Como o Cosmos obtém config/credenciais do Athena (dbt) | Plano A: `AthenaAccessKeyProfileMapping` lendo uma Airflow Connection. Plano B (fallback): `ProfileConfig(profiles_yml_filepath=...)` reaproveitando o `profiles.yml` existente | Centraliza a credencial AWS em um único lugar (Connection do Airflow) em vez de duas cópias de `.env`. O bug conhecido da issue [astronomer-cosmos#996](https://github.com/astronomer/astronomer-cosmos/issues/996) só é disparado quando a Connection usa credenciais temporárias com session token (assume role/STS) — como a Connection aqui usa as mesmas access key/secret key estáticas do IAM user já usadas hoje, o risco é baixo. Se ainda assim falhar, cai para o Plano B sem retrabalho, pois já está especificado |
-| Como as tasks de ingestão (`pipeline/`) obtêm config/credenciais | Camada de tradução dentro da própria task da DAG: lê a Connection + Variables do Airflow e injeta em `os.environ` antes de chamar o código de `pipeline/` | Mantém `pipeline/` agnóstico de Airflow e testável standalone via Poetry (sem precisar de `apache-airflow` instalado só para importar `pipeline_config.py`). Evita duplicar a mesma credencial AWS em `airflow_project/.env` |
+| Como o Cosmos obtém config/credenciais do Athena (dbt) | `ProfileConfig(profiles_yml_filepath=...)` reaproveitando o `profiles.yml` existente, sem Connection do Airflow | **Revisado em 2026-06-23** — a versão original (Plano A, `AthenaAccessKeyProfileMapping` lendo uma Connection) partia da premissa de centralizar a credencial "em vez de duas cópias de `.env`", mas a própria Connection vira uma terceira cópia em texto plano dentro de `airflow_settings.yaml` — não elimina duplicação nenhuma. O `profiles.yml` não referencia `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` via `env_var()` (só `DBT_DATABASE`, `DBT_REGION_NAME` etc.) — a autenticação já cai no provider padrão do boto3, que lê essas variáveis do ambiente do processo. Bastando elas chegarem no container via `env_file` (passo 7), o Plano B funciona sem nenhuma mudança no `profiles.yml`, e evita por completo o risco da issue [astronomer-cosmos#996](https://github.com/astronomer/astronomer-cosmos/issues/996) (em vez de só mitigá-lo) |
+| Como as tasks de ingestão (`pipeline/`) obtêm config/credenciais | Direto do ambiente do container, via `env_file` no `docker-compose.override.yml` apontando pro `.env` da raiz (passo 7) — sem Connection, sem Variable, sem camada de tradução na DAG | **Revisado em 2026-06-23** — `pipeline_config.py` já faz `load_dotenv()` + `os.getenv(...)` por conta própria; dentro do container o `load_dotenv()` não encontra nenhum `.env` (está no `.dockerignore`) e cai direto pro `os.getenv()`, já populado pelo `env_file`. Mantém `pipeline/` agnóstico de Airflow e testável standalone via Poetry, e elimina a necessidade de uma função de tradução (`_inject_aws_env_from_airflow`) na DAG |
 | Modo de execução do dbt dentro da DAG | `ExecutionMode.LOCAL` com venv dbt dedicada, criada em build time no Dockerfile | Evita conflito de dependências com o Astro Runtime e evita o custo de criar venv a cada execução de task (alternativa: `ExecutionMode.VIRTUALENV` dinâmico, descartada) |
 | Onde instalar as dependências Python do `pipeline/` (`boto3`, `pandas`, `pyarrow`, `python-dotenv`) | Ambiente principal da imagem via `airflow_project/requirements.txt`, sem venv isolada | Diferente do `dbt-core` (árvore de dependências grande e historicamente conflitante com o Airflow — ver issue #996 acima), esses pacotes são comuns e com pins soltos: risco de colisão baixo com o Astro Runtime/Cosmos. Isolar junto com a venv do dbt só acoplaria as duas árvores de dependência sem motivo funcional — e não resolveria a execução isolada por si só, já que tasks `@task` correm no processo do próprio worker/scheduler do Airflow, não num binário externo chamado via subprocess como o `dbt` |
 
@@ -25,9 +25,9 @@ Este documento é um roteiro de configuração — nenhum dos arquivos abaixo fo
 | 3 | Dependências do ambiente principal (Cosmos + `pipeline/`) | `airflow_project/requirements.txt` |
 | 4 | venv dbt isolada + `dbt deps` no build, com cache de camada via `packages.yml`/`package-lock.yml` | `airflow_project/Dockerfile` |
 | 5 | Ignorar lixo gerado | `airflow_project/.dockerignore` |
-| 6 | Connection AWS + Variables (dev local) | `airflow_project/airflow_settings.yaml` |
-| 7 | DAG com Cosmos + injeção de env vars pra `pipeline/` | `airflow_project/dags/pipeline_daily.py` (e apagar `exampledag.py`) |
-| 8 | Volumes locais pra dev sem rebuild (opcional) | `airflow_project/docker-compose.override.yml` |
+| 6 | ~~Connection AWS + Variables~~ — descartado, credenciais vêm via `env_file` (passo 7) | `airflow_project/airflow_settings.yaml` |
+| 7 | DAG com Cosmos (Plano B) | `airflow_project/dags/pipeline_daily.py` (e apagar `exampledag.py`) |
+| 8 | Volumes locais pra dev sem rebuild + credenciais via `env_file` | `airflow_project/docker-compose.override.yml` |
 | 9 | Validação local | `astro dev start` |
 
 ## 1. Reorganização de pastas
@@ -133,34 +133,13 @@ pipeline/data
 **/__pycache__
 ```
 
-## 5. Connections e Variables (Airflow) — dev local via `airflow_settings.yaml`
+## 5. Connections e Variables (Airflow) — descartado
 
-O Astro CLI já inclui `airflow_project/airflow_settings.yaml` (gitignorado, equivalente ao `.env` mas para o modelo de objetos do Airflow). É nele que a credencial AWS e a config do Athena/dbt são cadastradas para o ambiente local — substituindo a necessidade de um `airflow_project/.env` com as variáveis duplicadas do `.env` da raiz.
+**Revisado em 2026-06-23.** Este passo cadastraria uma Connection `aws_athena` e Variables `s3_bucket`/`athena_database` via `airflow_project/airflow_settings.yaml`, consumidas pelo Plano A do Cosmos e por uma função de tradução na DAG. Como o Plano B virou o caminho principal (ver decisão no topo) e `pipeline_config.py` já lê `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET` e `ATHENA_DATABASE` direto do ambiente do processo, nenhuma dessas variáveis precisa de Connection nem Variable do Airflow — tudo chega via `env_file` no `docker-compose.override.yml` (passo 7), apontando pro `.env` da raiz que já existe e já é usado pelo Poetry.
 
-```yaml
-airflow:
-  connections:
-    - conn_id: aws_athena
-      conn_type: aws
-      conn_login: <AWS_ACCESS_KEY_ID>
-      conn_password: <AWS_SECRET_ACCESS_KEY>
-      conn_extra:
-        region_name: us-east-1
-        database: awsdatacatalog
-        schema: cost_monitor
-        s3_staging_dir: <DBT_STAGING_DIR>
-  variables:
-    - variable_name: s3_bucket
-      variable_value: <S3_BUCKET>
-    - variable_name: athena_database
-      variable_value: cost_monitor
-```
+`airflow_settings.yaml` continua existindo no projeto (gerado pelo `astro dev init`), só não tem nenhuma entrada cadastrada por enquanto. Revisitar isso se surgir algo que realmente precise do modelo de Connection nativo do Airflow — por exemplo, um secrets backend (AWS Secrets Manager etc.), que tem suporte mais direto via Connection do que via env var solta.
 
-A mesma Connection `aws_athena` serve dois consumidores:
-- **dbt (via Cosmos)**: `AthenaAccessKeyProfileMapping` lê `conn_login`/`conn_password` como `aws_access_key_id`/`aws_secret_access_key` e os campos de `conn_extra` (`region_name`, `database`, `schema`, `s3_staging_dir`) diretamente — não precisa de nenhum glue code, é o mapeamento nativo da classe.
-- **pipeline (ingestão)**: a DAG lê essa mesma Connection + as Variables e injeta em `os.environ` antes de chamar o código de `pipeline/` (detalhe no passo 6).
-
-⚠️ Isso é só para dev local. Em produção (deploy via Astro), a Connection e as Variables são cadastradas via Environment Variables/secrets do Astro Cloud — pendência para quando houver deploy real, não bloqueia o setup local (ver passo 9).
+⚠️ Isso é só para dev local. Em produção (deploy via Astro), as mesmas variáveis (`AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET`, `ATHENA_DATABASE`, `DBT_*`) são cadastradas via Environment Variables/secrets do Astro Cloud — pendência para quando houver deploy real, não bloqueia o setup local (ver passo 9).
 
 ## 6. DAG — `airflow_project/dags/pipeline_daily.py`
 
@@ -169,33 +148,32 @@ Primeiro apagar `dags/exampledag.py` (placeholder do `astro dev init`, sem rela�
 Esqueleto (`RenderConfig(dbt_deps=False)` porque o `dbt deps` já rodou no build da imagem):
 
 ```python
-import os
-
-from airflow.hooks.base import BaseHook
-from airflow.models import Variable
-from airflow.sdk import dag, task
 from pendulum import datetime
+
+from airflow.sdk import dag, task
 
 from cosmos import DbtTaskGroup, ProjectConfig, ProfileConfig, ExecutionConfig, RenderConfig
 from cosmos.constants import ExecutionMode
-from cosmos.profiles import AthenaAccessKeyProfileMapping
 
 DBT_PROJECT_DIR = "/usr/local/airflow/dbt_food_cost_monitor"
 DBT_VENV_BIN = "/usr/local/airflow/dbt_venv/bin/dbt"
-AWS_CONN_ID = "aws_athena"
 
-# Plano A — AthenaAccessKeyProfileMapping (Connection do Airflow)
+# Plano B — reaproveita o profiles.yml existente (env_var-based), sem Connection do Airflow.
+# As variáveis (AWS_*, DBT_*) chegam no ambiente do container via env_file no
+# docker-compose.override.yml (passo 7), apontando pro .env da raiz.
 profile_config = ProfileConfig(
     profile_name="dbt_food_cost_monitor",
     target_name="dev",
-    profile_mapping=AthenaAccessKeyProfileMapping(conn_id=AWS_CONN_ID),
+    profiles_yml_filepath=f"{DBT_PROJECT_DIR}/profiles.yml",
 )
 
-# Plano B — se o profile mapping falhar (ex.: astronomer-cosmos#996), trocar pelo bloco abaixo:
+# Plano A — alternativa via Connection do Airflow, descartada em 2026-06-23 (ver decisão no topo).
+# Reconsiderar só se precisar de um secrets backend nativo do Airflow no futuro:
+# from cosmos.profiles import AthenaAccessKeyProfileMapping
 # profile_config = ProfileConfig(
 #     profile_name="dbt_food_cost_monitor",
 #     target_name="dev",
-#     profiles_yml_filepath=f"{DBT_PROJECT_DIR}/profiles.yml",
+#     profile_mapping=AthenaAccessKeyProfileMapping(conn_id="aws_athena"),
 # )
 
 execution_config = ExecutionConfig(
@@ -205,28 +183,16 @@ execution_config = ExecutionConfig(
 render_config = RenderConfig(dbt_deps=False)
 
 
-def _inject_aws_env_from_airflow() -> None:
-    """Traduz Connection/Variables do Airflow para os.environ, mantendo pipeline/ agnóstico de Airflow."""
-    conn = BaseHook.get_connection(AWS_CONN_ID)
-    os.environ["AWS_ACCESS_KEY_ID"] = conn.login
-    os.environ["AWS_SECRET_ACCESS_KEY"] = conn.password
-    os.environ["AWS_REGION"] = conn.extra_dejson.get("region_name", "us-east-1")
-    os.environ["S3_BUCKET"] = Variable.get("s3_bucket")
-    os.environ["ATHENA_DATABASE"] = Variable.get("athena_database")
-
-
 @dag(dag_id="food_delivery_cost_monitor", schedule="@daily", start_date=datetime(2026, 6, 1), catchup=False)
 def pipeline_daily():
 
     @task
     def generate_data():
-        _inject_aws_env_from_airflow()
         from ingestion.generate_synthetic_data import main  # ajustar ao entrypoint real
         main()
 
     @task
     def upload_to_s3():
-        _inject_aws_env_from_airflow()
         from ingestion.upload_to_s3 import main  # ajustar ao entrypoint real
         main()
 
@@ -247,22 +213,26 @@ def pipeline_daily():
 pipeline_daily()
 ```
 
-⚠️ Os nomes de função `main()` em `generate_synthetic_data`/`upload_to_s3` são um placeholder — confirmar o entrypoint real desses módulos. `generate_synthetic_data.py` usa `argparse`, então pode não ter uma função `main()` exportável; pode ser melhor chamar via `BashOperator` (`python -m ingestion.generate_synthetic_data ...`) em vez de importar — nesse caso, a injeção de `os.environ` do passo `_inject_aws_env_from_airflow` precisa ser feita via parâmetro `env=` do `BashOperator` em vez de `os.environ` direto no processo do worker.
+⚠️ Os nomes de função `main()` em `generate_synthetic_data`/`upload_to_s3` são um placeholder — confirmar o entrypoint real desses módulos. `generate_synthetic_data.py` usa `argparse`, então pode não ter uma função `main()` exportável; pode ser melhor chamar via `BashOperator` (`python -m ingestion.generate_synthetic_data ...`) em vez de importar. Como as credenciais já vêm do ambiente do container (`env_file`, passo 7), um `BashOperator` funciona sem nenhum parâmetro `env=` extra — subprocessos herdam o ambiente do processo pai automaticamente.
 
-## 7. `airflow_project/docker-compose.override.yml` (opcional — acelera o ciclo de dev)
+## 7. `airflow_project/docker-compose.override.yml` (volumes pra dev sem rebuild + credenciais)
 
 O Astro CLI detecta e faz merge automático de um `docker-compose.override.yml` colocado na raiz do projeto (`astro dev start`, modo container — não funciona em modo standalone). Ele só vale pra dev local: o `astro deploy` builda a imagem a partir do `Dockerfile` e a sobe pro registry sem nenhum compose envolvido, então esse arquivo nunca afeta produção.
 
-Sem ele, `pipeline/` e `dbt_food_cost_monitor/` só entram nos containers via `COPY` no build (passos 1/3) — qualquer alteração exige rodar `astro dev start` de novo (rebuild completo, incluindo `dbt deps`). Com o override, essas pastas passam a ser bind mounts: edição no disco aparece direto dentro do container rodando, sem rebuild.
+Sem ele, `pipeline/` e `dbt_food_cost_monitor/` só entram nos containers via `COPY` no build (passos 1/3) — qualquer alteração exige rodar `astro dev start` de novo (rebuild completo, incluindo `dbt deps`). Com o override, essas pastas passam a ser bind mounts: edição no disco aparece direto dentro do container rodando, sem rebuild. O mesmo arquivo também resolve como as credenciais chegam nos containers (ver decisão revisada no topo e passo 5).
 
 ```yaml
 services:
   scheduler:
+    env_file:
+      - ../.env
     volumes:
       - ./pipeline:/usr/local/airflow/pipeline
       - ./dbt_food_cost_monitor:/usr/local/airflow/dbt_food_cost_monitor
       - dbt_packages:/usr/local/airflow/dbt_food_cost_monitor/dbt_packages
   dag-processor:
+    env_file:
+      - ../.env
     volumes:
       - ./dbt_food_cost_monitor:/usr/local/airflow/dbt_food_cost_monitor
       - dbt_packages:/usr/local/airflow/dbt_food_cost_monitor/dbt_packages
@@ -282,7 +252,13 @@ Por que o volume nomeado `dbt_packages` por cima do bind mount: essa pasta está
 
 ⚠️ Os paths de destino dos volumes têm que casar exatamente com os do `COPY` no Dockerfile (`/usr/local/airflow/pipeline`, `/usr/local/airflow/dbt_food_cost_monitor`) — se esses paths mudarem no Dockerfile, esse arquivo precisa acompanhar.
 
-Validação: `astro dev bash --scheduler "ls -al /usr/local/airflow/pipeline"`, ou editar um arquivo local e confirmar que reflete no container sem rebuild.
+**`env_file`** é uma diretiva diferente da substituição `${VAR}` dentro do próprio compose — ela carrega pares `KEY=VALUE` de um arquivo e injeta como variável de ambiente real dentro do container, igual `--env-file` do `docker run`. `../.env` aponta pro `.env` da raiz do repo (path resolvido relativo a este arquivo, que mora em `airflow_project/`) — o mesmo arquivo que o Poetry já usa localmente, sem segunda cópia. Com isso:
+- O `dbt` (Plano B) se autentica do mesmo jeito que já funciona hoje via Poetry — boto3 lê `AWS_ACCESS_KEY_ID`/`AWS_SECRET_ACCESS_KEY` do ambiente automaticamente, sem o `profiles.yml` precisar referenciá-las.
+- `pipeline_config.py` já faz `load_dotenv()` + `os.getenv(...)`; dentro do container o `load_dotenv()` não acha nenhum `.env` (está no `.dockerignore`) e cai pro `os.getenv()` puro, já populado pelo `env_file`.
+
+⚠️ Isso torna esse arquivo, que começou como otimização opcional de rebuild, também necessário pras credenciais chegarem nos containers locais. Não é uma fragilidade nova: `airflow_settings.yaml` (descartado, passo 5) seria igualmente um artefato manual de dev local, gitignorado e nunca usado em produção — só estamos escolhendo qual desses arquivos carrega essa responsabilidade.
+
+Validação: `astro dev bash --scheduler "printenv AWS_ACCESS_KEY_ID"` (confirma que a variável chegou) e `astro dev bash --scheduler "ls -al /usr/local/airflow/pipeline"` (confirma o volume), ou editar um arquivo local e checar se reflete sem rebuild.
 
 ## 8. Validação local
 
@@ -295,7 +271,7 @@ Checklist:
 - Build não falha no `dbt deps` nem na instalação do Cosmos.
 - DAG `food_delivery_cost_monitor` aparece na UI sem erro de import (`Dag Import Errors`).
 - `dbt_pipeline` aparece expandido como `TaskGroup` com uma task por model/test (sinal de que o Cosmos parseou o manifest certo).
-- Rodar a DAG manualmente e confirmar que a task do primeiro model dbt (`stg_job_logs`) realmente conecta no Athena (erro de credencial apareceria aqui primeiro — se for o erro `InvalidClientTokenId`/"security token included in the request is invalid" da issue #996, trocar para o Plano B do passo 6).
+- Rodar a DAG manualmente e confirmar que a task do primeiro model dbt (`stg_job_logs`) realmente conecta no Athena (erro de credencial apareceria aqui primeiro — nesse fluxo via `env_file` + Plano B, o suspeito mais provável é variável ausente no `.env` da raiz, não o `InvalidClientTokenId` da issue #996, que só afetava o Plano A já descartado).
 
 ## 9. Para depois (não bloqueia o setup inicial)
 

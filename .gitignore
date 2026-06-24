@@ -8,6 +8,7 @@ dbt_packages/
 logs/
 data/
 *.user.yml
+.astro_venv
 
 *.docx
 

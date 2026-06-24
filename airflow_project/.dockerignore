@@ -6,3 +6,9 @@ logs/
 .venv
 airflow.db
 airflow.cfg
+dbt_food_cost_monitor/target
+dbt_food_cost_monitor/logs
+dbt_food_cost_monitor/dbt_packages
+pipeline/__pycache__
+pipeline/data
+**/__pycache__

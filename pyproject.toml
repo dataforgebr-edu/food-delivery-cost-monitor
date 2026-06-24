@@ -45,7 +45,18 @@ security   = { cmd = "bandit -r airflow_project/pipeline -lll", help = "Scan de 
 athena_setup = { cmd = "python -m infra.athena_setup", help = "criação do banco e da tabela no glue" }
 
 [tool.pyright]
-include = ["airflow_project/pipeline"]
+include = ["airflow_project/"]
 extraPaths = ["airflow_project/pipeline"]
 venvPath = "."
 venv = ".venv"
+
+[[tool.pyright.executionEnvironments]]
+root = "airflow_project/dags"
+extraPaths = [".astro_venv/Lib/site-packages"]
+
+[tool.pyrefly]
+search-path = ["airflow_project/pipeline"]
+site-package-path = [
+    ".venv/Lib/site-packages",
+    ".astro_venv/Lib/site-packages",
+]
