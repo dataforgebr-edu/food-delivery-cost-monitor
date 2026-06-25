@@ -1,4 +1,4 @@
-from airflow.sdk import dag, task
+from airflow.sdk import dag, get_current_context, task
 from cosmos import (
     DbtTaskGroup,
     ExecutionConfig,
@@ -36,9 +36,10 @@ def pipeline_daily():
 
     @task(task_id="gerados_dados")
     def generate_data():
-        from ingestion.generate_synthetic_data import main
+        from ingestion.generate_synthetic_data import generate_for_date
 
-        main()
+        context = get_current_context()
+        generate_for_date(context["logical_date"].date())
 
     @task(task_id="upload_s3")
     def upload_to_s3():
@@ -52,6 +53,9 @@ def pipeline_daily():
         profile_config=profile_config,
         execution_config=execution_config,
         render_config=render_config,
+        operator_args={
+            "install_deps": False,
+        },
     )
 
     @task(task_id="termino_pipeline")

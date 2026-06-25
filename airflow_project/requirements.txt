@@ -1,6 +1,7 @@
 # Astro Runtime includes the following pre-installed providers packages: https://www.astronomer.io/docs/astro/runtime-image-architecture#provider-packages
 astronomer-cosmos>=1.11,<2.0
 boto3>=1.43.18,<2.0.0
+boto3-stubs[athena,glue,s3]>=1.43.22,<2.0.0
 pandas>=3.0.3,<4.0.0
 pyarrow>=24.0.0,<25.0.0
 python-dotenv>=1.2.2,<2.0.0

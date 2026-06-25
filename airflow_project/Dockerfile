@@ -1,6 +1,11 @@
 FROM astrocrpublic.azurecr.io/runtime:3.2-4
 
+USER root
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
 # venv isolada só para o dbt (mesmas faixas de versão do pyproject.toml)
+USER astro
 RUN python -m venv /usr/local/airflow/dbt_venv && \
     /usr/local/airflow/dbt_venv/bin/pip install --no-cache-dir \
     "dbt-core>=1.11.11,<2.0.0" \

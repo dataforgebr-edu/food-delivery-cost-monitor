@@ -1,0 +1,17 @@
+services:
+  scheduler:
+    env_file:
+      - .env
+    volumes:
+      - ./pipeline:/usr/local/airflow/pipeline
+      - ./dbt_food_cost_monitor:/usr/local/airflow/dbt_food_cost_monitor
+      - dbt_packages:/usr/local/airflow/dbt_food_cost_monitor/dbt_packages
+  dag-processor:
+    env_file:
+      - .env
+    volumes:
+      - ./dbt_food_cost_monitor:/usr/local/airflow/dbt_food_cost_monitor
+      - dbt_packages:/usr/local/airflow/dbt_food_cost_monitor/dbt_packages
+
+volumes:
+  dbt_packages:
