@@ -5,8 +5,8 @@
         "${workspaceFolder}/airflow_project/pipeline"
     ],
     "terminal.integrated.env.windows": {
-        "PYTHONPATH": "${workspaceFolder}/airflow_project/pipeline"
-        // "PYTHONPATH": "D:/Git/food-delivery-cost-monitor/airflow_project/pipeline"
+        // "PYTHONPATH": "${workspaceFolder}/airflow_project/pipeline"
+        "PYTHONPATH": "D:/Git/food-delivery-cost-monitor/airflow_project/pipeline"
     },
     "python.envFile": "${workspaceFolder}/airflow_project/.env"
 }

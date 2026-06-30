@@ -205,5 +205,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
-    # generate_for_date(date(2026, 6, 26))
+    # main()
+    generate_for_date(date(2026, 6, 30))
