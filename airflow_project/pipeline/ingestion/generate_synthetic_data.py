@@ -135,21 +135,17 @@ def generate_for_date(
         )
 
         for i in range(JOBS_PER_DOMAIN_PER_DAY):
-            records.append(
-                _generate_record(
-                    execution_date, domain, is_outlier=i in outlier_indices
+            is_outlier = i in outlier_indices
+            record = _generate_record(execution_date, domain, is_outlier=is_outlier)
+            records.append(record)
+            if is_outlier:
+                total_outliers += 1
+                logger.info(
+                    f"OUTLIER | job_id={record['job_id']} domain={record['domain']} "
+                    f"job={record['job_name']} cost=${record['estimated_cost_usd']:.4f}"
                 )
-            )
 
     df = pd.DataFrame(records)
-
-    for _, row in df[df["_is_outlier"]].iterrows():
-        logger.info(
-            f"OUTLIER | job_id={row['job_id']} domain={row['domain']} "
-            f"job={row['job_name']} cost=${row['estimated_cost_usd']:.4f}"
-        )
-        total_outliers += 1
-
     df = df.drop(columns=["_is_outlier"])
 
     partition_path = output_dir / f"date={execution_date.isoformat()}"
@@ -206,4 +202,4 @@ def main():
 
 if __name__ == "__main__":
     # main()
-    generate_for_date(date(2026, 6, 30))
+    generate_for_date(date.today())

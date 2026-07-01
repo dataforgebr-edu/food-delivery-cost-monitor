@@ -34,6 +34,12 @@ render_config = RenderConfig(dbt_deps=False)
 )
 def pipeline_daily():
 
+    @task(task_id="create_infra")
+    def create_infra():
+        from infra.athena_setup import main
+
+        main()
+
     @task(task_id="gerados_dados")
     def generate_data():
         from ingestion.generate_synthetic_data import generate_for_date
@@ -62,7 +68,13 @@ def pipeline_daily():
     def notificacao_dag():
         print("Pipeline concluído!")
 
-    generate_data() >> upload_to_s3() >> dbt_pipeline >> notificacao_dag()
+    (
+        create_infra()
+        >> generate_data()
+        >> upload_to_s3()
+        >> dbt_pipeline
+        >> notificacao_dag()
+    )
 
 
 pipeline_daily()
