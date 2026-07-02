@@ -101,8 +101,9 @@ models:
         data_tests:
           - not_null
           - accepted_values:
-              values:
-                [orders, payments, fintech, marketplace, logistics, restaurants]
+              arguments:
+                values:
+                  [orders, payments, fintech, marketplace, logistics, restaurants]
       - name: nm_job
         description: Nome do job
         data_tests:
@@ -112,24 +113,28 @@ models:
         data_tests:
           - not_null
           - dbt_utils.expression_is_true:
+              arguments:
                 expression: ">= 0"
       - name: vl_medio_7d
         description: Média de custo dos últimos 7 dias.
         data_tests:
           - not_null
           - dbt_utils.expression_is_true:
+              arguments:
                 expression: ">= 0"
       - name: vl_desvio_7d
         description: Desvio padrão dos últimos 7 dias.
         data_tests:
           - not_null
           - dbt_utils.expression_is_true:
+              arguments:
                 expression: ">= 0"
       - name: vl_limite_superior
         description: Limite superior de custo para o job
         data_tests:
           - not_null
           - dbt_utils.expression_is_true:
+              arguments:
                 expression: ">= 0"
       - name: nr_sigma_desvio
         description: Desvio em sigma do custo do job em relação à média
@@ -143,4 +148,5 @@ models:
         data_tests:
           - not_null
           - accepted_values:
+              arguments:
                 values: ["critical", "warning"]

@@ -1,5 +1,11 @@
 FROM astrocrpublic.azurecr.io/runtime:3.2-4
 
+# variáveis de ambiente que corrigem o problema de congelamento do numpy quando o scheduler faz o fork para rodar a dag
+ENV OPENBLAS_NUM_THREADS=1
+ENV OMP_NUM_THREADS=1
+ENV MKL_NUM_THREADS=1
+ENV NUMEXPR_NUM_THREADS=1
+
 USER root
 RUN apt-get update && apt-get install -y --no-install-recommends build-essential \
     && rm -rf /var/lib/apt/lists/*

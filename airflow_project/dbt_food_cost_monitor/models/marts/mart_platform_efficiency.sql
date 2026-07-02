@@ -27,11 +27,11 @@ calculate_window_functions_metrics as (
             partition by nm_dominio, date_trunc('month', dt_execucao)
             order by dt_execucao asc
         ) as vl_custo_mtd
-        ,nullif(
+        ,coalesce(
             lag(vl_total_custo_usd, 1) over (
                 partition by nm_dominio
                 order by dt_execucao asc
-            ), 0) as vl_custo_dia_anterior
+            ), vl_total_custo_usd) as vl_custo_dia_anterior
     from source
 ),
 calculate_cost_and_trend_score as (

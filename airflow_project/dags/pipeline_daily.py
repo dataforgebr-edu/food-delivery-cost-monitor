@@ -34,13 +34,13 @@ render_config = RenderConfig(dbt_deps=False)
 )
 def pipeline_daily():
 
-    @task(task_id="create_infra")
+    @task(task_id="cria_infraestrutura")
     def create_infra():
         from infra.athena_setup import main
 
         main()
 
-    @task(task_id="gerados_dados")
+    @task(task_id="gerador_dados")
     def generate_data():
         from ingestion.generate_synthetic_data import generate_for_date
 
