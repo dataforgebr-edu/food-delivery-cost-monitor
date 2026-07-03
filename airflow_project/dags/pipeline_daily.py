@@ -29,7 +29,7 @@ render_config = RenderConfig(dbt_deps=False)
 @dag(
     dag_id="food_delivery_cost_monitor",
     schedule="@daily",
-    start_date=datetime(2026, 6, 24),
+    start_date=datetime(2026, 6, 1),
     catchup=False,
 )
 def pipeline_daily():

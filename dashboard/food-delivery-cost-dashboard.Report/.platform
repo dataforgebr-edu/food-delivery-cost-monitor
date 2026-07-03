@@ -1,0 +1,11 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Report",
+    "displayName": "food-delivery-cost-dashboard"
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "967d79bf-7c79-400d-a113-6a711120e4e4"
+  }
+}
