@@ -1,0 +1,7 @@
+relationship ca5e87f1-efb5-dc62-77fd-3adce1307950
+	fromColumn: mart_anomalies.dt_execucao
+	toColumn: dim_calendario.Data
+
+relationship 79665b3c-de51-3f3c-8bba-12cefd480418
+	fromColumn: mart_platform_efficiency.dt_execucao
+	toColumn: dim_calendario.Data

@@ -7,9 +7,49 @@
         "x": 0,
         "y": 0
       },
-      "nodes": [],
+      "nodes": [
+        {
+          "location": {
+            "x": 333.40134234449397,
+            "y": 432.94771470327646
+          },
+          "nodeIndex": "mart_anomalies",
+          "nodeLineageTag": "61a5dc43-b2c6-4a00-afc7-bc898de3c96c",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 734.0691307830059,
+            "y": 429.20741125762015
+          },
+          "nodeIndex": "mart_platform_efficiency",
+          "nodeLineageTag": "3facd0e0-f5e1-45f9-a1ed-4f2ecd463c84",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 531.65767358330152,
+            "y": 17.381112634073133
+          },
+          "nodeIndex": "dim_calendario",
+          "nodeLineageTag": "23183038-deac-44aa-aa78-bfaa67a4008a",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        }
+      ],
       "name": "All tables",
-      "zoomValue": 100,
+      "zoomValue": 63.287087723234222,
       "pinKeyFieldsToTop": false,
       "showExtraHeaderInfo": false,
       "hideKeyFieldsWhenCollapsed": false,

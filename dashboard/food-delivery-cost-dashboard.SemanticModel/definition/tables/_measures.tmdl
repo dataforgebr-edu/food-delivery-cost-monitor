@@ -1,0 +1,139 @@
+table _measures
+	lineageTag: 13150c42-ede5-4388-9a29-5b5d1b8b567f
+
+	measure 'Vl. Desvio 7d' = SUM(mart_anomalies[vl_desvio_7d])
+		displayFolder: mart_anomalies
+		lineageTag: 7c4422d4-8d11-4290-b077-7950a6fb32c8
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Estimativa Custo USD' = SUM(mart_anomalies[vl_estimativa_custo_usd])
+		displayFolder: mart_anomalies
+		lineageTag: db15ebaf-a559-42f6-a8bd-d595430fc058
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Limite Superior' = SUM(mart_anomalies[vl_limite_superior])
+		displayFolder: mart_anomalies
+		lineageTag: 6e40f9cd-9d10-4c5a-a689-522332d6afe5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Média 7d' = SUM(mart_anomalies[vl_medio_7d])
+		displayFolder: mart_anomalies
+		lineageTag: 84b656a5-e53a-4849-83e3-f80d6ddefe41
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Sinal de Desvio' = SUM(mart_anomalies[nr_sigma_desvio])
+		displayFolder: mart_anomalies
+		lineageTag: 07b133b9-2a80-4374-9661-5df49182bddc
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Score Custo' = SUM(mart_platform_efficiency[nr_custo_score])
+		displayFolder: mart_platform_efficiency
+		lineageTag: d58cc0e8-0417-4a2d-8458-87e515f63d0b
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Tendência Custo %' = SUM(mart_platform_efficiency[nr_custo_trend_pct])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 4bc9870e-558f-4d47-aeaa-7edd48c3be88
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Tendência Custo Score' = SUM(mart_platform_efficiency[nr_custo_trend_score])
+		displayFolder: mart_platform_efficiency
+		lineageTag: edd0aa93-f67a-4b5d-ba77-c361ea2409b0
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Score Eficiência' = SUM(mart_platform_efficiency[nr_eficiencia_score])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 7f15968e-6f92-471c-96c3-6a5b50e8361d
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Média de Duração em Minutos' = SUM(mart_platform_efficiency[nr_medio_duracao_minutos])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 99a1aeb5-09fd-43c5-9fff-9d0ce0b3d8f3
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Jobs com Sucesso' = SUM(mart_platform_efficiency[nr_sucesso_jobs])
+		formatString: 0
+		displayFolder: mart_platform_efficiency
+		lineageTag: 6ecc1b93-1dd2-4d5d-8ae7-63aac0639444
+
+	measure 'Nr. Taxa Sucesso' = SUM(mart_platform_efficiency[nr_taxa_sucesso])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 94611031-c276-4975-b302-bf2678a8d7eb
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Total de Execuções em Minutos' = SUM(mart_platform_efficiency[nr_total_duracao_minutos])
+		displayFolder: mart_platform_efficiency
+		lineageTag: d99de725-df1b-43e9-9a1e-7dea5b245a99
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Total Jobs' = SUM(mart_platform_efficiency[nr_total_jobs])
+		formatString: 0
+		displayFolder: mart_platform_efficiency
+		lineageTag: 8b1e28e2-0d7d-43db-905d-ea27d078d710
+
+	measure 'Vl. Custo dia Anterior' = SUM(mart_platform_efficiency[vl_custo_dia_anterior])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 0832e652-6178-4f8d-9fdc-2a9023106c0e
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Custo MTD' = SUM(mart_platform_efficiency[vl_custo_mtd])
+		displayFolder: mart_platform_efficiency
+		lineageTag: de020832-3c44-4a1c-98c6-58951716a46c
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Média 7d Eficiência' = SUM(mart_platform_efficiency[vl_medio_7d])
+		displayFolder: mart_platform_efficiency
+		lineageTag: d7111727-07a1-44f2-a41a-c6d4576cbaa5
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Desvio 7d Eficiência' = SUM(mart_platform_efficiency[vl_desvio_7d])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 02259614-e1e7-4d4d-9e8f-cdf0a9670329
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Maior Custo' = SUM(mart_platform_efficiency[vl_maior_custo])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 24d9ad0e-a4a1-4df7-85a0-1faf919c8580
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Médio por Jobs' = SUM(mart_platform_efficiency[vl_medio_por_job])
+		displayFolder: mart_platform_efficiency
+		lineageTag: be18e49e-9f80-452c-9595-c291142ea596
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Vl. Total Custo USD' = SUM(mart_platform_efficiency[vl_total_custo_usd])
+		displayFolder: mart_platform_efficiency
+		lineageTag: 4eec9a7c-69cc-442f-9acb-2e02a7ae1a20
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition _measures = m
+		mode: import
+		source =
+				let
+				  Source = Table.FromRows(Json.Document(Binary.Decompress(Binary.FromText("i44FAA==", BinaryEncoding.Base64), Compression.Deflate)), let _t = ((type nullable text) meta [Serialized.Text = true]) in type table [Column1 = _t]),
+				    #"Removed Columns" = Table.RemoveColumns(Source,{"Column1"})
+				in
+				  #"Removed Columns"
+
+	annotation PBI_NavigationStepName = Navigation
+
+	annotation PBI_ResultType = Table

@@ -1,0 +1,190 @@
+table mart_platform_efficiency
+	lineageTag: 3facd0e0-f5e1-45f9-a1ed-4f2ecd463c84
+
+	column dt_execucao
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: f9c20960-1ef7-4751-9232-fe1475af7134
+		summarizeBy: none
+		sourceColumn: dt_execucao
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column nm_dominio
+		dataType: string
+		lineageTag: 82f2c7d5-54db-48f5-ae30-95adcc4f9359
+		summarizeBy: none
+		sourceColumn: nm_dominio
+
+		annotation SummarizationSetBy = Automatic
+
+	column nr_total_jobs
+		dataType: int64
+		formatString: 0
+		lineageTag: f8abdbcf-43fe-46a3-b3ca-019a9f8e850d
+		summarizeBy: sum
+		sourceColumn: nr_total_jobs
+
+		annotation SummarizationSetBy = Automatic
+
+	column nr_sucesso_jobs
+		dataType: int64
+		formatString: 0
+		lineageTag: c931abd8-e445-4c0d-b6b5-f57f00f83d5e
+		summarizeBy: sum
+		sourceColumn: nr_sucesso_jobs
+
+		annotation SummarizationSetBy = Automatic
+
+	column vl_total_custo_usd
+		dataType: double
+		lineageTag: ade39a14-052a-46eb-9fc6-7fd6488b4693
+		summarizeBy: sum
+		sourceColumn: vl_total_custo_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_medio_por_job
+		dataType: double
+		lineageTag: 0a8180dd-e365-432e-99c3-4bb198978bd7
+		summarizeBy: sum
+		sourceColumn: vl_medio_por_job
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_maior_custo
+		dataType: double
+		lineageTag: 31e370c5-4bd3-4024-8432-a5500288302c
+		summarizeBy: sum
+		sourceColumn: vl_maior_custo
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_total_duracao_minutos
+		dataType: double
+		lineageTag: 1037daf0-d2d6-47f2-98a9-4a3f2dde44a5
+		summarizeBy: sum
+		sourceColumn: nr_total_duracao_minutos
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_medio_duracao_minutos
+		dataType: double
+		lineageTag: e15c352c-dcfd-44a1-a983-4d64a25f416d
+		summarizeBy: sum
+		sourceColumn: nr_medio_duracao_minutos
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_taxa_sucesso
+		dataType: double
+		lineageTag: f6d2f19d-0a1b-48b5-a0ed-dd8f1f18f261
+		summarizeBy: sum
+		sourceColumn: nr_taxa_sucesso
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_medio_7d
+		dataType: double
+		lineageTag: 11f28b18-d826-4b86-a1d6-286e6da135f1
+		summarizeBy: sum
+		sourceColumn: vl_medio_7d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_desvio_7d
+		dataType: double
+		lineageTag: e1ee5d9f-c346-4ed0-a783-546ff1cf3639
+		summarizeBy: sum
+		sourceColumn: vl_desvio_7d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_custo_mtd
+		dataType: double
+		lineageTag: 15fac075-b945-4fbb-96c7-1d4a5bdb0936
+		summarizeBy: sum
+		sourceColumn: vl_custo_mtd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_custo_dia_anterior
+		dataType: double
+		lineageTag: 24918e23-16fc-47ab-b676-a762e590e172
+		summarizeBy: sum
+		sourceColumn: vl_custo_dia_anterior
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_custo_trend_pct
+		dataType: double
+		lineageTag: 86b7cc57-c5a7-4c49-8909-58d56059a410
+		summarizeBy: sum
+		sourceColumn: nr_custo_trend_pct
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_custo_score
+		dataType: double
+		lineageTag: 76a60af6-13f5-40fd-900a-07b674ec62f9
+		summarizeBy: sum
+		sourceColumn: nr_custo_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_custo_trend_score
+		dataType: double
+		lineageTag: c0334d95-c713-43af-b8f3-655dba2264c1
+		summarizeBy: sum
+		sourceColumn: nr_custo_trend_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_eficiencia_score
+		dataType: double
+		lineageTag: 64faef4e-2156-43cb-9713-ac4d7632d939
+		summarizeBy: sum
+		sourceColumn: nr_eficiencia_score
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	partition mart_platform_efficiency = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Amazon Athena ODBC", [HierarchicalNavigation=true]),
+				    AwsDataCatalog_Database = Source{[Name="AwsDataCatalog",Kind="Database"]}[Data],
+				    cost_monitor_gold_Schema = AwsDataCatalog_Database{[Name="cost_monitor_gold",Kind="Schema"]}[Data],
+				    mart_platform_efficiency_Table = cost_monitor_gold_Schema{[Name="mart_platform_efficiency",Kind="Table"]}[Data]
+				in
+				    mart_platform_efficiency_Table

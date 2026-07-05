@@ -1,0 +1,106 @@
+table mart_anomalies
+	lineageTag: 61a5dc43-b2c6-4a00-afc7-bc898de3c96c
+
+	column id_job
+		dataType: string
+		lineageTag: 8a12207f-e1b0-4bbf-971f-f5cdca4dac5a
+		summarizeBy: none
+		sourceColumn: id_job
+
+		annotation SummarizationSetBy = Automatic
+
+	column dt_execucao
+		dataType: dateTime
+		formatString: Short Date
+		lineageTag: 31d4a21d-0ac4-43d1-9817-dd851acf1e68
+		summarizeBy: none
+		sourceColumn: dt_execucao
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column nm_dominio
+		dataType: string
+		lineageTag: a766fb92-8490-48d4-bb22-02a70efc5b0b
+		summarizeBy: none
+		sourceColumn: nm_dominio
+
+		annotation SummarizationSetBy = Automatic
+
+	column nm_job
+		dataType: string
+		lineageTag: e92e5f18-2f79-460b-bb60-735166ba1b15
+		summarizeBy: none
+		sourceColumn: nm_job
+
+		annotation SummarizationSetBy = Automatic
+
+	column vl_estimativa_custo_usd
+		dataType: double
+		lineageTag: d546c44d-f485-40ef-8138-b5342383a1cf
+		summarizeBy: sum
+		sourceColumn: vl_estimativa_custo_usd
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_medio_7d
+		dataType: double
+		lineageTag: 49ffdc90-5bc5-4b9f-bbf0-eb1a6f57601a
+		summarizeBy: sum
+		sourceColumn: vl_medio_7d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_desvio_7d
+		dataType: double
+		lineageTag: 067e7584-5f03-4bec-9efe-092a98dc26fc
+		summarizeBy: sum
+		sourceColumn: vl_desvio_7d
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column vl_limite_superior
+		dataType: double
+		lineageTag: 93a5fd1c-fdab-4924-b8b1-c383b06a43ae
+		summarizeBy: sum
+		sourceColumn: vl_limite_superior
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nr_sigma_desvio
+		dataType: double
+		lineageTag: f7388c67-f937-4242-acf9-8131a90bfd05
+		summarizeBy: sum
+		sourceColumn: nr_sigma_desvio
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column nm_severidade
+		dataType: string
+		lineageTag: 0daf22bc-4ee6-4fb7-9052-55c35039ee8c
+		summarizeBy: none
+		sourceColumn: nm_severidade
+
+		annotation SummarizationSetBy = Automatic
+
+	partition mart_anomalies = m
+		mode: import
+		source =
+				let
+				    Source = Odbc.DataSource("dsn=Amazon Athena ODBC", [HierarchicalNavigation=true]),
+				    AwsDataCatalog_Database = Source{[Name="AwsDataCatalog",Kind="Database"]}[Data],
+				    cost_monitor_gold_Schema = AwsDataCatalog_Database{[Name="cost_monitor_gold",Kind="Schema"]}[Data],
+				    mart_anomalies_Table = cost_monitor_gold_Schema{[Name="mart_anomalies",Kind="Table"]}[Data]
+				in
+				    mart_anomalies_Table

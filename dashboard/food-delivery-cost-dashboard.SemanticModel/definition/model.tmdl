@@ -10,4 +10,11 @@ annotation __PBI_TimeIntelligenceEnabled = 1
 
 annotation PBI_ProTooling = ["DevMode"]
 
+annotation PBI_QueryOrder = ["mart_anomalies","mart_platform_efficiency","dim_calendario","_measures"]
+
+ref table mart_anomalies
+ref table mart_platform_efficiency
+ref table dim_calendario
+ref table _measures
+
 ref cultureInfo en-US
