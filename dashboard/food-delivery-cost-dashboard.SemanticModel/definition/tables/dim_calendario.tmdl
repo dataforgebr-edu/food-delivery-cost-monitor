@@ -5,7 +5,7 @@ table dim_calendario
 	column Data
 		dataType: dateTime
 		isKey
-		formatString: Long Date
+		formatString: Short Date
 		lineageTag: 806f2f40-84d1-4d31-a043-ef619efa43d9
 		summarizeBy: none
 		sourceColumn: Data
@@ -256,9 +256,26 @@ table dim_calendario
 
 		annotation SummarizationSetBy = Automatic
 
+	column 'Flag data futura' = ```
+
+			VAR vMaioDt =
+			    MAX(mart_platform_efficiency[dt_execucao])
+			RETURN
+			IF(
+			    dim_calendario[Data] > vMaioDt,
+			    TRUE(),
+			    FALSE()
+			)
+			```
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 79b8afdd-f45e-4e9d-977d-36efacbc41cd
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
 	partition dim_calendario = m
 		mode: import
-		source = ```
+		source =
 				let
 				    DataMin = List.Min(mart_platform_efficiency[dt_execucao]),
 				    DataMax = List.Max(mart_platform_efficiency[dt_execucao]),
@@ -316,7 +333,6 @@ table dim_calendario
 				    #"Added Custom Column" = Table.AddColumn(InsereTrimestreCompleto, "MêsAnoCurto", each Text.Combine({Text.Start(Text.Proper([Mês]), 3), "/", Text.End(Number.ToText([Ano]), 2)}))
 				in
 				    #"Added Custom Column"
-				```
 
 	annotation PBI_NavigationStepName = Navigation
 

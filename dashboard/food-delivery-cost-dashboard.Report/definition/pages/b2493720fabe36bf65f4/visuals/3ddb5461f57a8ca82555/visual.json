@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "3ddb5461f57a8ca82555",
+  "position": {
+    "x": 760.05939043813942,
+    "y": 0,
+    "z": 2,
+    "height": 95.78489863132036,
+    "width": 258.74362227681343,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "mart_anomalies"
+                    }
+                  },
+                  "Property": "nm_job"
+                }
+              },
+              "queryRef": "mart_anomalies.nm_job",
+              "nativeQueryRef": "Job",
+              "active": true,
+              "displayName": "Job"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

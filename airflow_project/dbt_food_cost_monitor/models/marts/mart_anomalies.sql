@@ -45,8 +45,9 @@ detect_anomalies as (
         ,vl_limite_superior
         ,nr_sigma_desvio
         ,case
-            when nr_sigma_desvio > 3 then 'critical'
+            when nr_sigma_desvio > 2.4 then 'critical'
             when nr_sigma_desvio >= 2 then 'warning'
+            else 'expected'
         end as nm_severidade
     from calculate_sigma
     where 1 = 1

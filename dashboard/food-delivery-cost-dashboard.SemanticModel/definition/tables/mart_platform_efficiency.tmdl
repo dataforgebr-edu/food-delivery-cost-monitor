@@ -3,7 +3,7 @@ table mart_platform_efficiency
 
 	column dt_execucao
 		dataType: dateTime
-		formatString: Long Date
+		formatString: Short Date
 		lineageTag: f9c20960-1ef7-4751-9232-fe1475af7134
 		summarizeBy: none
 		sourceColumn: dt_execucao
@@ -188,3 +188,5 @@ table mart_platform_efficiency
 				    mart_platform_efficiency_Table = cost_monitor_gold_Schema{[Name="mart_platform_efficiency",Kind="Table"]}[Data]
 				in
 				    mart_platform_efficiency_Table
+
+	annotation PBI_ResultType = Table

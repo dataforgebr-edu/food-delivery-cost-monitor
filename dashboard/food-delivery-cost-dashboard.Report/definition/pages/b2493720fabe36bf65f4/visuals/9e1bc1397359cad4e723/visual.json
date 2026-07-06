@@ -1,0 +1,58 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "9e1bc1397359cad4e723",
+  "position": {
+    "x": 487.63221121399454,
+    "y": 0,
+    "z": 1,
+    "height": 95.78489863132036,
+    "width": 256.25570283184408,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "slicer",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "mart_platform_efficiency"
+                    }
+                  },
+                  "Property": "nm_dominio"
+                }
+              },
+              "queryRef": "mart_platform_efficiency.nm_dominio",
+              "nativeQueryRef": "Domínio",
+              "active": true,
+              "displayName": "Domínio"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "isDefaultSort": true
+      }
+    },
+    "objects": {
+      "data": [
+        {
+          "properties": {
+            "mode": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Dropdown'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

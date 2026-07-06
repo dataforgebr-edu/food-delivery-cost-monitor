@@ -37,7 +37,12 @@ table _measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Nr. Tendência Custo %' = SUM(mart_platform_efficiency[nr_custo_trend_pct])
+	measure 'Nr. Tendência Custo %' =
+
+			DIVIDE(
+			    ([Vl. Total Custo USD] - [Vl. Custo dia Anterior]),
+			    [Vl. Custo dia Anterior]
+			)
 		displayFolder: mart_platform_efficiency
 		lineageTag: 4bc9870e-558f-4d47-aeaa-7edd48c3be88
 
@@ -66,7 +71,12 @@ table _measures
 		displayFolder: mart_platform_efficiency
 		lineageTag: 6ecc1b93-1dd2-4d5d-8ae7-63aac0639444
 
-	measure 'Nr. Taxa Sucesso' = SUM(mart_platform_efficiency[nr_taxa_sucesso])
+	measure 'Nr. Taxa Sucesso %' =
+
+			DIVIDE(
+			    [Nr. Jobs com Sucesso],
+			    [Nr. Total Jobs]
+			)
 		displayFolder: mart_platform_efficiency
 		lineageTag: 94611031-c276-4975-b302-bf2678a8d7eb
 
@@ -124,6 +134,11 @@ table _measures
 		lineageTag: 4eec9a7c-69cc-442f-9acb-2e02a7ae1a20
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Nr. Anomalias Criticas' = 1
+		formatString: 0
+		displayFolder: mart_anomalies
+		lineageTag: 4b5a6991-b6c9-475f-b12d-9cfa471fb656
 
 	partition _measures = m
 		mode: import
