@@ -1,0 +1,9 @@
+
+EVALUATE
+	TOPN(
+    2,
+    ALLSELECTED(mart_anomalies[nm_dominio]),
+    [Vl. Total Custo USD],
+    DESC
+
+)

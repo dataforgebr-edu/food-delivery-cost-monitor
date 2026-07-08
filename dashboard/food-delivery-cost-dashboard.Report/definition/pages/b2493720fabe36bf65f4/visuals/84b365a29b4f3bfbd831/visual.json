@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
-  "name": "c820f00e1e2663578402",
+  "name": "84b365a29b4f3bfbd831",
   "position": {
-    "x": 385.62751397025079,
+    "x": 961.58086548065762,
     "y": 95.78489863132036,
-    "z": 4000,
+    "z": 6000,
     "height": 108.22449585616715,
     "width": 253.7677833868747,
-    "tabOrder": 4000
+    "tabOrder": 6000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,31 +23,16 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Nr. Taxa Sucesso %"
+                  "Property": "Ds. Domínio mais Caro"
                 }
               },
-              "queryRef": "_measures.Nr. Taxa Sucesso",
-              "nativeQueryRef": "Nr. Taxa Sucesso %"
+              "queryRef": "_measures.Ds. Domínio mais Caro",
+              "nativeQueryRef": "Ds. Domínio mais Caro"
             }
           ]
         }
       },
       "sortDefinition": {
-        "sort": [
-          {
-            "field": {
-              "Measure": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "_measures"
-                  }
-                },
-                "Property": "Nr. Taxa Sucesso %"
-              }
-            },
-            "direction": "Descending"
-          }
-        ],
         "isDefaultSort": true
       }
     },

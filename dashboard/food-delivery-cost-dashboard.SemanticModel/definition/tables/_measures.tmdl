@@ -140,6 +140,59 @@ table _measures
 		displayFolder: mart_anomalies
 		lineageTag: 4b5a6991-b6c9-475f-b12d-9cfa471fb656
 
+	measure 'Nr. Jobs Criticos' =
+
+			CALCULATE(
+			    COUNT(mart_anomalies[id_job]),
+			    mart_anomalies[nm_severidade] = "critical"
+			)
+		formatString: 0
+		displayFolder: mart_anomalies
+		lineageTag: 4b6b0793-d90d-4c51-9ad6-22bc78942ceb
+
+	measure 'Ds. Domínio mais Caro' = ```
+
+			VAR vMaiorData =
+			CALCULATE(
+			    MAX(mart_platform_efficiency[dt_execucao]),
+			    ALLSELECTED(dim_calendario[Data])
+			)
+			VAR vTop =
+			TOPN(
+			    1,
+			    ALLSELECTED(mart_platform_efficiency[nm_dominio]),
+			    [Vl. Total Custo USD],
+			    DESC
+
+			)
+			RETURN
+			CALCULATE(
+			    MAX(mart_platform_efficiency[nm_dominio]),
+			    KEEPFILTERS(vTop),
+			    mart_platform_efficiency[dt_execucao] = vMaiorData
+			)
+			```
+		displayFolder: mart_platform_efficiency
+		lineageTag: 411dd544-aba2-479e-aa77-a224e8f037bb
+
+	measure 'Vl. Total Custo USD Ult. 30 dias' = ```
+
+			VAR vDtFiltro =
+			CALCULATE(
+			    MAX(mart_anomalies[dt_execucao]),
+			    ALLSELECTED(dim_calendario[Data])
+			)
+			RETURN
+			CALCULATE(
+			    [Vl. Total Custo USD],
+			    mart_platform_efficiency[dt_execucao] >= vDtFiltro-30
+			)
+			```
+		displayFolder: mart_platform_efficiency
+		lineageTag: c89141ad-ba9f-4976-943c-f92e69db34a7
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
 	partition _measures = m
 		mode: import
 		source =

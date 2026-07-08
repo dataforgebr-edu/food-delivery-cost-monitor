@@ -23,11 +23,11 @@
                       "Entity": "dim_calendario"
                     }
                   },
-                  "Property": "Data"
+                  "Property": "Dia Atual"
                 }
               },
-              "queryRef": "dim_calendario.Data",
-              "nativeQueryRef": "Data",
+              "queryRef": "dim_calendario.Dia Atual",
+              "nativeQueryRef": "Dia Atual",
               "active": true
             }
           ]
@@ -43,13 +43,12 @@
                     "Entity": "dim_calendario"
                   }
                 },
-                "Property": "Data"
+                "Property": "Dia Atual"
               }
             },
-            "direction": "Ascending"
+            "direction": "Descending"
           }
-        ],
-        "isDefaultSort": true
+        ]
       }
     },
     "objects": {
@@ -59,7 +58,7 @@
             "startDate": {
               "expr": {
                 "Literal": {
-                  "Value": "datetime'2026-07-02T00:00:00'"
+                  "Value": "datetime'2026-04-12T00:00:00'"
                 }
               }
             },
@@ -73,7 +72,7 @@
             "mode": {
               "expr": {
                 "Literal": {
-                  "Value": "'Between'"
+                  "Value": "'Dropdown'"
                 }
               }
             }
@@ -96,47 +95,28 @@
                 "Where": [
                   {
                     "Condition": {
-                      "And": {
-                        "Left": {
-                          "Comparison": {
-                            "ComparisonKind": 2,
-                            "Left": {
-                              "Column": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Source": "d"
-                                  }
-                                },
-                                "Property": "Data"
-                              }
-                            },
-                            "Right": {
-                              "Literal": {
-                                "Value": "datetime'2026-07-02T00:00:00'"
-                              }
+                      "In": {
+                        "Expressions": [
+                          {
+                            "Column": {
+                              "Expression": {
+                                "SourceRef": {
+                                  "Source": "d"
+                                }
+                              },
+                              "Property": "Dia Atual"
                             }
                           }
-                        },
-                        "Right": {
-                          "Comparison": {
-                            "ComparisonKind": 3,
-                            "Left": {
-                              "Column": {
-                                "Expression": {
-                                  "SourceRef": {
-                                    "Source": "d"
-                                  }
-                                },
-                                "Property": "Data"
-                              }
-                            },
-                            "Right": {
+                        ],
+                        "Values": [
+                          [
+                            {
                               "Literal": {
-                                "Value": "datetime'2026-07-03T00:00:00'"
+                                "Value": "'Atual'"
                               }
                             }
-                          }
-                        }
+                          ]
+                        ]
                       }
                     }
                   }
@@ -148,23 +128,5 @@
       ]
     },
     "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "265bf2ae2a14164e5ff9",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "dim_calendario"
-              }
-            },
-            "Property": "Data"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
   }
 }

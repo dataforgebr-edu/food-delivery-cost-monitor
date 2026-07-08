@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
-  "name": "c820f00e1e2663578402",
+  "name": "c79d0fbdc9f606866870",
   "position": {
-    "x": 385.62751397025079,
+    "x": 675.47012930918117,
     "y": 95.78489863132036,
-    "z": 4000,
+    "z": 5000,
     "height": 108.22449585616715,
     "width": 253.7677833868747,
-    "tabOrder": 4000
+    "tabOrder": 5000
   },
   "visual": {
     "visualType": "cardVisual",
@@ -23,11 +23,11 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Nr. Taxa Sucesso %"
+                  "Property": "Nr. Jobs Criticos"
                 }
               },
-              "queryRef": "_measures.Nr. Taxa Sucesso",
-              "nativeQueryRef": "Nr. Taxa Sucesso %"
+              "queryRef": "_measures.Nr. Jobs Criticos",
+              "nativeQueryRef": "Nr. Jobs Criticos"
             }
           ]
         }
@@ -42,7 +42,7 @@
                     "Entity": "_measures"
                   }
                 },
-                "Property": "Nr. Taxa Sucesso %"
+                "Property": "Nr. Jobs Criticos"
               }
             },
             "direction": "Descending"

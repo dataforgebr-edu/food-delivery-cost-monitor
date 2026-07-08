@@ -1,0 +1,93 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
+  "name": "efbb59b039a6d0148b39",
+  "position": {
+    "x": 658.17825661116558,
+    "y": 264.5249755142018,
+    "z": 8000,
+    "height": 339.74534769833497,
+    "width": 598.001958863859,
+    "tabOrder": 8000
+  },
+  "visual": {
+    "visualType": "clusteredBarChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "mart_platform_efficiency"
+                    }
+                  },
+                  "Property": "nm_dominio"
+                }
+              },
+              "queryRef": "mart_platform_efficiency.nm_dominio",
+              "nativeQueryRef": "nm_dominio",
+              "active": true
+            }
+          ]
+        },
+        "Tooltips": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_measures"
+                    }
+                  },
+                  "Property": "Ds. Domínio mais Caro"
+                }
+              },
+              "queryRef": "_measures.Ds. Domínio mais Caro",
+              "nativeQueryRef": "Ds. Domínio mais Caro"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_measures"
+                    }
+                  },
+                  "Property": "Nr. Score Eficiência"
+                }
+              },
+              "queryRef": "_measures.Nr. Score Eficiência",
+              "nativeQueryRef": "Nr. Score Eficiência"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_measures"
+                  }
+                },
+                "Property": "Nr. Score Eficiência"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
+        "isDefaultSort": true
+      }
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

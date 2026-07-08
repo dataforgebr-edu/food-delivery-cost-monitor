@@ -256,7 +256,7 @@ table dim_calendario
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Flag data futura' = ```
+	column 'Flag data futura' =
 
 			VAR vMaioDt =
 			    MAX(mart_platform_efficiency[dt_execucao])
@@ -266,9 +266,23 @@ table dim_calendario
 			    TRUE(),
 			    FALSE()
 			)
-			```
 		formatString: """TRUE"";""TRUE"";""FALSE"""
 		lineageTag: 79b8afdd-f45e-4e9d-977d-36efacbc41cd
+		summarizeBy: none
+
+		annotation SummarizationSetBy = Automatic
+
+	column 'Dia Atual' = ```
+
+			VAR vMaiorDt = MAX(mart_platform_efficiency[dt_execucao])
+			RETURN
+			IF(
+			    dim_calendario[Data] = vMaiorDt,
+			    "Atual",
+			    FORMAT(dim_calendario[Data], "dd/mm/yyyy")
+			)
+			```
+		lineageTag: 2fbb8153-0658-4203-9db2-19db3fbc28d5
 		summarizeBy: none
 
 		annotation SummarizationSetBy = Automatic
