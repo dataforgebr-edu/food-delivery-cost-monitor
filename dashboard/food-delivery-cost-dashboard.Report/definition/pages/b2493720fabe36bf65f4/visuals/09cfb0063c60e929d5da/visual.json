@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "09cfb0063c60e929d5da",
   "position": {
-    "x": 0,
-    "y": 218.1390793339863,
+    "x": 59.710066679264635,
+    "y": 210.2291930999109,
     "z": 7000,
-    "height": 298.37414299706171,
-    "width": 615.55337904015676,
+    "height": 298.5503333963232,
+    "width": 615.76006262991655,
     "tabOrder": 7000
   },
   "visual": {
@@ -32,24 +32,6 @@
             }
           ]
         },
-        "Series": {
-          "projections": [
-            {
-              "field": {
-                "Column": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "mart_platform_efficiency"
-                    }
-                  },
-                  "Property": "nm_dominio"
-                }
-              },
-              "queryRef": "mart_platform_efficiency.nm_dominio",
-              "nativeQueryRef": "nm_dominio"
-            }
-          ]
-        },
         "Y": {
           "projections": [
             {
@@ -60,11 +42,25 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Vl. Total Custo USD Ult. 30 dias"
+                  "Property": "Vl. Média 7d Eficiência (Ult. 15 dias)"
                 }
               },
-              "queryRef": "_measures.Vl. Total Custo USD Ult. 30 dias",
-              "nativeQueryRef": "Vl. Total Custo USD Ult. 30 dias"
+              "queryRef": "_measures.Vl. Média 7d Eficiência (Ult. 15 dias)",
+              "nativeQueryRef": "Vl. Média 7d Eficiência (Ult. 15 dias)"
+            },
+            {
+              "field": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "_measures"
+                    }
+                  },
+                  "Property": "Vl. Total Custo USD (Ult. 15 dias)"
+                }
+              },
+              "queryRef": "_measures.Vl. Total Custo USD (Ult. 15 dias)",
+              "nativeQueryRef": "Vl. Total Custo USD (Ult. 15 dias)"
             }
           ]
         }
@@ -87,6 +83,28 @@
         ]
       }
     },
+    "objects": {
+      "categoryAxis": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
     "visualContainerObjects": {
       "title": [
         {
@@ -94,7 +112,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Custo diário por domínio (30d)'"
+                  "Value": "'Tendência de custo vs benchmark 15d'"
                 }
               }
             },

@@ -272,7 +272,7 @@ table dim_calendario
 
 		annotation SummarizationSetBy = Automatic
 
-	column 'Dia Atual' = ```
+	column 'Dia Atual' =
 
 			VAR vMaiorDt = MAX(mart_platform_efficiency[dt_execucao])
 			RETURN
@@ -281,9 +281,11 @@ table dim_calendario
 			    "Atual",
 			    FORMAT(dim_calendario[Data], "dd/mm/yyyy")
 			)
-			```
 		lineageTag: 2fbb8153-0658-4203-9db2-19db3fbc28d5
 		summarizeBy: none
+		sortByColumn: AnoMesDia
+
+		changedProperty = SortByColumn
 
 		annotation SummarizationSetBy = Automatic
 

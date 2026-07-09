@@ -11,7 +11,7 @@
         {
           "location": {
             "x": 333.40134234449397,
-            "y": 432.94771470327646
+            "y": 441.638271020313
           },
           "nodeIndex": "mart_anomalies",
           "nodeLineageTag": "61a5dc43-b2c6-4a00-afc7-bc898de3c96c",
@@ -24,7 +24,7 @@
         {
           "location": {
             "x": 734.0691307830059,
-            "y": 429.20741125762015
+            "y": 437.89796757465672
           },
           "nodeIndex": "mart_platform_efficiency",
           "nodeLineageTag": "3facd0e0-f5e1-45f9-a1ed-4f2ecd463c84",
@@ -37,10 +37,23 @@
         {
           "location": {
             "x": 531.65767358330152,
-            "y": 17.381112634073133
+            "y": 26.0716689511097
           },
           "nodeIndex": "dim_calendario",
           "nodeLineageTag": "23183038-deac-44aa-aa78-bfaa67a4008a",
+          "size": {
+            "height": 300,
+            "width": 234
+          },
+          "zIndex": 0
+        },
+        {
+          "location": {
+            "x": 946.96457909816081,
+            "y": 115.34738384430375
+          },
+          "nodeIndex": "_measures",
+          "nodeLineageTag": "13150c42-ede5-4388-9a29-5b5d1b8b567f",
           "size": {
             "height": 300,
             "width": 234
