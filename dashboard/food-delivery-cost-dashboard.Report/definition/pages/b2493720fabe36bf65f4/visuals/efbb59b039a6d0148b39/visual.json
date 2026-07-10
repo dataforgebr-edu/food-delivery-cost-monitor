@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "efbb59b039a6d0148b39",
   "position": {
-    "x": 697.86140431390538,
+    "x": 702.8372432038442,
     "y": 217.69295143481898,
     "z": 8000,
-    "height": 308.5020111762006,
-    "width": 526.1949626110196,
+    "height": 291.08657506141509,
+    "width": 521.2191237210809,
     "tabOrder": 8000
   },
   "visual": {
@@ -27,26 +27,9 @@
                 }
               },
               "queryRef": "mart_platform_efficiency.nm_dominio",
-              "nativeQueryRef": "nm_dominio",
-              "active": true
-            }
-          ]
-        },
-        "Tooltips": {
-          "projections": [
-            {
-              "field": {
-                "Measure": {
-                  "Expression": {
-                    "SourceRef": {
-                      "Entity": "_measures"
-                    }
-                  },
-                  "Property": "Ds. Domínio mais Caro"
-                }
-              },
-              "queryRef": "_measures.Ds. Domínio mais Caro",
-              "nativeQueryRef": "Ds. Domínio mais Caro"
+              "nativeQueryRef": "Domínio",
+              "active": true,
+              "displayName": "Domínio"
             }
           ]
         },
@@ -64,7 +47,8 @@
                 }
               },
               "queryRef": "_measures.Nr. Score Eficiência",
-              "nativeQueryRef": "Nr. Score Eficiência"
+              "nativeQueryRef": "Score eficiência",
+              "displayName": "Score eficiência"
             }
           ]
         }
@@ -116,6 +100,13 @@
               "expr": {
                 "Literal": {
                   "Value": "true"
+                }
+              }
+            },
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

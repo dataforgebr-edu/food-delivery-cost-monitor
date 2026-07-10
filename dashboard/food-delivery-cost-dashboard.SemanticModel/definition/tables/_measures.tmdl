@@ -54,11 +54,10 @@ table _measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Nr. Score Eficiência' = SUM(mart_platform_efficiency[nr_eficiencia_score])
+	measure 'Nr. Score Eficiência' = SUM(mart_platform_efficiency[nr_eficiencia_score])/100
+		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: mart_platform_efficiency
 		lineageTag: 7f15968e-6f92-471c-96c3-6a5b50e8361d
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Nr. Média de Duração em Minutos' = SUM(mart_platform_efficiency[nr_medio_duracao_minutos])
 		displayFolder: mart_platform_efficiency
@@ -100,10 +99,11 @@ table _measures
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Vl. Custo MTD' = SUM(mart_platform_efficiency[vl_custo_mtd])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: mart_platform_efficiency
 		lineageTag: de020832-3c44-4a1c-98c6-58951716a46c
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
 	measure 'Vl. Média 7d Eficiência' = SUM(mart_platform_efficiency[vl_medio_7d])
 		displayFolder: mart_platform_efficiency
@@ -124,10 +124,11 @@ table _measures
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Vl. Médio por Jobs' = SUM(mart_platform_efficiency[vl_medio_por_job])
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: mart_platform_efficiency
 		lineageTag: be18e49e-9f80-452c-9595-c291142ea596
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
 	measure 'Vl. Total Custo USD' = SUM(mart_platform_efficiency[vl_total_custo_usd])
 		displayFolder: mart_platform_efficiency
@@ -203,10 +204,11 @@ table _measures
 			    [Vl. Estimativa Custo USD],
 			    KEEPFILTERS(dim_calendario[Data] >= vDtFiltro-7)
 			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: mart_anomalies
 		lineageTag: cc3e6cad-d52c-4728-a964-36a33eb830d7
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
 	measure 'Vl. Total Custo USD (Ult. 15 dias)' =
 
@@ -220,10 +222,11 @@ table _measures
 			    [Vl. Total Custo USD],
 			    KEEPFILTERS(dim_calendario[Data] >= vDtFiltro-15)
 			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: mart_platform_efficiency
 		lineageTag: c94dabe6-117b-4f95-beeb-c33012ff3e3a
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
 	measure 'Vl. Média 7d Eficiência (Ult. 15 dias)' =
 
@@ -237,10 +240,11 @@ table _measures
 			    [Vl. Média 7d Eficiência],
 			    KEEPFILTERS(dim_calendario[Data] >= vDtFiltro-15)
 			)
+		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
 		displayFolder: mart_platform_efficiency
 		lineageTag: d5ba0b53-7bef-4f25-95df-644d6ae1cbd3
 
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
+		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
 	measure 'Vl. Limite Superior Tendência' = [Vl. Média 7d Eficiência (Ult. 15 dias)] + (2 * [Vl. Desvio 7d Eficiência (Últ. 15 dias)])
 		displayFolder: mart_platform_efficiency

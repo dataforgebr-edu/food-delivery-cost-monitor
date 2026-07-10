@@ -11,13 +11,13 @@
       "type": "SharedResources"
     },
     "customTheme": {
-      "name": "AccessibleDefault",
+      "name": "FoodCost_Monitor2669650058569125.json",
       "reportVersionAtImport": {
         "visual": "2.10.0",
         "report": "3.4.0",
         "page": "2.3.1"
       },
-      "type": "SharedResources"
+      "type": "RegisteredResources"
     }
   },
   "filterConfig": {
@@ -119,14 +119,20 @@
       "type": "SharedResources",
       "items": [
         {
-          "name": "AccessibleDefault",
-          "path": "BuiltInThemes/AccessibleDefault.json",
-          "type": "CustomTheme"
-        },
-        {
           "name": "CY26SU05",
           "path": "BaseThemes/CY26SU05.json",
           "type": "BaseTheme"
+        }
+      ]
+    },
+    {
+      "name": "RegisteredResources",
+      "type": "RegisteredResources",
+      "items": [
+        {
+          "name": "FoodCost_Monitor2669650058569125.json",
+          "path": "FoodCost_Monitor2669650058569125.json",
+          "type": "CustomTheme"
         }
       ]
     }

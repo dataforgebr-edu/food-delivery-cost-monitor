@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "84b365a29b4f3bfbd831",
   "position": {
-    "x": 961.58086548065762,
+    "x": 639.39529735712551,
     "y": 95.78489863132036,
     "z": 6000,
     "height": 108.22449585616715,
-    "width": 253.7677833868747,
+    "width": 264.96342088923683,
     "tabOrder": 6000
   },
   "visual": {
@@ -23,16 +23,31 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Ds. Domínio mais Caro"
+                  "Property": "Vl. Médio por Jobs"
                 }
               },
-              "queryRef": "_measures.Ds. Domínio mais Caro",
-              "nativeQueryRef": "Ds. Domínio mais Caro"
+              "queryRef": "_measures.Vl. Médio por Jobs",
+              "nativeQueryRef": "Vl. Médio por Jobs"
             }
           ]
         }
       },
       "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Measure": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "_measures"
+                  }
+                },
+                "Property": "Vl. Médio por Jobs"
+              }
+            },
+            "direction": "Descending"
+          }
+        ],
         "isDefaultSort": true
       }
     },

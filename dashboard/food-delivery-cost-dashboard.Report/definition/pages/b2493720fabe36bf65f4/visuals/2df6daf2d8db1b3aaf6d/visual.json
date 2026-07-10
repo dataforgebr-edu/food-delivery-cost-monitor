@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "2df6daf2d8db1b3aaf6d",
   "position": {
-    "x": 743.57594403881762,
-    "y": 526.64738026358077,
+    "x": 675.47012930918117,
+    "y": 508.7795264962341,
     "z": 10000,
-    "height": 193.10403942997962,
-    "width": 525.3934579296199,
+    "height": 211.47315282239558,
+    "width": 552.31811678319787,
     "tabOrder": 10000
   },
   "visual": {
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "mart_platform_efficiency.nm_dominio",
-              "nativeQueryRef": "nm_dominio",
-              "active": true
+              "nativeQueryRef": "Domínio",
+              "active": true,
+              "displayName": "Domínio"
             }
           ]
         },
@@ -46,7 +47,8 @@
                 }
               },
               "queryRef": "_measures.Vl. Custo MTD",
-              "nativeQueryRef": "Vl. Custo MTD"
+              "nativeQueryRef": "Custo MTD",
+              "displayName": "Custo MTD"
             }
           ]
         }

@@ -312,6 +312,16 @@ cultureInfo en-US
 			            "State": "Generated",
 			            "Weight": 0.99
 			          }
+			        },
+			        {
+			          "Domínio": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -578,6 +588,16 @@ cultureInfo en-US
 			            "Type": "Noun",
 			            "State": "Generated",
 			            "Weight": 0.99
+			          }
+			        },
+			        {
+			          "Severidade": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -2824,6 +2844,16 @@ cultureInfo en-US
 			          "nr. score eficiência": {
 			            "State": "Generated"
 			          }
+			        },
+			        {
+			          "Score eficiência": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -2859,7 +2889,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure.nr__taxa_sucesso": {
+			    "entity__measure.nr__taxa_sucesso_": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_measures",
@@ -2869,8 +2899,28 @@ cultureInfo en-US
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "nr. taxa sucesso": {
+			          "nr. taxa sucesso %": {
 			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "nr. taxon sucesso percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.78
+			          }
+			        },
+			        {
+			          "nr. taxon sucesso pct": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.757
 			          }
 			        }
 			      ]
@@ -3035,6 +3085,16 @@ cultureInfo en-US
 			        {
 			          "vl. custo MTD": {
 			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "Custo MTD": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -3238,6 +3298,338 @@ cultureInfo en-US
 			          }
 			        }
 			      ]
+			    },
+			    "dim_calendario.flag_data_futura": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_calendario",
+			          "ConceptualProperty": "Flag data futura"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "flag data futura": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "flag information futura": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "flag fact futura": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "flag info futura": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "flag statistic futura": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.609
+			          }
+			        },
+			        {
+			          "flag document futura": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "flag figure futura": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        },
+			        {
+			          "flag record futura": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.591
+			          }
+			        }
+			      ]
+			    },
+			    "dim_calendario.dia_atual": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "dim_calendario",
+			          "ConceptualProperty": "Dia Atual"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "dia atual": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.nr__anomalias_criticas": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Nr. Anomalias Criticas"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "nr. anomalias criticas": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.nr__jobs_criticos": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Nr. Jobs Criticos"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "nr. jobs criticos": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.ds__domínio_mais_caro": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Ds. Domínio mais Caro"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "ds. domínio mais caro": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__total_custo_USD_ult__30_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Total Custo USD (Ult. 30 dias)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. total custo USD (ult. 30 dias)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "vl. total custo USD": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__total_custo_USD_ult__7_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Total Custo USD Ult. 7 dias"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. total custo USD ult. 7 dias": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "Custo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__total_custo_USD_ult__15_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Total Custo USD (Ult. 15 dias)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. total custo USD (ult. 15 dias)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "vl. total custo USD": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "Vl. Custo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__média_7d_eficiência_ult__15_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Média 7d Eficiência (Ult. 15 dias)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. média 7d eficiência (ult. 15 dias)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "vl. média 7d eficiência": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "Vl. Custo médio 7d": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__limite_superior_tendência": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Limite Superior Tendência"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. limite superior tendência": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__desvio_7d_eficiência_últ__15_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Desvio 7d Eficiência (Últ. 15 dias)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. desvio 7d eficiência (últ. 15 dias)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "vl. desvio 7d eficiência": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__limite_inferior_tendência": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Limite Inferior Tendência"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. limite inferior tendência": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__amplitude_banda": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Amplitude Banda"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. amplitude banda": {
+			            "State": "Generated"
+			          }
+			        }
+			      ]
 			    }
 			  },
 			  "Relationships": {
@@ -3330,6 +3722,435 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "dim_calendarios_have_mart_anomalies"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__amplitude_banda": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__amplitude_banda": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__amplitude_banda"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__amplitude_banda"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__amplitude_banda"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__limite_inferior_tendência": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__limite_inferior_tendência": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__limite_inferior_tendência"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__limite_inferior_tendência"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__limite_inferior_tendência"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__desvio_7d_eficiência_últ__15_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__desvio_7d_eficiência_últ__15_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__desvio_7d_eficiência_últ__15_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__desvio_7d_eficiência_últ__15_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__desvio_7d_eficiência_últ__15_dias"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__limite_superior_tendência": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__limite_superior_tendência": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__limite_superior_tendência"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__limite_superior_tendência"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__limite_superior_tendência"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__média_7d_eficiência_ult__15_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__média_7d_eficiência_ult__15_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__média_7d_eficiência_ult__15_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__média_7d_eficiência_ult__15_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__média_7d_eficiência_ult__15_dias"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__total_custo_USD_ult__15_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__total_custo_USD_ult__15_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__total_custo_USD_ult__15_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__total_custo_USD_ult__15_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__total_custo_USD_ult__15_dias"
+			        }
+			      ]
+			    },
+			    "mart_anomaly_has_entity__measure_vl__total_custo_USD_ult__7_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_anomalies"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_anomaly": {
+			          "Target": {
+			            "Entity": "mart_anomaly"
+			          }
+			        },
+			        "entity__measure.vl__total_custo_USD_ult__7_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__total_custo_USD_ult__7_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_anomaly"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__total_custo_USD_ult__7_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_anomalies_have_vl__total_custo_USD_ult__7_dias"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__total_custo_USD_ult__30_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__total_custo_USD_ult__30_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__total_custo_USD_ult__30_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__total_custo_USD_ult__30_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__total_custo_USD_ult__30_dias"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_ds__domínio_mais_caro": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.ds__domínio_mais_caro": {
+			          "Target": {
+			            "Entity": "entity__measure.ds__domínio_mais_caro"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.ds__domínio_mais_caro"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_ds__domínio_mais_caro"
+			        }
+			      ]
+			    },
+			    "mart_anomaly_has_entity__measure_nr__jobs_criticos": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_anomalies"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_anomaly": {
+			          "Target": {
+			            "Entity": "mart_anomaly"
+			          }
+			        },
+			        "entity__measure.nr__jobs_criticos": {
+			          "Target": {
+			            "Entity": "entity__measure.nr__jobs_criticos"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_anomaly"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.nr__jobs_criticos"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_anomalies_have_nr__jobs_criticos"
+			        }
+			      ]
+			    },
+			    "entity__measure_has_nr__anomalias_criticas": {
+			      "Binding": {
+			        "ConceptualEntity": "_measures"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "entity__measure": {
+			          "Target": {
+			            "Entity": "entity__measure"
+			          }
+			        },
+			        "entity__measure.nr__anomalias_criticas": {
+			          "Target": {
+			            "Entity": "entity__measure.nr__anomalias_criticas"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "entity__measure"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.nr__anomalias_criticas"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "Phrasing_measures_have_nr__anomalias_criticas"
+			        }
+			      ]
+			    },
+			    "dim_calendario_has_dia_atual": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_calendario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_calendario": {
+			          "Target": {
+			            "Entity": "dim_calendario"
+			          }
+			        },
+			        "dim_calendario.dia_atual": {
+			          "Target": {
+			            "Entity": "dim_calendario.dia_atual"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_calendario"
+			            },
+			            "Object": {
+			              "Role": "dim_calendario.dia_atual"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_calendarios_have_dia_atuals"
+			        }
+			      ]
+			    },
+			    "dim_calendario_has_flag_data_futura": {
+			      "Binding": {
+			        "ConceptualEntity": "dim_calendario"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "dim_calendario": {
+			          "Target": {
+			            "Entity": "dim_calendario"
+			          }
+			        },
+			        "dim_calendario.flag_data_futura": {
+			          "Target": {
+			            "Entity": "dim_calendario.flag_data_futura"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "dim_calendario"
+			            },
+			            "Object": {
+			              "Role": "dim_calendario.flag_data_futura"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "dim_calendarios_have_flag_data_futuras"
 			        }
 			      ]
 			    },
@@ -3630,7 +4451,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "mart_platform_efficiency_has_entity__measure_nr__taxa_sucesso": {
+			    "mart_platform_efficiency_has_entity__measure_nr__taxa_sucesso_": {
 			      "Binding": {
 			        "ConceptualEntity": "mart_platform_efficiency"
 			      },
@@ -3641,9 +4462,9 @@ cultureInfo en-US
 			            "Entity": "mart_platform_efficiency"
 			          }
 			        },
-			        "entity__measure.nr__taxa_sucesso": {
+			        "entity__measure.nr__taxa_sucesso_": {
 			          "Target": {
-			            "Entity": "entity__measure.nr__taxa_sucesso"
+			            "Entity": "entity__measure.nr__taxa_sucesso_"
 			          }
 			        }
 			      },
@@ -3654,12 +4475,12 @@ cultureInfo en-US
 			              "Role": "mart_platform_efficiency"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.nr__taxa_sucesso"
+			              "Role": "entity__measure.nr__taxa_sucesso_"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_nr__taxa_sucesso"
+			          "ID": "mart_platform_efficiencies_have_nr__taxa_sucesso_"
 			        }
 			      ]
 			    },

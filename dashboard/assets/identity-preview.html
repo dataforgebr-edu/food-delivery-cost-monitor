@@ -1,0 +1,358 @@
+<title>FoodCost Monitor — Identidade Visual</title>
+<style>
+  :root {
+    --ground: #FBFAF9;
+    --surface: #FFFFFF;
+    --surface-alt: #F3F4F6;
+    --ink: #1F2937;
+    --ink-soft: #6B7280;
+    --ink-faint: #9CA3AF;
+    --border: #E5E7EB;
+    --brand: #DC2626;
+    --brand-2: #F97316;
+    --good: #16A34A;
+    --warn: #F59E0B;
+    --bad: #DC2626;
+    --shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px -12px rgba(17, 24, 39, 0.12);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --ground: #15171C;
+      --surface: #1D2027;
+      --surface-alt: #262A32;
+      --ink: #F1F2F4;
+      --ink-soft: #A3A9B4;
+      --ink-faint: #767C87;
+      --border: #333844;
+      --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -16px rgba(0, 0, 0, 0.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #15171C;
+    --surface: #1D2027;
+    --surface-alt: #262A32;
+    --ink: #F1F2F4;
+    --ink-soft: #A3A9B4;
+    --ink-faint: #767C87;
+    --border: #333844;
+    --shadow: 0 1px 2px rgba(0, 0, 0, 0.3), 0 12px 32px -16px rgba(0, 0, 0, 0.5);
+  }
+  :root[data-theme="light"] {
+    --ground: #FBFAF9;
+    --surface: #FFFFFF;
+    --surface-alt: #F3F4F6;
+    --ink: #1F2937;
+    --ink-soft: #6B7280;
+    --ink-faint: #9CA3AF;
+    --border: #E5E7EB;
+    --shadow: 0 1px 2px rgba(17, 24, 39, 0.04), 0 8px 24px -12px rgba(17, 24, 39, 0.12);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  main {
+    max-width: 880px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--brand);
+    margin: 0 0 10px;
+  }
+
+  h1 {
+    font-size: clamp(28px, 4vw, 38px);
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    margin: 0 0 8px;
+    text-wrap: balance;
+  }
+
+  .lede {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin: 0;
+  }
+
+  h2 {
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 0 0 18px;
+  }
+
+  section { display: flex; flex-direction: column; }
+
+  /* Logo showcase */
+  .logo-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .logo-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 36px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow);
+  }
+  .logo-card.on-light { background: #FFFFFF; }
+  .logo-card.on-dark { background: #14171C; }
+  .logo-card svg { width: 100%; max-width: 300px; height: auto; }
+
+  .icon-row {
+    margin-top: 16px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 24px 28px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .icon-row svg:nth-child(1) { width: 72px; height: 72px; flex: none; }
+  .icon-row svg:nth-child(2) { width: 40px; height: 40px; flex: none; }
+  .icon-row svg:nth-child(3) { width: 22px; height: 22px; flex: none; }
+  .icon-row .cap {
+    font-size: 13px;
+    color: var(--ink-faint);
+    margin-left: auto;
+  }
+
+  /* Palette */
+  .palette-group { margin-bottom: 28px; }
+  .palette-group:last-child { margin-bottom: 0; }
+  .palette-group-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ink);
+    margin: 0 0 10px;
+  }
+  .swatches {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+  }
+  .swatch .chip { height: 56px; }
+  .swatch .meta { padding: 10px 12px; }
+  .swatch .role {
+    font-size: 12.5px;
+    font-weight: 600;
+    margin: 0 0 2px;
+  }
+  .swatch .hex {
+    font-family: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+    font-size: 11.5px;
+    color: var(--ink-faint);
+    font-variant-numeric: tabular-nums;
+    margin: 0;
+  }
+
+  /* Files */
+  .files {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+  .file-row {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    padding: 13px 18px;
+    border-bottom: 1px solid var(--border);
+  }
+  .file-row:last-child { border-bottom: none; }
+  .file-row code {
+    font-family: ui-monospace, "Cascadia Code", "SFMono-Regular", Consolas, monospace;
+    font-size: 13px;
+    color: var(--brand);
+    flex: none;
+    min-width: 190px;
+  }
+  .file-row span {
+    font-size: 13.5px;
+    color: var(--ink-soft);
+  }
+
+  footer {
+    max-width: 62ch;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-faint);
+  }
+</style>
+
+<main>
+  <header>
+    <p class="eyebrow">food-delivery-cost-monitor &middot; dashboard/assets</p>
+    <h1>FoodCost Monitor — Identidade Visual</h1>
+    <p class="lede">
+      Paleta e logo fictícios do dashboard Power BI. Energia visual próxima ao
+      universo do iFood (vermelho, emblema arredondado), com cores, ícone e
+      wordmark próprios — não é a marca real.
+    </p>
+  </header>
+
+  <section>
+    <h2>Logo</h2>
+    <div class="logo-grid">
+      <div class="logo-card on-light">
+        <svg viewBox="0 0 460 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#DC2626"/>
+              <stop offset="100%" stop-color="#F97316"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(8,8) scale(0.35)">
+            <rect x="0" y="0" width="240" height="240" rx="54" fill="url(#g1)"/>
+            <path d="M 90 100 C 90 70 150 70 150 100" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+            <rect x="70" y="100" width="100" height="90" rx="14" fill="#FFFFFF"/>
+            <rect x="70" y="118" width="100" height="8" fill="#DC2626"/>
+            <polyline points="88,165 110,150 132,158 156,133" fill="none" stroke="#FCD34D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="156" cy="133" r="9" fill="#FCD34D" stroke="#DC2626" stroke-width="3"/>
+          </g>
+          <text x="106" y="55" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#1F2937">FoodCost</text>
+          <text x="106" y="78" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="600" letter-spacing="3" fill="#6B7280">MONITOR</text>
+        </svg>
+      </div>
+      <div class="logo-card on-dark">
+        <svg viewBox="0 0 460 100" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#DC2626"/>
+              <stop offset="100%" stop-color="#F97316"/>
+            </linearGradient>
+          </defs>
+          <g transform="translate(8,8) scale(0.35)">
+            <rect x="0" y="0" width="240" height="240" rx="54" fill="url(#g2)"/>
+            <path d="M 90 100 C 90 70 150 70 150 100" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+            <rect x="70" y="100" width="100" height="90" rx="14" fill="#FFFFFF"/>
+            <rect x="70" y="118" width="100" height="8" fill="#DC2626"/>
+            <polyline points="88,165 110,150 132,158 156,133" fill="none" stroke="#FCD34D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            <circle cx="156" cy="133" r="9" fill="#FCD34D" stroke="#DC2626" stroke-width="3"/>
+          </g>
+          <text x="106" y="55" font-family="Segoe UI, Arial, sans-serif" font-size="34" font-weight="700" fill="#FFFFFF">FoodCost</text>
+          <text x="106" y="78" font-family="Segoe UI, Arial, sans-serif" font-size="15" font-weight="600" letter-spacing="3" fill="#D1D5DB">MONITOR</text>
+        </svg>
+      </div>
+    </div>
+
+    <div class="icon-row">
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g3" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#F97316"/></linearGradient></defs>
+        <rect x="0" y="0" width="240" height="240" rx="54" fill="url(#g3)"/>
+        <path d="M 90 100 C 90 70 150 70 150 100" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+        <rect x="70" y="100" width="100" height="90" rx="14" fill="#FFFFFF"/>
+        <rect x="70" y="118" width="100" height="8" fill="#DC2626"/>
+        <polyline points="88,165 110,150 132,158 156,133" fill="none" stroke="#FCD34D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="156" cy="133" r="9" fill="#FCD34D" stroke="#DC2626" stroke-width="3"/>
+      </svg>
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g4" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#F97316"/></linearGradient></defs>
+        <rect x="0" y="0" width="240" height="240" rx="54" fill="url(#g4)"/>
+        <path d="M 90 100 C 90 70 150 70 150 100" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+        <rect x="70" y="100" width="100" height="90" rx="14" fill="#FFFFFF"/>
+        <rect x="70" y="118" width="100" height="8" fill="#DC2626"/>
+        <polyline points="88,165 110,150 132,158 156,133" fill="none" stroke="#FCD34D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="156" cy="133" r="9" fill="#FCD34D" stroke="#DC2626" stroke-width="3"/>
+      </svg>
+      <svg viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g5" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" stop-color="#DC2626"/><stop offset="100%" stop-color="#F97316"/></linearGradient></defs>
+        <rect x="0" y="0" width="240" height="240" rx="54" fill="url(#g5)"/>
+        <path d="M 90 100 C 90 70 150 70 150 100" fill="none" stroke="#FFFFFF" stroke-width="10" stroke-linecap="round"/>
+        <rect x="70" y="100" width="100" height="90" rx="14" fill="#FFFFFF"/>
+        <rect x="70" y="118" width="100" height="8" fill="#DC2626"/>
+        <polyline points="88,165 110,150 132,158 156,133" fill="none" stroke="#FCD34D" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="156" cy="133" r="9" fill="#FCD34D" stroke="#DC2626" stroke-width="3"/>
+      </svg>
+      <span class="cap">Ícone isolado em 3 tamanhos — legível até favicon</span>
+    </div>
+  </section>
+
+  <section>
+    <h2>Paleta</h2>
+
+    <div class="palette-group">
+      <p class="palette-group-label">Marca</p>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#DC2626"></div><div class="meta"><p class="role" style="color:#DC2626">Primária</p><p class="hex">#DC2626</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#F97316"></div><div class="meta"><p class="role" style="color:#F97316">Secundária</p><p class="hex">#F97316</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#1F2937"></div><div class="meta"><p class="role">Texto principal</p><p class="hex">#1F2937</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#6B7280"></div><div class="meta"><p class="role">Texto secundário</p><p class="hex">#6B7280</p></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <p class="palette-group-label">Semântica &middot; status de anomalia</p>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#16A34A"></div><div class="meta"><p class="role" style="color:#16A34A">Normal</p><p class="hex">#16A34A</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#F59E0B"></div><div class="meta"><p class="role" style="color:#F59E0B">Warning (2–3σ)</p><p class="hex">#F59E0B</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#DC2626"></div><div class="meta"><p class="role" style="color:#DC2626">Critical (&gt;3σ)</p><p class="hex">#DC2626</p></div></div>
+      </div>
+    </div>
+
+    <div class="palette-group">
+      <p class="palette-group-label">Categórica &middot; domínios</p>
+      <div class="swatches">
+        <div class="swatch"><div class="chip" style="background:#DC2626"></div><div class="meta"><p class="role">orders</p><p class="hex">#DC2626</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#F97316"></div><div class="meta"><p class="role">payments</p><p class="hex">#F97316</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#CA8A04"></div><div class="meta"><p class="role">fintech</p><p class="hex">#CA8A04</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#0EA5E9"></div><div class="meta"><p class="role">marketplace</p><p class="hex">#0EA5E9</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#6366F1"></div><div class="meta"><p class="role">logistics</p><p class="hex">#6366F1</p></div></div>
+        <div class="swatch"><div class="chip" style="background:#16A34A"></div><div class="meta"><p class="role">restaurants</p><p class="hex">#16A34A</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Arquivos entregues</h2>
+    <div class="files">
+      <div class="file-row"><code>logo-icon.svg</code><span>Ícone isolado (240×240) — favicon, capa de página</span></div>
+      <div class="file-row"><code>logo-full.svg</code><span>Lockup ícone + wordmark, para fundos claros</span></div>
+      <div class="file-row"><code>logo-full-dark.svg</code><span>Lockup ícone + wordmark, para fundos escuros</span></div>
+      <div class="file-row"><code>theme.json</code><span>Tema customizado do Power BI — View → Themes → Browse for themes</span></div>
+      <div class="file-row"><code>palette.md</code><span>Referência completa de cores e instruções de aplicação</span></div>
+    </div>
+  </section>
+
+  <footer>
+    Todos os arquivos estão em <code>dashboard/assets/</code>. SVGs são vetoriais —
+    sem Cairo/Inkscape instalados nesta máquina para gerar PNG automaticamente;
+    se precisar de PNG (ex.: visual "Image" do Power BI), abra o SVG no navegador
+    e exporte, ou use um conversor online.
+  </footer>
+</main>

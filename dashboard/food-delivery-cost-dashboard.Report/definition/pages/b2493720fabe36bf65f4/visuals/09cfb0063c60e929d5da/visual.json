@@ -2,7 +2,7 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "09cfb0063c60e929d5da",
   "position": {
-    "x": 59.710066679264635,
+    "x": 32.342952784601678,
     "y": 210.2291930999109,
     "z": 7000,
     "height": 298.5503333963232,
@@ -42,11 +42,12 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Vl. Média 7d Eficiência (Ult. 15 dias)"
+                  "Property": "Vl. Total Custo USD (Ult. 15 dias)"
                 }
               },
-              "queryRef": "_measures.Vl. Média 7d Eficiência (Ult. 15 dias)",
-              "nativeQueryRef": "Vl. Média 7d Eficiência (Ult. 15 dias)"
+              "queryRef": "_measures.Vl. Total Custo USD (Ult. 15 dias)",
+              "nativeQueryRef": "Vl. Custo",
+              "displayName": "Vl. Custo"
             },
             {
               "field": {
@@ -56,11 +57,12 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Vl. Total Custo USD (Ult. 15 dias)"
+                  "Property": "Vl. Média 7d Eficiência (Ult. 15 dias)"
                 }
               },
-              "queryRef": "_measures.Vl. Total Custo USD (Ult. 15 dias)",
-              "nativeQueryRef": "Vl. Total Custo USD (Ult. 15 dias)"
+              "queryRef": "_measures.Vl. Média 7d Eficiência (Ult. 15 dias)",
+              "nativeQueryRef": "Vl. Custo médio 7d",
+              "displayName": "Vl. Custo médio 7d"
             }
           ]
         }
@@ -98,6 +100,60 @@
               "expr": {
                 "Literal": {
                   "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "valueAxis": [
+        {
+          "properties": {
+            "showAxisTitle": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "lineStyles": [
+        {
+          "properties": {
+            "lineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "'solid'"
+                }
+              }
+            },
+            "lineChartType": {
+              "expr": {
+                "Literal": {
+                  "Value": "'linear'"
+                }
+              }
+            },
+            "interpolationSmooth": {
+              "expr": {
+                "Literal": {
+                  "Value": "'monotoneX'"
+                }
+              }
+            },
+            "areaShow": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "showMarker": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
                 }
               }
             }

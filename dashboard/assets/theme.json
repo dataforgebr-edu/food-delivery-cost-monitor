@@ -1,0 +1,38 @@
+{
+  "name": "FoodCost Monitor",
+  "dataColors": [
+    "#DC2626",
+    "#F97316",
+    "#CA8A04",
+    "#0EA5E9",
+    "#6366F1",
+    "#16A34A"
+  ],
+  "background": "#FFFFFF",
+  "backgroundLight": "#F9FAFB",
+  "backgroundNeutral": "#F3F4F6",
+  "foreground": "#1F2937",
+  "foregroundNeutralSecondary": "#6B7280",
+  "foregroundNeutralTertiary": "#9CA3AF",
+  "tableAccent": "#DC2626",
+  "good": "#16A34A",
+  "neutral": "#F59E0B",
+  "bad": "#DC2626",
+  "maximum": "#DC2626",
+  "center": "#F97316",
+  "minimum": "#FEF2F2",
+  "textClasses": {
+    "callout": { "fontFace": "Segoe UI Semibold", "color": "#1F2937" },
+    "title": { "fontFace": "Segoe UI Semibold", "color": "#1F2937" },
+    "header": { "fontFace": "Segoe UI Semibold", "color": "#1F2937" },
+    "label": { "fontFace": "Segoe UI", "color": "#1F2937" }
+  },
+  "visualStyles": {
+    "*": {
+      "*": {
+        "background": [{ "show": false }],
+        "border": [{ "show": false }]
+      }
+    }
+  }
+}

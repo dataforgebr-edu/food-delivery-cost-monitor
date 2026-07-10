@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "be5507072f9f78c688b1",
   "position": {
-    "x": 42.63335935467083,
-    "y": 509.0924675881281,
+    "x": 32.342952784601678,
+    "y": 508.7795264962341,
     "z": 9000,
-    "height": 210.65895210543232,
-    "width": 633.23077865025789,
+    "height": 211.47315282239558,
+    "width": 497.583888993872,
     "tabOrder": 9000
   },
   "visual": {
@@ -41,7 +41,8 @@
                 }
               },
               "queryRef": "mart_anomalies.nm_dominio",
-              "nativeQueryRef": "nm_dominio"
+              "nativeQueryRef": "Domínio",
+              "displayName": "Domínio"
             },
             {
               "field": {
@@ -55,7 +56,8 @@
                 }
               },
               "queryRef": "mart_anomalies.nm_job",
-              "nativeQueryRef": "nm_job"
+              "nativeQueryRef": "Job",
+              "displayName": "Job"
             },
             {
               "field": {
@@ -69,7 +71,8 @@
                 }
               },
               "queryRef": "_measures.Vl. Total Custo USD Ult. 7 dias",
-              "nativeQueryRef": "Vl. Total Custo USD Ult. 7 dias"
+              "nativeQueryRef": "Custo",
+              "displayName": "Custo"
             },
             {
               "field": {
@@ -83,7 +86,8 @@
                 }
               },
               "queryRef": "mart_anomalies.nm_severidade",
-              "nativeQueryRef": "nm_severidade"
+              "nativeQueryRef": "Severidade",
+              "displayName": "Severidade"
             }
           ]
         }
@@ -107,11 +111,6 @@
       }
     },
     "objects": {
-      "columnHeaders": [
-        {
-          "properties": {}
-        }
-      ],
       "values": [
         {
           "properties": {
@@ -153,7 +152,7 @@
                           },
                           "Value": {
                             "Literal": {
-                              "Value": "'#CECE21'"
+                              "Value": "'#F59E0B'"
                             }
                           }
                         },
@@ -189,7 +188,7 @@
                           },
                           "Value": {
                             "Literal": {
-                              "Value": "'#FD1717'"
+                              "Value": "'#DC2626'"
                             }
                           }
                         }
@@ -209,6 +208,93 @@
               }
             ],
             "metadata": "mart_anomalies.nm_severidade"
+          }
+        },
+        {
+          "properties": {
+            "backColorSecondary": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.1
+                    }
+                  }
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "columnHeaders": [
+        {
+          "properties": {
+            "alignment": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Center'"
+                }
+              }
+            },
+            "fontSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "bold": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "outlineStyle": {
+              "expr": {
+                "Literal": {
+                  "Value": "4D"
+                }
+              }
+            },
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.6
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "total": [
+        {
+          "properties": {
+            "outlineColor": {
+              "solid": {
+                "color": {
+                  "expr": {
+                    "ThemeDataColor": {
+                      "ColorId": 0,
+                      "Percent": -0.6
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       ]
@@ -235,6 +321,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'center'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "stylePreset": [
+        {
+          "properties": {
+            "name": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Minimal'"
                 }
               }
             }
