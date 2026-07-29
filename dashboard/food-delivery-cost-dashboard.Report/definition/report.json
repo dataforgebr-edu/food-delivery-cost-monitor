@@ -133,6 +133,11 @@
           "name": "FoodCost_Monitor2669650058569125.json",
           "path": "FoodCost_Monitor2669650058569125.json",
           "type": "CustomTheme"
+        },
+        {
+          "name": "FoodCost_P121491107513315877.svg",
+          "path": "FoodCost_P121491107513315877.svg",
+          "type": "Image"
         }
       ]
     }

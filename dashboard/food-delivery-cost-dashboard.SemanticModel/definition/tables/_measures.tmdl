@@ -43,10 +43,9 @@ table _measures
 			    ([Vl. Total Custo USD] - [Vl. Custo dia Anterior]),
 			    [Vl. Custo dia Anterior]
 			)
+		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: mart_platform_efficiency
 		lineageTag: 4bc9870e-558f-4d47-aeaa-7edd48c3be88
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Nr. Tendência Custo Score' = SUM(mart_platform_efficiency[nr_custo_trend_score])
 		displayFolder: mart_platform_efficiency
@@ -76,10 +75,9 @@ table _measures
 			    [Nr. Jobs com Sucesso],
 			    [Nr. Total Jobs]
 			)
+		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: mart_platform_efficiency
 		lineageTag: 94611031-c276-4975-b302-bf2678a8d7eb
-
-		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Nr. Total de Execuções em Minutos' = SUM(mart_platform_efficiency[nr_total_duracao_minutos])
 		displayFolder: mart_platform_efficiency
@@ -124,7 +122,7 @@ table _measures
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
 	measure 'Vl. Médio por Jobs' = SUM(mart_platform_efficiency[vl_medio_por_job])
-		formatString: \$#,0.00;(\$#,0.00);\$#,0.00
+		formatString: \$#,0.0;(\$#,0.0);\$#,0.0
 		displayFolder: mart_platform_efficiency
 		lineageTag: be18e49e-9f80-452c-9595-c291142ea596
 

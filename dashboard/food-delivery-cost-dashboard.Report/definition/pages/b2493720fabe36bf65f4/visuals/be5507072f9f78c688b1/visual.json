@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "be5507072f9f78c688b1",
   "position": {
-    "x": 32.342952784601678,
-    "y": 508.7795264962341,
+    "x": 68.229426433915208,
+    "y": 444.38902743142143,
     "z": 9000,
-    "height": 211.47315282239558,
-    "width": 497.583888993872,
+    "height": 230.72319201995012,
+    "width": 547.63092269326683,
     "tabOrder": 9000
   },
   "visual": {
@@ -295,6 +295,64 @@
                 }
               }
             }
+          }
+        }
+      ],
+      "columnWidth": [
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "84.386533624323D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "dim_calendario.Data"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "87.48877897680535D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "mart_anomalies.nm_dominio"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "165.9775561793537D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "mart_anomalies.nm_job"
+          }
+        },
+        {
+          "properties": {
+            "value": {
+              "expr": {
+                "Literal": {
+                  "Value": "79.18204379462054D"
+                }
+              }
+            }
+          },
+          "selector": {
+            "metadata": "_measures.Vl. Total Custo USD Ult. 7 dias"
           }
         }
       ]

@@ -2,11 +2,11 @@
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.10.0/schema.json",
   "name": "77f0e90643b89864c813",
   "position": {
-    "x": 212.71711254488028,
-    "y": 0,
+    "x": 456.05985037406481,
+    "y": 52.069825436408976,
     "z": 0,
-    "height": 95.78489863132036,
-    "width": 256.25570283184408,
+    "height": 55.660847880299251,
+    "width": 210.97256857855362,
     "tabOrder": 0
   },
   "visual": {
@@ -27,8 +27,9 @@
                 }
               },
               "queryRef": "dim_calendario.Dia Atual",
-              "nativeQueryRef": "Dia Atual",
-              "active": true
+              "nativeQueryRef": "Dia",
+              "active": true,
+              "displayName": "Dia"
             }
           ]
         }
@@ -112,7 +113,7 @@
                           [
                             {
                               "Literal": {
-                                "Value": "'Atual'"
+                                "Value": "'05/07/2026'"
                               }
                             }
                           ]
@@ -121,6 +122,32 @@
                     }
                   }
                 ]
+              }
+            }
+          }
+        }
+      ],
+      "header": [
+        {
+          "properties": {
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "items": [
+        {
+          "properties": {
+            "textSize": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
               }
             }
           }

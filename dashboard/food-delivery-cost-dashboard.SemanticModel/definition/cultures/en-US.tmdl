@@ -2712,6 +2712,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.757
 			          }
+			        },
+			        {
+			          "Tendência Custo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -2921,6 +2931,16 @@ cultureInfo en-US
 			              "Agent": "Thesaurus"
 			            },
 			            "Weight": 0.757
+			          }
+			        },
+			        {
+			          "Taxa sucesso": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -3260,6 +3280,16 @@ cultureInfo en-US
 			            },
 			            "Weight": 0.494
 			          }
+			        },
+			        {
+			          "Custo médio job": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -3398,6 +3428,16 @@ cultureInfo en-US
 			          "dia atual": {
 			            "State": "Generated"
 			          }
+			        },
+			        {
+			          "Dia": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
 			        }
 			      ]
 			    },
@@ -3429,6 +3469,16 @@ cultureInfo en-US
 			        {
 			          "nr. jobs criticos": {
 			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "Jobs criticos": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
 			          }
 			        }
 			      ]
