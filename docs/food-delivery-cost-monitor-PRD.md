@@ -8,11 +8,21 @@
 
 **Campo** | **Valor**
 --- | ---
-Versão | 1.0
-Data | Maio 2026
-Status | Em desenvolvimento
+Versão | 1.1
+Data | Julho 2026 (v1.0: Maio 2026)
+Status | **Entregue** — pipeline funcional de ponta a ponta, dashboard publicado
 Contexto | Projeto portfolio — inspirado no ambiente de Governança de Dados do iFood
 Stack principal | Python, SQL, dbt, Airflow, Astronomer Cosmos, AWS S3, AWS Athena, Docker, Power BI
+Dashboard | [Link público ao vivo](https://app.powerbi.com/view?r=eyJrIjoiMWU2N2VkZDktOTg3MC00NTA2LTljYTgtYjUyNWU3OTNiMzZiIiwidCI6IjJiZDE5YWQ4LTcyZTUtNGY2ZC1hZmY1LWRhOTMwMTdmZGYxYiJ9)
+
+> **Changelog v1.1 (Julho 2026)** — atualização do documento para refletir o que foi efetivamente construído. Mudanças em relação ao planejado na v1.0:
+>
+> - **§3** — estrutura de pastas reescrita: `pipeline/` e o projeto dbt passaram para dentro de `airflow_project/`; `docker-compose.yml` foi substituído pelo Astro CLI
+> - **§4** — documentada a convenção de nomenclatura das colunas em português com prefixo de tipo (nova §4.1.1), adotada a partir da staging
+> - **§4.2** — `execution_week` (DATE_TRUNC) foi implementado como `nr_semana` (número inteiro da semana); a staging ganhou contrato dbt
+> - **§5.3** — `.env` mora em `airflow_project/`, não na raiz; `ATHENA_OUTPUT_LOCATION` deixou de ser variável de ambiente
+> - **§7.1** — o corte de severidade `critical` ficou em **2.4σ**, não 3σ
+> - **§9** — os KPIs e visuais construídos divergem dos planejados; seção reescrita com o dashboard real
 
 
 # 1. Visão Geral
@@ -34,8 +44,8 @@ Construir um pipeline de dados end-to-end que:
 1. Ingere logs simulados de execução de jobs de processamento de dados
 2. Armazena os dados brutos em um Data Lake na AWS (S3)
 3. Transforma e modela os dados com dbt usando AWS Athena como engine de query
-4. Detecta anomalias de custo com Python (desvio padrão)
-5. Orquestra todo o fluxo com Apache Airflow
+4. Detecta anomalias de custo em SQL, via window functions no model `mart_anomalies` (desvio padrão sobre janela móvel de 7 dias)
+5. Orquestra todo o fluxo com Apache Airflow, integrando o grafo do dbt via Astronomer Cosmos
 6. Expõe métricas em um dashboard interativo no Power BI
 
 # 2. Arquitetura do Pipeline
@@ -85,77 +95,119 @@ Dashboard com KPIs de custo, tendências e lista de anomalias detectadas
 
 Infra local
 
-Docker Compose
+Astro CLI (Astronomer)
 
-Airflow em Docker local; Power BI Desktop instalado na máquina
+Airflow local gerenciado pelo Astro CLI (`astro dev start`), com imagem customizada via Dockerfile; Power BI Desktop instalado na máquina. **Substituiu o Docker Compose planejado na v1.0**
 
 ## 2.1 Fluxo de dados detalhado
-- O script generate_synthetic_data.py cria N registros de logs para cada data do período configuradoigurado
-- Os logs sao salvos em formato Parquet e enviados para S3 no caminho s3://ifood-cost-monitor/raw/job_logs/date=YYYY-MM-DD/
+- O script generate_synthetic_data.py cria N registros de logs para cada data do período configurado
+- Os logs sao salvos em formato Parquet e enviados para S3 no caminho `s3://{S3_BUCKET}/raw/job_logs/date=YYYY-MM-DD/data.parquet`
 - O AWS Glue Data Catalog registra a tabela externa apontando para o S3
-- O dbt executa os models sequencialmente: stg_job_logs > int_cost_by_domain > mart_platform_efficiency > mart_anomalies
-- mart_anomalies calcula as anomalias diretamente em SQL via window functions sobre mart_platform_efficiency, sem script Python adicional
-- O Power BI Desktop conecta-se ao Athena via ODBC e exibe os dashboards em tempo real
+- O dbt executa os models respeitando o grafo de dependências: `stg_job_logs` → `int_cost_by_domain` → `mart_platform_efficiency`, e `stg_job_logs` → `mart_anomalies`
+- **`mart_anomalies` lê de `stg_job_logs`**, e não de `mart_platform_efficiency`: a detecção precisa da granularidade de job individual (`nm_job`), que a agregação por domínio já teria perdido. As window functions rodam em SQL, sem script Python adicional
+- Cada camada é materializada em um schema Athena próprio: `cost_monitor_bronze` (staging, view), `cost_monitor_silver` (intermediate, table) e `cost_monitor_gold` (marts, table)
+- O Power BI conecta-se ao Athena via ODBC (driver Simba) em modo **Import**, consumindo apenas o schema `cost_monitor_gold`
 
 ## 2.2 Diagrama de dependências da DAG
-*generate_data >> upload_to_s3 >> dbt_pipeline (Cosmos DbtTaskGroup: stg_job_logs >> int_cost_by_domain >> mart_platform_efficiency + mart_anomalies >> testes dbt inline) >> notify_completion*
+*cria_infraestrutura >> gerador_dados >> upload_s3 >> dbt_pipeline (Cosmos DbtTaskGroup: stg_job_logs >> int_cost_by_domain >> mart_platform_efficiency, e stg_job_logs >> mart_anomalies, + testes dbt inline) >> termino_pipeline*
+
+> Implementado em `airflow_project/dags/pipeline_daily.py` com a API `airflow.sdk` (decorators `@dag`/`@task`). A task `cria_infraestrutura` — que roda o `athena_setup.py` de forma idempotente — não estava prevista na v1.0.
 
 # 3. Estrutura de Pastas
+
+> **Reescrita na v1.1.** A estrutura planejada na v1.0 (com `dags/`, `ingestion/`, `infra/` e `dbt_project/` na raiz do repositório) foi substituída: **`pipeline/` e o projeto dbt passaram para dentro de `airflow_project/`**, que é o projeto do Astro CLI. O motivo é que o `Dockerfile` do Astro copia arquivos a partir do próprio diretório do projeto — mantendo tudo ali dentro, a imagem é construída direto do build context, sem precisar de uma pasta `include/` sincronizando cópias do código.
+
 **Caminho**
 
 **Descrição**
 
-dags/pipeline_daily.py
+airflow_project/dags/pipeline_daily.py
 
-DAG principal do Airflow — orquestra todo o pipeline diario; integra os models dbt via Astronomer Cosmos (DbtTaskGroup)
+DAG principal do Airflow (`food_delivery_cost_monitor`) — orquestra todo o pipeline diario; integra os models dbt via Astronomer Cosmos (DbtTaskGroup)
 
-ingestion/generate_synthetic_data.py
+airflow_project/pipeline/pipeline_config.py
+
+Carrega as variáveis de ambiente, instancia os clientes boto3 (S3/Glue) e centraliza as constantes de path do Data Lake
+
+airflow_project/pipeline/ingestion/generate_synthetic_data.py
 
 Gera logs sintéticos com sazonalidade e outliers propositais
 
-ingestion/upload_to_s3.py
+airflow_project/pipeline/ingestion/upload_to_s3.py
 
-Faz upload dos Parquets para o S3 com particionamento por data
+Faz upload incremental dos Parquets para o S3 com particionamento por data
 
-dbt_project/models/staging/stg_job_logs.sql
-
-Limpeza e tipagem dos dados brutos
-
-dbt_project/models/intermédiate/int_cost_by_domain.sql
-
-Agregação intermédiaria por domínio e dia
-
-dbt_project/models/marts/mart_platform_efficiency.sql
-
-Tabela final com KPIs de eficiência
-
-dbt_project/models/marts/mart_anomalies.sql
-
-Tabela de alertas de anomalias detectadas
-
-dbt_project/sources.yml
-
-Definição das fontes de dados (tabela raw no Athena)
-
-dbt_project/schema.yml
-
-Documentação e testes dos models (not_null, unique, accepted_values)
-
-dbt_project/models/marts/mart_anomalies.sql
-
-Detecta jobs com custo > 2 sigma da média móvel de 7 dias via window functions SQL
-
-infra/docker-compose.yml
-
-Sobe Airflow (webserver, scheduler, worker) — Power BI Desktop instalado localmente
-
-infra/athena_setup.py
+airflow_project/pipeline/infra/athena_setup.py
 
 Cria o database e a tabela externa no AWS Glue/Athena
 
-infra/requirements.txt
+airflow_project/pipeline/infra/logi.py
 
-Dependências Python do projeto
+Logger compartilhado pelos módulos do pipeline
+
+airflow_project/dbt_food_cost_monitor/models/staging/stg_job_logs.sql
+
+Renomeação, tipagem e filtro de qualidade dos dados brutos
+
+airflow_project/dbt_food_cost_monitor/models/staging/_sources.yml
+
+Definição das fontes de dados (tabela raw no Athena) + testes de freshness
+
+airflow_project/dbt_food_cost_monitor/models/staging/_schema.yml
+
+Contrato (`contract: enforced`), documentação e testes da staging
+
+airflow_project/dbt_food_cost_monitor/models/intermediate/int_cost_by_domain.sql
+
+Agregação intermediária por domínio e dia
+
+airflow_project/dbt_food_cost_monitor/models/marts/mart_platform_efficiency.sql
+
+Tabela final com KPIs de eficiência
+
+airflow_project/dbt_food_cost_monitor/models/marts/mart_anomalies.sql
+
+Tabela de alertas: detecta jobs com custo acima de 2σ da média móvel de 7 dias via window functions SQL
+
+airflow_project/dbt_food_cost_monitor/dbt_project.yml
+
+Materialização e schema (`+schema: bronze|silver|gold`) de cada camada
+
+airflow_project/dbt_food_cost_monitor/profiles.yml
+
+Credenciais do adapter Athena, resolvidas via `env_var()`
+
+airflow_project/Dockerfile
+
+Imagem customizada do Airflow, com a venv dedicada do dbt instalada em build time
+
+airflow_project/requirements.txt
+
+Dependências Python do ambiente Airflow (astronomer-cosmos)
+
+airflow_project/tests/
+
+Testes de integridade das DAGs
+
+airflow_project/.env
+
+Variáveis de ambiente — **é aqui que o arquivo vive**, não na raiz (ver §5.3). Gitignorado
+
+dashboard/
+
+Projeto Power BI (`.pbip`): definição dos visuais (`.Report`) e do modelo semântico em TMDL (`.SemanticModel`)
+
+dashboard/assets/
+
+Prints do dashboard, logos e paleta de cores
+
+docs/dashboard.md
+
+Documentação da camada de visualização: modelo semântico, medidas DAX e visuais
+
+pyproject.toml
+
+Dependências e tasks do projeto Python (Poetry + taskipy)
 
 .env.example
 
@@ -257,13 +309,34 @@ Timestamp de criação do registro
 
 2026-05-01 12:34:56
 
-## 4.2 Staging — stg_job_logs
-Limpeza e padronização dos dados brutos. Inclui filtros de qualidade (remoção de registros com status invalido ou custo negativo) e adição de colunas derivadas calculáveis linha a linha.
+## 4.1.1 Convenção de nomenclatura das colunas (v1.1)
+A tabela raw preserva os nomes originais em inglês — é a fonte, e não deve ser reescrita. **A partir da staging, todas as colunas são renomeadas para português com um prefixo que indica o tipo do dado.** A convenção deixa o tipo explícito na leitura do SQL, sem exigir consulta ao schema:
 
-- Todos os campos do raw, tipados corretamente
-- execution_week: DATE_TRUNC('week', execution_date) — derivado linha a linha, sem dependência de outros registros
+**Prefixo** | **Tipo** | **Exemplo**
+--- | --- | ---
+`id_` | Identificador | `id_job`
+`dt_` | Data / timestamp | `dt_execucao`, `dt_criacao`
+`nm_` | Nome / texto categórico | `nm_dominio`, `nm_job`, `nm_severidade`
+`vl_` | Valor monetário | `vl_estimativa_custo_usd`, `vl_total_custo_usd`
+`nr_` | Número (contagem, duração, score) | `nr_total_jobs`, `nr_duracao_minutos`, `nr_sigma_desvio`
+`st_` | Status | `st_status`
+`tp_` | Tipo | `tp_cluster`
+
+A mesma convenção é reaproveitada nas medidas DAX do Power BI, com os prefixos `Vl.`, `Nr.`, `Pc.` (percentual) e `Ds.` (descrição/texto) — ver `docs/dashboard.md`.
+
+## 4.2 Staging — stg_job_logs
+Renomeação, tipagem e padronização dos dados brutos. Materializada como **view** no schema `cost_monitor_bronze`. Inclui filtro de qualidade e uma coluna derivada calculável linha a linha.
+
+- Todos os campos do raw, renomeados conforme §4.1.1 e tipados com `CAST` + macros `dbt.type_*` (portabilidade entre adapters)
+- Filtro `WHERE vl_estimativa_custo_usd > 0` — descarta custo negativo ou zerado
+- `nr_semana`: `CAST(week(dt_execucao) AS INT)` — número inteiro da semana, derivado linha a linha
+- **Contrato dbt** (`contract: enforced`) no `_schema.yml`: o build falha se qualquer coluna divergir do tipo declarado
+
+> **Divergência vs. v1.0:** o planejado era `execution_week` via `DATE_TRUNC('week', execution_date)`, resultando em uma DATE. O implementado é `nr_semana`, o número inteiro da semana via `week()`. A escolha simplifica o agrupamento por semana no Power BI, mas perde a informação do ano — semanas de anos diferentes colidem. Como o dashboard hoje agrupa por data usando a `dim_calendario`, a limitação não é exercida; se `nr_semana` passar a ser usada em análises multi-ano, deve virar `dt_semana` (DATE_TRUNC) ou ganhar o ano na chave.
 
 > **Nota arquitetural:** `cost_category` (classificação por quartil via NTILE) e `is_anomaly_candidate` (flag acima do percentil 95 do dia) foram removidos desta camada. Ambos exigem window functions de ranking ou agregação sobre múltiplos registros, o que viola o contrato da staging. `cost_category` pertence ao `int_cost_by_domain` ou `mart_platform_efficiency`; `is_anomaly_candidate` pertence ao `mart_anomalies`, após as estatísticas do dia já terem sido calculadas.
+
+> **Sobre a validação de `status`:** a staging **não filtra** status inválido, ao contrário do que a v1.0 previa. A validação é feita pelo teste `accepted_values` (`success`, `failed`, `timeout`) declarado no `_schema.yml`. A diferença é intencional: um status inesperado deve quebrar o build e exigir investigação, não ser silenciosamente descartado.
 
 ## 4.3 Intermédiate — int_cost_by_domain
 Agregação diaria por domínio, consumida pelos models finais e pelo detector de anomalias.
@@ -443,11 +516,11 @@ AWS CLI
 
 Configuração de credenciais e acesso ao S3/Athena
 
-Docker \+ Docker Compose
+Astro CLI \+ Docker Desktop
 
-v2\+
+Astro CLI 1.x
 
-Orquestração local dos servicos
+Orquestração local dos serviços via `astro dev start`, com imagem customizada (Dockerfile). **Substituiu o Docker Compose planejado na v1.0**
 
 Power BI
 
@@ -509,24 +582,42 @@ Gratuito
 *Permissoes IAM necessarias: s3:PutObject, s3:GetObject, s3:ListBucket, athena:StartQueryExecution, athena:GetQueryResults, glue:CreateTable, glue:GetTable, glue:UpdateTable.*
 
 ## 5.3 Variáveis de ambiente
-Todas as credenciais e configurações sensíveis sao gerenciadas via arquivo .env (nunca commitado no repositorio):
+Todas as credenciais e configurações sensíveis sao gerenciadas via arquivo `.env` (nunca commitado no repositorio).
+
+> **Localização (v1.1):** o `.env` vive em **`airflow_project/.env`**, não na raiz do repositório. É de lá que o Astro CLI carrega as variáveis e as injeta nos containers do Airflow; e como o `pipeline_config.py` usa `load_dotenv()` — que procura o arquivo subindo a partir do diretório atual — o mesmo arquivo atende também a execução manual dos scripts em `airflow_project/pipeline/`. O template `.env.example` continua na raiz.
+
+Variáveis lidas pelo `pipeline_config.py`:
 
 *AWS_ACCESS_KEY_ID=
 AWS_SECRET_ACCESS_KEY=
 AWS_REGION=us-east-1
 S3_BUCKET=food-delivery-cost-monitor
-ATHENA_DATABASE=cost_monitor
-ATHENA_OUTPUT_LOCATION=s3://food-delivery-cost-monitor/athena-results/*
+ATHENA_DATABASE=cost_monitor*
+
+Variáveis lidas pelo `profiles.yml` do dbt via `env_var()` — a ausência de qualquer uma delas faz o `dbt run` falhar no parse:
+
+*DBT_DATABASE=awsdatacatalog
+DBT_REGION_NAME=us-east-1
+DBT_S3_DATA_DIR=
+DBT_STAGING_DIR=
+DBT_SCHEMA=cost_monitor
+DBT_THREADS=4
+DBT_TYPE=athena*
+
+> **Correção vs. v1.0:** `ATHENA_OUTPUT_LOCATION` **não é** variável de ambiente. Ela é derivada em código, em `pipeline_config.py`, como `s3://{S3_BUCKET}/athena-results/`. Já `S3_BUCKET` é lida **sem valor default** — se faltar, o simples import do módulo levanta `ValueError`.
 
 # 6. Models dbt — Detalhamento
 ## 6.1 sources.yml
 Define a tabela raw do S3/Athena como fonte de dados para o dbt. Inclui testes de qualidade básicos: not_null nos campos criticos, accepted_values para status e domain.
 
 ## 6.2 stg_job_logs.sql
-- SELECT com CAST explicito em todos os tipos
-- WHERE status IN ('success', 'failed', 'timeout') — remove registros invalidos
-- WHERE estimated_cost_usd >= 0 — remove custos negativos
-- DATE_TRUNC('week', execution_date) para execution_week
+- SELECT com CAST explicito em todos os tipos, via macros `dbt.type_string()`, `dbt.type_float()`, `dbt.type_timestamp()`
+- Renomeação de todas as colunas conforme a convenção da §4.1.1
+- `WHERE vl_estimativa_custo_usd > 0` — remove custos negativos e zerados
+- `CAST(week(dt_execucao) AS INT)` para `nr_semana`
+- Estruturado em CTEs nomeadas por etapa (`change_cast_types` → `filter_negative_cost` → `create_new_columns`)
+
+> A validação de `status` ficou por conta do teste `accepted_values`, não de um `WHERE` — ver nota em 4.2.
 
 > `cost_category` e `is_anomaly_candidate` foram movidos para camadas posteriores — ver nota em 4.2.
 
@@ -550,10 +641,13 @@ Define a tabela raw do S3/Athena como fonte de dados para o dbt. Inclui testes d
 ## 7.1 Lógica
 A detecção de anomalias é implementada diretamente em SQL no model dbt `mart_anomalies.sql` — sem script Python adicional. Essa decisão mantém toda a lógica de transformação em uma única camada declarativa e testável.
 
-1. Lê de `mart_platform_efficiency`, que já contém `cost_7d_avg` e `cost_7d_std` por domínio
-2. Para granularidade por `(domain, job_name)`, aplica window functions: `AVG` e `STDDEV_POP` sobre os últimos 7 dias com `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW`
-3. Marca como anomalia qualquer registro onde: `estimated_cost_usd > média_7d + 2 * std_7d`
-4. Classifica a severidade: `warning` (2-3σ) ou `critical` (>3σ)
+1. Lê de **`stg_job_logs`** — e não de `mart_platform_efficiency`, como previa a v1.0. A detecção exige granularidade de job individual (`nm_job`), que a agregação por domínio do `int_cost_by_domain` já teria perdido
+2. Aplica window functions particionadas por `(nm_dominio, nm_job)`: `AVG` e `STDDEV_POP` sobre os últimos 7 dias com `ROWS BETWEEN 6 PRECEDING AND CURRENT ROW`
+3. Calcula `vl_limite_superior = vl_medio_7d + 2 * vl_desvio_7d` e `nr_sigma_desvio = (custo - média) / NULLIF(desvio, 0)` — o `NULLIF` protege a divisão para jobs de custo constante
+4. Mantém no resultado **apenas** as linhas onde `vl_estimativa_custo_usd > vl_limite_superior` — o model é uma tabela de alertas, não um espelho da staging
+5. Classifica a severidade: `warning` (2σ–2.4σ) ou `critical` (**>2.4σ**)
+
+> **Corte de severidade: 2.4σ, não 3σ (v1.1).** A v1.0 previa `critical` acima de 3σ. Com uma janela de apenas 7 pontos, o `STDDEV_POP` é estimado sobre uma amostra pequena e acaba inflado pelo próprio outlier que está sendo avaliado — o que empurra picos genuinamente graves para baixo de 3σ e deixa a categoria `critical` quase sempre vazia. O corte foi calibrado em 2.4σ contra os outliers injetados pelo gerador (multiplicador 3x–8x), de modo que `critical` isole de fato os extremos. Uma alternativa mais robusta, não implementada, seria calcular a média e o desvio **excluindo a linha avaliada** (`ROWS BETWEEN 7 PRECEDING AND 1 PRECEDING`), o que permitiria voltar ao corte clássico de 3σ.
 
 *Decisão de design: mover a detecção para dbt elimina um script avulso, centraliza os testes de qualidade e demonstra maturidade de pipeline — desvio padrão clássico mantém a lógica explicável em entrevista técnica.*
 
@@ -665,56 +759,68 @@ ProfileConfig (pendente)
 A decidir: apontar direto para o `profiles.yml` já existente em `dbt_food_cost_monitor/`, ou usar um `ProfileMapping` nativo do Cosmos para Athena (a confirmar se existe suporte oficial do Cosmos para esse adapter)
 
 # 9. Dashboard Power BI
-## 9.1 KPIs principais (cards de métricas)
-- Custo total do dia (USD) — comparado com dia anterior
-- Número de jobs executados — com taxa de sucesso
-- Número de anomalias detectadas — com breakdown por severidade
-- Domínio mais caro do dia
 
-## 9.2 Gráficos e visualizações
+> **Seção reescrita na v1.1** para refletir o dashboard efetivamente construído. Documentação detalhada (modelo semântico, DAX, limitações) em `docs/dashboard.md`. [Link público ao vivo](https://app.powerbi.com/view?r=eyJrIjoiMWU2N2VkZDktOTg3MC00NTA2LTljYTgtYjUyNWU3OTNiMzZiIiwidCI6IjJiZDE5YWQ4LTcyZTUtNGY2ZC1hZmY1LWRhOTMwMTdmZGYxYiJ9).
+
+## 9.0 Conexão e modelo semântico
+- Conexão ODBC (driver Simba) via DSN `Amazon Athena ODBC`, catálogo `AwsDataCatalog`, schema `cost_monitor_gold`
+- Modo **Import**, não DirectQuery: como a DAG roda `@daily`, consultar o Athena a cada interação do usuário só geraria custo de scan sem ganho de atualidade
+- Modelo em estrela: `dim_calendario` (marcada como tabela de datas) ligada por `Data` ao `dt_execucao` de `mart_platform_efficiency` e `mart_anomalies`
+- ~33 medidas DAX em uma tabela container `_measures`, organizadas em display folders por mart de origem
+- Publicação via *Publish to web* — aceitável porque todos os dados são sintéticos
+
+## 9.1 KPIs principais (cards de métricas) — implementado
+**Card** | **Medida** | **Definição**
+--- | --- | ---
+Tendência custo | `Pc. Tendência Custo Card` | Variação % do custo vs. dia anterior, reaproveitando a coluna `vl_custo_dia_anterior` já calculada via `LAG()` no mart
+Taxa sucesso | `Pc. Taxa Sucesso %` | `DIVIDE([Nr. Jobs com Sucesso], [Nr. Total Jobs])`
+Custo médio Job | `Vl. Médio por Jobs` | `SUM(mart_platform_efficiency[vl_medio_por_job])`
+Jobs críticos | `Nr. Jobs Criticos` | `CALCULATE(COUNT(mart_anomalies[id_job]), nm_severidade = "critical")`
+
+> **Divergência vs. v1.0.** O plano original previa cards de custo total do dia, nº de jobs executados, nº de anomalias por severidade e domínio mais caro. A versão construída trocou métricas de **volume** por métricas de **eficiência** — mais alinhadas ao propósito FinOps do projeto, já que custo absoluto sem contexto de tendência não indica ação. A medida `Ds. Domínio mais Caro` existe no modelo mas não foi exposta em nenhum visual.
+
+## 9.2 Gráficos e visualizações — implementado
+Página única, com 3 slicers (dia, domínio, job), 4 KPI cards e 4 visuais:
+
 **Visualização**
 
 **Tipo**
 
 **Fonte de dados**
 
-Custo diario por domínio (ultimos 30 dias)
+Tendência de custo vs. benchmark (15 dias)
 
-Line chart empilhado
+Line chart, 2 séries (`Vl. Total Custo USD (Últ. 15 dias)` e `Vl. Média 7d Eficiência (Últ. 15 dias)`)
 
 mart_platform_efficiency
 
-Top 10 jobs mais caros (hoje)
+Custo acumulado do mes (MTD) por domínio
 
-Bar chart horizontal
-
-stg_job_logs
-
-Eficiência por domínio
-
-Heatmap ou bar chart
+Donut chart (`Vl. Custo MTD`)
 
 mart_platform_efficiency
 
 Anomalias detectadas (ultimos 7 dias)
 
-Tabela com badge de severidade
+Tabela com badge de severidade por cor
 
 mart_anomalies
 
-Custo acumulado do mes (MTD) por domínio
+Eficiência por domínio
 
-Donut chart
-
-mart_platform_efficiency
-
-Tendencia de custo vs benchmark 7d
-
-Line chart com banda de confiança
+Bar chart horizontal (`Pc. Score Eficiência`)
 
 mart_platform_efficiency
+
+**Não implementado:** o visual *Top 10 jobs mais caros (hoje)* foi descartado — exigiria expor `stg_job_logs` (camada bronze) ao Power BI, quebrando a regra de que o dashboard consome apenas a Gold.
+
+**Parcialmente implementado:** a *banda de confiança* do gráfico de tendência tem as medidas prontas no modelo (`Vl. Limite Superior Tendência`, `Vl. Limite Inferior Tendência`, `Vl. Amplitude Banda`), mas ainda não está renderizada no visual.
+
+As medidas de janela (`Últ. 7/15/30 dias`) ancoram na última data **com dado** — via `MAX(dt_execucao)` sobre `ALLSELECTED(dim_calendario[Data])` — e não em `TODAY()`, para que o relatório continue legível se o pipeline ficar dias sem rodar.
 
 # 10. Plano de Execução (3 dias)
+
+> **Nota v1.1:** o plano de 3 dias abaixo é o registro original da v1.0 e ficou preservado como tal. Na prática, a entrega levou de Maio a Julho de 2026 — a estimativa não previu o tempo gasto na migração para o Astro CLI, na resolução do conflito de dependências entre dbt-core e o Astro Runtime (§8.3) e na construção do modelo semântico do Power BI, que consumiu boa parte do esforço final.
 ## Dia 1 — Fundação
 - Criar repositório no GitHub com estrutura de pastas completa
 - Configurar Docker Compose: Airflow (webserver, scheduler, worker, postgres, redis)
@@ -741,17 +847,18 @@ mart_platform_efficiency
 
 # 11. Critérios de Sucesso
 ## 11.1 Funcionais
-- Pipeline roda de ponta a ponta sem erros via trigger manual no Airflow
-- dbt test passa 100% (sem falhas de qualidade de dados)
-- Anomalias detectadas correspondem aos outliers injetados na geração
-- Dashboard exibe dados corretos para os ultimos 30 dias
+- ✅ Pipeline roda de ponta a ponta sem erros via trigger manual no Airflow
+- ✅ dbt test passa 100% (sem falhas de qualidade de dados)
+- ✅ Anomalias detectadas correspondem aos outliers injetados na geração
+- ✅ Dashboard exibe dados corretos para os ultimos 30 dias
 
 ## 11.2 De portfólio
-- README explica a arquitetura em menos de 5 minutos de leitura
-- Código está documentado com docstrings nas funções principais
-- Nenhuma credencial AWS no repositório (validar com git-secrets ou similar)
-- Prints do dashboard demonstram as visualizacoes funcionando
-- Post no LinkedIn com link do repositorio e menção ao iFood
+- ✅ README explica a arquitetura em menos de 5 minutos de leitura
+- ✅ Código está documentado com docstrings nas funções principais
+- ✅ Nenhuma credencial AWS no repositório — `.env` coberto pelo `.gitignore` da raiz e pelo de `airflow_project/`; `bandit` roda no pre-commit
+- ✅ Prints do dashboard demonstram as visualizacoes funcionando — em `dashboard/assets/`, incorporados ao README
+- ✅ Dashboard publicado com link público interativo (extra, não previsto na v1.0)
+- 🔜 Post no LinkedIn com link do repositorio e menção ao iFood
 
 *Diferencial: o projeto demonstra exatamente as competências listadas na vaga — pipelines de dados, SQL/dbt, Python, AWS, monitoramento de custos, e interesse em FinOps. Cada componente mapeia diretamente para uma responsabilidade descrita no 'Cardapio Diario' da posição.*
 
@@ -762,5 +869,14 @@ Melhorias opcionais para enriquecer o portfolio após a entrega inicial:
 - Substituir dados sintéticos por dados reais de uso público (ex: NYC Taxi Dataset como proxy)
 - Adicionar alertas via Slack/email quando anomalias criticas sao detectadas
 - Implementar infrastructure as code com Terraform para os recursos AWS
-- Adicionar unit tests para as funções Python (pytest)
+- Adicionar unit tests para as funções Python (pytest) — hoje `airflow_project/tests/` só valida integridade de DAG
+- Pipeline de CI (GitHub Actions) rodando `task lint-check`, `task security` e os testes a cada push
 - Explorar compressao Parquet (snappy vs zstd) e seu impacto no custo do Athena
+
+Específicos da camada de visualização (ver `docs/dashboard.md`):
+
+- Refresh agendado do dashboard via gateway de dados apontando para o Athena (hoje é manual)
+- Renderizar a banda de confiança ±2σ no gráfico de tendência (medidas já existem no modelo)
+- Nomear a página do relatório (hoje `Page 1`) e remover a medida placeholder `Nr. Anomalias Criticas`, definida como a constante `1`
+- Expor `Ds. Domínio mais Caro` em um visual — a medida existe mas não é usada
+- Avaliar a janela de anomalia excluindo a linha avaliada (`ROWS BETWEEN 7 PRECEDING AND 1 PRECEDING`) para permitir voltar ao corte clássico de 3σ (§7.1)
