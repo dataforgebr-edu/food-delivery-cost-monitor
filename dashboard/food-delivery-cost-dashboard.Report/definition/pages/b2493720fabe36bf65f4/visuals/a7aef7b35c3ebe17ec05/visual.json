@@ -23,12 +23,12 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Nr. Tendência Custo %"
+                  "Property": "Pc. Tendência Custo %"
                 }
               },
-              "queryRef": "_measures.Nr. Tendência Custo %",
-              "nativeQueryRef": "Tendência Custo",
-              "displayName": "Tendência Custo"
+              "queryRef": "_measures.Pc. Tendência Custo %",
+              "nativeQueryRef": "Tendência custo",
+              "displayName": "Tendência custo"
             }
           ]
         }
@@ -43,7 +43,7 @@
                     "Entity": "_measures"
                   }
                 },
-                "Property": "Nr. Tendência Custo %"
+                "Property": "Pc. Tendência Custo %"
               }
             },
             "direction": "Descending"
@@ -95,7 +95,7 @@
             }
           },
           "selector": {
-            "metadata": "_measures.Nr. Tendência Custo %"
+            "metadata": "_measures.Pc. Tendência Custo %"
           }
         }
       ],
@@ -179,6 +179,22 @@
             "id": "default"
           }
         }
+      ],
+      "image": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          },
+          "selector": {
+            "id": "default"
+          }
+        }
       ]
     },
     "visualContainerObjects": {
@@ -188,7 +204,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }

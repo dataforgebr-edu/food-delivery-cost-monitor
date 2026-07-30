@@ -2647,22 +2647,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure.nr__sinal_de_desvio": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Nr. Sinal de Desvio"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "nr. sinal de desvio": {
-			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
 			    "entity__measure.nr__score_custo": {
 			      "Definition": {
 			        "Binding": {
@@ -2675,194 +2659,6 @@ cultureInfo en-US
 			        {
 			          "nr. score custo": {
 			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.nr__tendência_custo_": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Nr. Tendência Custo %"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "nr. tendência custo %": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "nr. tendência custo percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.78
-			          }
-			        },
-			        {
-			          "nr. tendência custo pct": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.757
-			          }
-			        },
-			        {
-			          "Tendência Custo": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.nr__tendência_custo_score": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Nr. Tendência Custo Score"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "nr. tendência custo score": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "nr. tendência custo notch": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "nr. tendência custo slash": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "nr. tendência custo groove": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "nr. tendência custo nick": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "nr. tendência custo cut": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "nr. tendência custo mark": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.504
-			          }
-			        },
-			        {
-			          "nr. tendência custo total": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.479
-			          }
-			        },
-			        {
-			          "nr. tendência custo tally": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.479
-			          }
-			        },
-			        {
-			          "nr. tendência custo grade": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.479
-			          }
-			        },
-			        {
-			          "nr. tendência custo result": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.479
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.nr__score_eficiência": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Nr. Score Eficiência"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "nr. score eficiência": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "Score eficiência": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -2895,52 +2691,6 @@ cultureInfo en-US
 			        {
 			          "nr. jobs com sucesso": {
 			            "State": "Generated"
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.nr__taxa_sucesso_": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Nr. Taxa Sucesso %"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "nr. taxa sucesso %": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "nr. taxon sucesso percentage": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.78
-			          }
-			        },
-			        {
-			          "nr. taxon sucesso pct": {
-			            "Type": "Noun",
-			            "State": "Suggested",
-			            "Source": {
-			              "Agent": "Thesaurus"
-			            },
-			            "Weight": 0.757
-			          }
-			        },
-			        {
-			          "Taxa sucesso": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
 			          }
 			        }
 			      ]
@@ -3282,7 +3032,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Custo médio job": {
+			          "Custo médio Job": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -3472,7 +3222,7 @@ cultureInfo en-US
 			          }
 			        },
 			        {
-			          "Jobs criticos": {
+			          "Jobs críticos": {
 			            "State": "Suggested",
 			            "Source": {
 			              "Type": "External",
@@ -3499,17 +3249,17 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure.vl__total_custo_USD_ult__30_dias": {
+			    "entity__measure.vl__total_custo_USD_últ__30_dias": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Vl. Total Custo USD (Ult. 30 dias)"
+			          "ConceptualProperty": "Vl. Total Custo USD (Últ. 30 dias)"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "vl. total custo USD (ult. 30 dias)": {
+			          "vl. total custo USD (últ. 30 dias)": {
 			            "State": "Generated"
 			          }
 			        },
@@ -3521,92 +3271,140 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "entity__measure.vl__total_custo_USD_ult__7_dias": {
+			    "entity__measure.pc__tendência_custo_score": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Vl. Total Custo USD Ult. 7 dias"
+			          "ConceptualProperty": "Pc. Tendência Custo Score"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "vl. total custo USD ult. 7 dias": {
+			          "pc. tendência custo score": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "Custo": {
+			          "pc. tendência custo notch": {
+			            "Type": "Noun",
 			            "State": "Suggested",
 			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
+			              "Agent": "Thesaurus"
 			            },
-			            "Weight": 0.9
+			            "Weight": 0.504
+			          }
+			        },
+			        {
+			          "pc. tendência custo slash": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.504
+			          }
+			        },
+			        {
+			          "pc. tendência custo groove": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.504
+			          }
+			        },
+			        {
+			          "pc. tendência custo nick": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.504
+			          }
+			        },
+			        {
+			          "pc. tendência custo cut": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.504
+			          }
+			        },
+			        {
+			          "pc. tendência custo mark": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.504
+			          }
+			        },
+			        {
+			          "pc. tendência custo total": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.479
+			          }
+			        },
+			        {
+			          "pc. tendência custo tally": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.479
+			          }
+			        },
+			        {
+			          "pc. tendência custo grade": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.479
+			          }
+			        },
+			        {
+			          "pc. tendência custo result": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.479
 			          }
 			        }
 			      ]
 			    },
-			    "entity__measure.vl__total_custo_USD_ult__15_dias": {
+			    "entity__measure.nr__desviopadrão": {
 			      "Definition": {
 			        "Binding": {
 			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Vl. Total Custo USD (Ult. 15 dias)"
+			          "ConceptualProperty": "Nr. Desvio-Padrão"
 			        }
 			      },
 			      "State": "Generated",
 			      "Terms": [
 			        {
-			          "vl. total custo USD (ult. 15 dias)": {
+			          "nr. desvio-padrão": {
 			            "State": "Generated"
 			          }
 			        },
 			        {
-			          "vl. total custo USD": {
+			          "nr. desvio padrão": {
 			            "State": "Generated",
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "Vl. Custo": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
-			          }
-			        }
-			      ]
-			    },
-			    "entity__measure.vl__média_7d_eficiência_ult__15_dias": {
-			      "Definition": {
-			        "Binding": {
-			          "ConceptualEntity": "_measures",
-			          "ConceptualProperty": "Vl. Média 7d Eficiência (Ult. 15 dias)"
-			        }
-			      },
-			      "State": "Generated",
-			      "Terms": [
-			        {
-			          "vl. média 7d eficiência (ult. 15 dias)": {
-			            "State": "Generated"
-			          }
-			        },
-			        {
-			          "vl. média 7d eficiência": {
-			            "State": "Generated",
-			            "Weight": 0.75
-			          }
-			        },
-			        {
-			          "Vl. Custo médio 7d": {
-			            "State": "Suggested",
-			            "Source": {
-			              "Type": "External",
-			              "Agent": "PowerBI.VisualColumnRename"
-			            },
-			            "Weight": 0.9
+			            "Weight": 0.97
 			          }
 			        }
 			      ]
@@ -3677,6 +3475,296 @@ cultureInfo en-US
 			        {
 			          "vl. amplitude banda": {
 			            "State": "Generated"
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__total_custo_USD_últ__15_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Total Custo USD (Últ. 15 dias)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. total custo USD (últ. 15 dias)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "vl. total custo USD": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "Custo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__média_7d_eficiência_últ__15_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Média 7d Eficiência (Últ. 15 dias)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. média 7d eficiência (últ. 15 dias)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "vl. média 7d eficiência": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "Custo médio 7d": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.pc__tendência_custo_": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Pc. Tendência Custo %"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "pc. tendência custo %": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "pc. tendência custo percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.78
+			          }
+			        },
+			        {
+			          "pc. tendência custo pct": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.757
+			          }
+			        },
+			        {
+			          "Tendência custo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.vl__total_custo_USD_últ__7_dias": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Vl. Total Custo USD (Últ. 7 dias)"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "vl. total custo USD (últ. 7 dias)": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "vl. total custo USD": {
+			            "State": "Generated",
+			            "Weight": 0.75
+			          }
+			        },
+			        {
+			          "Custo": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.pc__taxa_sucesso_": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Pc. Taxa Sucesso %"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "pc. taxa sucesso %": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "pc. taxon sucesso percentage": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.78
+			          }
+			        },
+			        {
+			          "pc. taxon sucesso pct": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.757
+			          }
+			        },
+			        {
+			          "Taxa sucesso": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.pc__score_eficiência": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Pc. Score Eficiência"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "pc. score eficiência": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "Score eficiência": {
+			            "State": "Suggested",
+			            "Source": {
+			              "Type": "External",
+			              "Agent": "PowerBI.VisualColumnRename"
+			            },
+			            "Weight": 0.9
+			          }
+			        }
+			      ]
+			    },
+			    "entity__measure.pc__tendência_custo_card": {
+			      "Definition": {
+			        "Binding": {
+			          "ConceptualEntity": "_measures",
+			          "ConceptualProperty": "Pc. Tendência Custo Card"
+			        }
+			      },
+			      "State": "Generated",
+			      "Terms": [
+			        {
+			          "pc. tendência custo card": {
+			            "State": "Generated"
+			          }
+			        },
+			        {
+			          "pc. tendência custo postcard": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.52
+			          }
+			        },
+			        {
+			          "pc. tendência custo valentine": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.52
+			          }
+			        },
+			        {
+			          "pc. tendência custo pass": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.479
+			          }
+			        },
+			        {
+			          "pc. tendência custo certificate": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.455
+			          }
+			        },
+			        {
+			          "pc. tendência custo license": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.455
+			          }
+			        },
+			        {
+			          "pc. tendência custo tag": {
+			            "Type": "Noun",
+			            "State": "Suggested",
+			            "Source": {
+			              "Agent": "Thesaurus"
+			            },
+			            "Weight": 0.455
 			          }
 			        }
 			      ]
@@ -3772,6 +3860,237 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "dim_calendarios_have_mart_anomalies"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_pc__tendência_custo_card": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.pc__tendência_custo_card": {
+			          "Target": {
+			            "Entity": "entity__measure.pc__tendência_custo_card"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.pc__tendência_custo_card"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_pc__tendência_custo_card"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_pc__score_eficiência": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.pc__score_eficiência": {
+			          "Target": {
+			            "Entity": "entity__measure.pc__score_eficiência"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.pc__score_eficiência"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_pc__score_eficiência"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_pc__taxa_sucesso_": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.pc__taxa_sucesso_": {
+			          "Target": {
+			            "Entity": "entity__measure.pc__taxa_sucesso_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.pc__taxa_sucesso_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_pc__taxa_sucesso_"
+			        }
+			      ]
+			    },
+			    "mart_anomaly_has_entity__measure_vl__total_custo_USD_últ__7_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_anomalies"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_anomaly": {
+			          "Target": {
+			            "Entity": "mart_anomaly"
+			          }
+			        },
+			        "entity__measure.vl__total_custo_USD_últ__7_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__total_custo_USD_últ__7_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_anomaly"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__total_custo_USD_últ__7_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_anomalies_have_vl__total_custo_USD_últ__7_dias"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_pc__tendência_custo_": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.pc__tendência_custo_": {
+			          "Target": {
+			            "Entity": "entity__measure.pc__tendência_custo_"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.pc__tendência_custo_"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_pc__tendência_custo_"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__média_7d_eficiência_últ__15_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__média_7d_eficiência_últ__15_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__média_7d_eficiência_últ__15_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__média_7d_eficiência_últ__15_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__média_7d_eficiência_últ__15_dias"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__total_custo_USD_últ__15_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__total_custo_USD_últ__15_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__total_custo_USD_últ__15_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__total_custo_USD_últ__15_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__total_custo_USD_últ__15_dias"
 			        }
 			      ]
 			    },
@@ -3907,73 +4226,7 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "mart_platform_efficiency_has_entity__measure_vl__média_7d_eficiência_ult__15_dias": {
-			      "Binding": {
-			        "ConceptualEntity": "mart_platform_efficiency"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "mart_platform_efficiency": {
-			          "Target": {
-			            "Entity": "mart_platform_efficiency"
-			          }
-			        },
-			        "entity__measure.vl__média_7d_eficiência_ult__15_dias": {
-			          "Target": {
-			            "Entity": "entity__measure.vl__média_7d_eficiência_ult__15_dias"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "mart_platform_efficiency"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.vl__média_7d_eficiência_ult__15_dias"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_vl__média_7d_eficiência_ult__15_dias"
-			        }
-			      ]
-			    },
-			    "mart_platform_efficiency_has_entity__measure_vl__total_custo_USD_ult__15_dias": {
-			      "Binding": {
-			        "ConceptualEntity": "mart_platform_efficiency"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "mart_platform_efficiency": {
-			          "Target": {
-			            "Entity": "mart_platform_efficiency"
-			          }
-			        },
-			        "entity__measure.vl__total_custo_USD_ult__15_dias": {
-			          "Target": {
-			            "Entity": "entity__measure.vl__total_custo_USD_ult__15_dias"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "mart_platform_efficiency"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.vl__total_custo_USD_ult__15_dias"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_vl__total_custo_USD_ult__15_dias"
-			        }
-			      ]
-			    },
-			    "mart_anomaly_has_entity__measure_vl__total_custo_USD_ult__7_dias": {
+			    "mart_anomaly_has_entity__measure_nr__desviopadrão": {
 			      "Binding": {
 			        "ConceptualEntity": "mart_anomalies"
 			      },
@@ -3984,9 +4237,9 @@ cultureInfo en-US
 			            "Entity": "mart_anomaly"
 			          }
 			        },
-			        "entity__measure.vl__total_custo_USD_ult__7_dias": {
+			        "entity__measure.nr__desviopadrão": {
 			          "Target": {
-			            "Entity": "entity__measure.vl__total_custo_USD_ult__7_dias"
+			            "Entity": "entity__measure.nr__desviopadrão"
 			          }
 			        }
 			      },
@@ -3997,16 +4250,16 @@ cultureInfo en-US
 			              "Role": "mart_anomaly"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.vl__total_custo_USD_ult__7_dias"
+			              "Role": "entity__measure.nr__desviopadrão"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "mart_anomalies_have_vl__total_custo_USD_ult__7_dias"
+			          "ID": "mart_anomalies_have_nr__desviopadrão"
 			        }
 			      ]
 			    },
-			    "mart_platform_efficiency_has_entity__measure_vl__total_custo_USD_ult__30_dias": {
+			    "mart_platform_efficiency_has_entity__measure_pc__tendência_custo_score": {
 			      "Binding": {
 			        "ConceptualEntity": "mart_platform_efficiency"
 			      },
@@ -4017,9 +4270,9 @@ cultureInfo en-US
 			            "Entity": "mart_platform_efficiency"
 			          }
 			        },
-			        "entity__measure.vl__total_custo_USD_ult__30_dias": {
+			        "entity__measure.pc__tendência_custo_score": {
 			          "Target": {
-			            "Entity": "entity__measure.vl__total_custo_USD_ult__30_dias"
+			            "Entity": "entity__measure.pc__tendência_custo_score"
 			          }
 			        }
 			      },
@@ -4030,12 +4283,45 @@ cultureInfo en-US
 			              "Role": "mart_platform_efficiency"
 			            },
 			            "Object": {
-			              "Role": "entity__measure.vl__total_custo_USD_ult__30_dias"
+			              "Role": "entity__measure.pc__tendência_custo_score"
 			            }
 			          },
 			          "State": "Generated",
 			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_vl__total_custo_USD_ult__30_dias"
+			          "ID": "mart_platform_efficiencies_have_pc__tendência_custo_score"
+			        }
+			      ]
+			    },
+			    "mart_platform_efficiency_has_entity__measure_vl__total_custo_USD_últ__30_dias": {
+			      "Binding": {
+			        "ConceptualEntity": "mart_platform_efficiency"
+			      },
+			      "State": "Generated",
+			      "Roles": {
+			        "mart_platform_efficiency": {
+			          "Target": {
+			            "Entity": "mart_platform_efficiency"
+			          }
+			        },
+			        "entity__measure.vl__total_custo_USD_últ__30_dias": {
+			          "Target": {
+			            "Entity": "entity__measure.vl__total_custo_USD_últ__30_dias"
+			          }
+			        }
+			      },
+			      "Phrasings": [
+			        {
+			          "Attribute": {
+			            "Subject": {
+			              "Role": "mart_platform_efficiency"
+			            },
+			            "Object": {
+			              "Role": "entity__measure.vl__total_custo_USD_últ__30_dias"
+			            }
+			          },
+			          "State": "Generated",
+			          "Weight": 0.99,
+			          "ID": "mart_platform_efficiencies_have_vl__total_custo_USD_últ__30_dias"
 			        }
 			      ]
 			    },
@@ -4501,39 +4787,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "mart_platform_efficiency_has_entity__measure_nr__taxa_sucesso_": {
-			      "Binding": {
-			        "ConceptualEntity": "mart_platform_efficiency"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "mart_platform_efficiency": {
-			          "Target": {
-			            "Entity": "mart_platform_efficiency"
-			          }
-			        },
-			        "entity__measure.nr__taxa_sucesso_": {
-			          "Target": {
-			            "Entity": "entity__measure.nr__taxa_sucesso_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "mart_platform_efficiency"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.nr__taxa_sucesso_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_nr__taxa_sucesso_"
-			        }
-			      ]
-			    },
 			    "mart_platform_efficiency_has_entity__measure_nr__jobs_com_sucesso": {
 			      "Binding": {
 			        "ConceptualEntity": "mart_platform_efficiency"
@@ -4600,105 +4853,6 @@ cultureInfo en-US
 			        }
 			      ]
 			    },
-			    "mart_platform_efficiency_has_entity__measure_nr__score_eficiência": {
-			      "Binding": {
-			        "ConceptualEntity": "mart_platform_efficiency"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "mart_platform_efficiency": {
-			          "Target": {
-			            "Entity": "mart_platform_efficiency"
-			          }
-			        },
-			        "entity__measure.nr__score_eficiência": {
-			          "Target": {
-			            "Entity": "entity__measure.nr__score_eficiência"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "mart_platform_efficiency"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.nr__score_eficiência"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_nr__score_eficiência"
-			        }
-			      ]
-			    },
-			    "mart_platform_efficiency_has_entity__measure_nr__tendência_custo_score": {
-			      "Binding": {
-			        "ConceptualEntity": "mart_platform_efficiency"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "mart_platform_efficiency": {
-			          "Target": {
-			            "Entity": "mart_platform_efficiency"
-			          }
-			        },
-			        "entity__measure.nr__tendência_custo_score": {
-			          "Target": {
-			            "Entity": "entity__measure.nr__tendência_custo_score"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "mart_platform_efficiency"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.nr__tendência_custo_score"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_nr__tendência_custo_score"
-			        }
-			      ]
-			    },
-			    "mart_platform_efficiency_has_entity__measure_nr__tendência_custo_": {
-			      "Binding": {
-			        "ConceptualEntity": "mart_platform_efficiency"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "mart_platform_efficiency": {
-			          "Target": {
-			            "Entity": "mart_platform_efficiency"
-			          }
-			        },
-			        "entity__measure.nr__tendência_custo_": {
-			          "Target": {
-			            "Entity": "entity__measure.nr__tendência_custo_"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "mart_platform_efficiency"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.nr__tendência_custo_"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "mart_platform_efficiencies_have_nr__tendência_custo_"
-			        }
-			      ]
-			    },
 			    "mart_platform_efficiency_has_entity__measure_nr__score_custo": {
 			      "Binding": {
 			        "ConceptualEntity": "mart_platform_efficiency"
@@ -4729,39 +4883,6 @@ cultureInfo en-US
 			          "State": "Generated",
 			          "Weight": 0.99,
 			          "ID": "mart_platform_efficiencies_have_nr__score_custo"
-			        }
-			      ]
-			    },
-			    "mart_anomaly_has_entity__measure_nr__sinal_de_desvio": {
-			      "Binding": {
-			        "ConceptualEntity": "mart_anomalies"
-			      },
-			      "State": "Generated",
-			      "Roles": {
-			        "mart_anomaly": {
-			          "Target": {
-			            "Entity": "mart_anomaly"
-			          }
-			        },
-			        "entity__measure.nr__sinal_de_desvio": {
-			          "Target": {
-			            "Entity": "entity__measure.nr__sinal_de_desvio"
-			          }
-			        }
-			      },
-			      "Phrasings": [
-			        {
-			          "Attribute": {
-			            "Subject": {
-			              "Role": "mart_anomaly"
-			            },
-			            "Object": {
-			              "Role": "entity__measure.nr__sinal_de_desvio"
-			            }
-			          },
-			          "State": "Generated",
-			          "Weight": 0.99,
-			          "ID": "mart_anomalies_have_nr__sinal_de_desvio"
 			        }
 			      ]
 			    },

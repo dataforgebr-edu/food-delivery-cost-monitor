@@ -67,10 +67,10 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Vl. Total Custo USD Ult. 7 dias"
+                  "Property": "Vl. Total Custo USD (Últ. 7 dias)"
                 }
               },
-              "queryRef": "_measures.Vl. Total Custo USD Ult. 7 dias",
+              "queryRef": "_measures.Vl. Total Custo USD (Últ. 7 dias)",
               "nativeQueryRef": "Custo",
               "displayName": "Custo"
             },
@@ -352,7 +352,7 @@
             }
           },
           "selector": {
-            "metadata": "_measures.Vl. Total Custo USD Ult. 7 dias"
+            "metadata": "_measures.Vl. Total Custo USD (Últ. 7 dias)"
           }
         }
       ]
@@ -392,6 +392,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'Minimal'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

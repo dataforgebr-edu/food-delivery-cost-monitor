@@ -27,8 +27,8 @@
                 }
               },
               "queryRef": "_measures.Nr. Jobs Criticos",
-              "nativeQueryRef": "Jobs criticos",
-              "displayName": "Jobs criticos"
+              "nativeQueryRef": "Jobs críticos",
+              "displayName": "Jobs críticos"
             }
           ]
         }
@@ -131,7 +131,7 @@
             }
           },
           "selector": {
-            "metadata": "_measures.Nr. Tendência Custo %"
+            "metadata": "_measures.Pc. Tendência Custo %"
           }
         }
       ],
@@ -291,7 +291,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }

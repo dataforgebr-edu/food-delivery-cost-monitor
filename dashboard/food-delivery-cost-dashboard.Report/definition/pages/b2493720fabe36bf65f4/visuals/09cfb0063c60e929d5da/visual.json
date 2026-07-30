@@ -42,12 +42,12 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Vl. Total Custo USD (Ult. 15 dias)"
+                  "Property": "Vl. Total Custo USD (Últ. 15 dias)"
                 }
               },
-              "queryRef": "_measures.Vl. Total Custo USD (Ult. 15 dias)",
-              "nativeQueryRef": "Vl. Custo",
-              "displayName": "Vl. Custo"
+              "queryRef": "_measures.Vl. Total Custo USD (Últ. 15 dias)",
+              "nativeQueryRef": "Custo",
+              "displayName": "Custo"
             },
             {
               "field": {
@@ -57,12 +57,12 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Vl. Média 7d Eficiência (Ult. 15 dias)"
+                  "Property": "Vl. Média 7d Eficiência (Últ. 15 dias)"
                 }
               },
-              "queryRef": "_measures.Vl. Média 7d Eficiência (Ult. 15 dias)",
-              "nativeQueryRef": "Vl. Custo médio 7d",
-              "displayName": "Vl. Custo médio 7d"
+              "queryRef": "_measures.Vl. Média 7d Eficiência (Últ. 15 dias)",
+              "nativeQueryRef": "Custo médio 7d",
+              "displayName": "Custo médio 7d"
             }
           ]
         }
@@ -168,7 +168,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Tendência de custo vs benchmark 15d'"
+                  "Value": "'Tendência de custo vs. benchmark (15 dias)'"
                 }
               }
             },
@@ -176,6 +176,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'center'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

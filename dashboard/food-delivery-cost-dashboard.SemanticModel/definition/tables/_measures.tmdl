@@ -25,7 +25,7 @@ table _measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Nr. Sinal de Desvio' = SUM(mart_anomalies[nr_sigma_desvio])
+	measure 'Nr. Desvio-Padrão' = SUM(mart_anomalies[nr_sigma_desvio])
 		displayFolder: mart_anomalies
 		lineageTag: 07b133b9-2a80-4374-9661-5df49182bddc
 
@@ -37,7 +37,7 @@ table _measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Nr. Tendência Custo %' =
+	measure 'Pc. Tendência Custo %' =
 
 			DIVIDE(
 			    ([Vl. Total Custo USD] - [Vl. Custo dia Anterior]),
@@ -47,13 +47,13 @@ table _measures
 		displayFolder: mart_platform_efficiency
 		lineageTag: 4bc9870e-558f-4d47-aeaa-7edd48c3be88
 
-	measure 'Nr. Tendência Custo Score' = SUM(mart_platform_efficiency[nr_custo_trend_score])
+	measure 'Pc. Tendência Custo Score' = SUM(mart_platform_efficiency[nr_custo_trend_score])
 		displayFolder: mart_platform_efficiency
 		lineageTag: edd0aa93-f67a-4b5d-ba77-c361ea2409b0
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Nr. Score Eficiência' = SUM(mart_platform_efficiency[nr_eficiencia_score])/100
+	measure 'Pc. Score Eficiência' = SUM(mart_platform_efficiency[nr_eficiencia_score])/100
 		formatString: 0.0%;-0.0%;0.0%
 		displayFolder: mart_platform_efficiency
 		lineageTag: 7f15968e-6f92-471c-96c3-6a5b50e8361d
@@ -69,7 +69,7 @@ table _measures
 		displayFolder: mart_platform_efficiency
 		lineageTag: 6ecc1b93-1dd2-4d5d-8ae7-63aac0639444
 
-	measure 'Nr. Taxa Sucesso %' =
+	measure 'Pc. Taxa Sucesso %' =
 
 			DIVIDE(
 			    [Nr. Jobs com Sucesso],
@@ -173,7 +173,7 @@ table _measures
 		displayFolder: mart_platform_efficiency
 		lineageTag: 411dd544-aba2-479e-aa77-a224e8f037bb
 
-	measure 'Vl. Total Custo USD (Ult. 30 dias)' =
+	measure 'Vl. Total Custo USD (Últ. 30 dias)' =
 
 			VAR vDtFiltro =
 			CALCULATE(
@@ -190,7 +190,7 @@ table _measures
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
 
-	measure 'Vl. Total Custo USD Ult. 7 dias' =
+	measure 'Vl. Total Custo USD (Últ. 7 dias)' =
 
 			VAR vDtFiltro =
 			CALCULATE(
@@ -208,7 +208,7 @@ table _measures
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
-	measure 'Vl. Total Custo USD (Ult. 15 dias)' =
+	measure 'Vl. Total Custo USD (Últ. 15 dias)' =
 
 			VAR vDtFiltro =
 			CALCULATE(
@@ -226,7 +226,7 @@ table _measures
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
-	measure 'Vl. Média 7d Eficiência (Ult. 15 dias)' =
+	measure 'Vl. Média 7d Eficiência (Últ. 15 dias)' =
 
 			VAR vDtFiltro =
 			CALCULATE(
@@ -244,7 +244,7 @@ table _measures
 
 		annotation PBI_FormatHint = {"currencyCulture":"en-US"}
 
-	measure 'Vl. Limite Superior Tendência' = [Vl. Média 7d Eficiência (Ult. 15 dias)] + (2 * [Vl. Desvio 7d Eficiência (Últ. 15 dias)])
+	measure 'Vl. Limite Superior Tendência' = [Vl. Média 7d Eficiência (Últ. 15 dias)] + (2 * [Vl. Desvio 7d Eficiência (Últ. 15 dias)])
 		displayFolder: mart_platform_efficiency
 		lineageTag: 835eb334-1e67-4d81-90bf-e29a97d9392f
 
@@ -266,7 +266,7 @@ table _measures
 		displayFolder: mart_platform_efficiency
 		lineageTag: d75211f3-ec22-4292-b6e7-dac06e419aa9
 
-	measure 'Vl. Limite Inferior Tendência' = [Vl. Média 7d Eficiência (Ult. 15 dias)] - (2 * [Vl. Desvio 7d Eficiência (Últ. 15 dias)])
+	measure 'Vl. Limite Inferior Tendência' = [Vl. Média 7d Eficiência (Últ. 15 dias)] - (2 * [Vl. Desvio 7d Eficiência (Últ. 15 dias)])
 		displayFolder: mart_platform_efficiency
 		lineageTag: 038a5bf2-112c-46d5-b7c9-527dc1d283f7
 
@@ -277,6 +277,12 @@ table _measures
 		lineageTag: d97d9956-6633-4c1a-bd86-29fe5baba085
 
 		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	measure 'Pc. Tendência Custo Card' =
+
+			FORMAT([Pc. Tendência Custo %], "0.0%")
+		displayFolder: mart_platform_efficiency
+		lineageTag: 6cf261db-ddc5-4578-87eb-ae3b8e870bb1
 
 	partition _measures = m
 		mode: import

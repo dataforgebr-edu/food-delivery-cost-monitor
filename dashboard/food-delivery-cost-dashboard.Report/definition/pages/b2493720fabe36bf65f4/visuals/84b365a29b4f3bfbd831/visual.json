@@ -6,7 +6,7 @@
     "y": 143.64089775561098,
     "z": 6000,
     "height": 73.615960099750623,
-    "width": 146.33416458852867,
+    "width": 153.51620947630923,
     "tabOrder": 6000
   },
   "visual": {
@@ -27,8 +27,8 @@
                 }
               },
               "queryRef": "_measures.Vl. Médio por Jobs",
-              "nativeQueryRef": "Custo médio job",
-              "displayName": "Custo médio job"
+              "nativeQueryRef": "Custo médio Job",
+              "displayName": "Custo médio Job"
             }
           ]
         }
@@ -131,7 +131,7 @@
             }
           },
           "selector": {
-            "metadata": "_measures.Nr. Tendência Custo %"
+            "metadata": "_measures.Pc. Tendência Custo %"
           }
         }
       ],
@@ -291,7 +291,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }

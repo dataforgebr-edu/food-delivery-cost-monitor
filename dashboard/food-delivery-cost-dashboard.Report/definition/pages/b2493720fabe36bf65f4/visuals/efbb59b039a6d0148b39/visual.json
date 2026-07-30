@@ -43,10 +43,10 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Nr. Score Eficiência"
+                  "Property": "Pc. Score Eficiência"
                 }
               },
-              "queryRef": "_measures.Nr. Score Eficiência",
+              "queryRef": "_measures.Pc. Score Eficiência",
               "nativeQueryRef": "Score eficiência",
               "displayName": "Score eficiência"
             }
@@ -63,7 +63,7 @@
                     "Entity": "_measures"
                   }
                 },
-                "Property": "Nr. Score Eficiência"
+                "Property": "Pc. Score Eficiência"
               }
             },
             "direction": "Descending"
@@ -149,6 +149,19 @@
               "expr": {
                 "Literal": {
                   "Value": "'center'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "visualHeader": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
                 }
               }
             }

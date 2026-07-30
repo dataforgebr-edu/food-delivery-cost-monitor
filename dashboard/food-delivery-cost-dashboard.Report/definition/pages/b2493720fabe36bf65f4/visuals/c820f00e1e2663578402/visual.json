@@ -23,10 +23,10 @@
                       "Entity": "_measures"
                     }
                   },
-                  "Property": "Nr. Taxa Sucesso %"
+                  "Property": "Pc. Taxa Sucesso %"
                 }
               },
-              "queryRef": "_measures.Nr. Taxa Sucesso",
+              "queryRef": "_measures.Pc. Taxa Sucesso %",
               "nativeQueryRef": "Taxa sucesso",
               "displayName": "Taxa sucesso"
             }
@@ -43,7 +43,7 @@
                     "Entity": "_measures"
                   }
                 },
-                "Property": "Nr. Taxa Sucesso %"
+                "Property": "Pc. Taxa Sucesso %"
               }
             },
             "direction": "Descending"
@@ -131,7 +131,7 @@
             }
           },
           "selector": {
-            "metadata": "_measures.Nr. Tendência Custo %"
+            "metadata": "_measures.Pc. Tendência Custo %"
           }
         }
       ],
@@ -291,7 +291,7 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "true"
+                  "Value": "false"
                 }
               }
             }
